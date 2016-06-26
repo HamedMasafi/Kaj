@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="BSepideh">BSepideh.ttf</file>
+    </qresource>
+</RCC>

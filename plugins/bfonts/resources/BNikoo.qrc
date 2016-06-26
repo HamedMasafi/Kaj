@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="BNikoo">BNikoo.ttf</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="BLotus">BLotus.ttf</file>
+    </qresource>
+</RCC>

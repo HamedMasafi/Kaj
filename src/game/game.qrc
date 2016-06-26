@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/kaj">
+        <file>qml/Kaj/Game/Bullet.qml</file>
+        <file>qml/Kaj/Game/Entity.qml</file>
+        <file>qml/Kaj/Game/EntityManager.qml</file>
+        <file>qml/Kaj/Game/GameWindow.qml</file>
+        <file>qml/Kaj/Game/qmldir</file>
+        <file>qml/Kaj/Game/Zoom.qml</file>
+    </qresource>
+</RCC>

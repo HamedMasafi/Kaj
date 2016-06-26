@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="BElm">BElm.ttf</file>
+    </qresource>
+</RCC>

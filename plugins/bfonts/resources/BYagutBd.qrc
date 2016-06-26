@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="BYagutBd">BYagutBd.ttf</file>
+    </qresource>
+</RCC>

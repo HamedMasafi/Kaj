@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/kaj">
+        <file>qml/Kaj/CircleButton.qml</file>
+        <file>qml/Kaj/qmldir</file>
+        <file>qml/Kaj/CircleImage.qml</file>
+        <file>qml/Kaj/AutoLayout.qml</file>
+        <file>qml/Kaj/module.qmltypes</file>
+    </qresource>
+</RCC>

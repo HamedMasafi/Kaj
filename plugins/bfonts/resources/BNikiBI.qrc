@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="BNikiBI">BNikiBI.ttf</file>
+    </qresource>
+</RCC>

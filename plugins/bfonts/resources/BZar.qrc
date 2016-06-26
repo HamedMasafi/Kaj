@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="BZar">BZar.ttf</file>
+    </qresource>
+</RCC>

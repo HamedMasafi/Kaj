@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="BBaranI">BBaranI.ttf</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="BRoyaBd">BRoyaBd.ttf</file>
+    </qresource>
+</RCC>

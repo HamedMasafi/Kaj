@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="BAseman">BAseman.ttf</file>
+    </qresource>
+</RCC>
