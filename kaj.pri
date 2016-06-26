@@ -1,9 +1,9 @@
 QT += qml quick widgets
 
 #CONFIG(debug, debug|release):{
-    QML_IMPORT_PATH = \
-        $$PWD/src/qml \
-        qrc:/kaj/qml
+#    QML_IMPORT_PATH = \
+#        $$PWD/src/qml \
+#        qrc:/kaj/qml
 #}
 
 
@@ -45,11 +45,12 @@ defineTest(tCopyToOutput){
 #COPYFOLDERS += android
 
 !contains(KAJ_MODULES, core) {
-    message(Core module is not included!!!)
+    message(Core module is not included. It will be incude automaticaly)
     KAJ_MODULES += core
 }
 for(m, KAJ_MODULES){
     include($$PWD/src/$${m}/$${m}.pri)
+    QML_IMPORT_PATH += $$PWD/src/$${m}/qml
 }
 for(m, KAJ_PLUGINS){
     include($$PWD/plugins/$${m}/$${m}.pri)

@@ -1,0 +1,3 @@
+[submodule "3rdparty/qm"]
+	path = 3rdparty/qm
+	url = https://github.com/qml-box2d/qml-box2d.git

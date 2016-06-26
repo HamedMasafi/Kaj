@@ -3,3 +3,4 @@ typeinfo module.qmltypes
 AutoLayout 1.0 AutoLayout.qml
 CircleButton 1.0 CircleButton.qml
 CircleImage 1.0 CircleImage.qml
+PagesView 1.0 PagesView.qml
