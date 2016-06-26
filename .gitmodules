@@ -1,3 +1,9 @@
 [submodule "3rdparty/qm"]
 	path = 3rdparty/qm
 	url = https://github.com/qml-box2d/qml-box2d.git
+[submodule "3rdparty/qml-box2d"]
+	path = 3rdparty/qml-box2d
+	url = https://github.com/qml-box2d/qml-box2d.git
+[submodule "3rdparty/liquidfun"]
+	path = 3rdparty/liquidfun
+	url = https://github.com/google/liquidfun.git
