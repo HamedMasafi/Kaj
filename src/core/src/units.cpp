@@ -13,7 +13,7 @@ Units::Units(QObject *parent) : QObject(parent)
 
 QString Units::screenName() const
 {
-
+    return QString("");
 }
 
 qreal Units::dp(int number)

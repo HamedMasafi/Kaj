@@ -15,3 +15,5 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/src/bfont.cpp
+
+INCLUDEPATH += $$PWD/src

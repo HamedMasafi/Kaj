@@ -1,3 +1,4 @@
+#include <QCoreApplication>
 #include "kajpluginbase.h"
 
 KajPluginBase::KajPluginBase(QObject *parent) : QObject(parent)
@@ -23,3 +24,9 @@ void KajPluginRegisterHelper::registerAll(){
         plugins[className]();
     }
 }
+
+void registerAll(){
+     KajPluginRegisterHelper::registerAll();
+}
+
+Q_COREAPP_STARTUP_FUNCTION(registerAll)

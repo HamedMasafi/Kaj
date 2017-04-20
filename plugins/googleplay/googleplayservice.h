@@ -19,6 +19,9 @@
 #include "gpg/player_manager.h"
 #include "gpg/score_page.h"
 #include "gpg/types.h"
+#include <android/log.h>
+#include "android/native_activity.h"
+#include <android/native_window_jni.h>
 #endif
 
 class GooglePlayService : public KajPluginBase//, public gpg::IRealTimeEventListener

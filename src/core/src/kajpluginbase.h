@@ -43,8 +43,8 @@ class KajPluginBaseRegistrar : public QObject{
 public:
     KajPluginBaseRegistrar()
     {
-        QString className = T::staticMetaObject.className();
-        KajPluginRegisterHelper::insert(className, &T::init);
+//        QString className = T::staticMetaObject.className();
+//        KajPluginRegisterHelper::insert(className, &T::init);
     }
 
     ~KajPluginBaseRegistrar(){

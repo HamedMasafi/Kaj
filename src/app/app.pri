@@ -1,0 +1,5 @@
+INCLUDEPATH += $$PWD/src
+DEPENDPATH += $$PWD/src
+QML_IMPORT_PATH += $$PWD/qml
+
+RESOURCES += $$PWD/app.qrc

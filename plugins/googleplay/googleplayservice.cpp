@@ -36,7 +36,7 @@ void GooglePlayService::initGooglePlayGameServices()
 //    QtAndroid::androidActivity().callMethod<void>("loginGPGS");
 #endif
 
-#ifdef Q_OS_ANDROID1
+#ifdef Q_OS_ANDROID
     if (service_ != nullptr) {
         return;
     }
@@ -46,8 +46,8 @@ void GooglePlayService::initGooglePlayGameServices()
     // Game Services have not been initialized, create a new Game Services.
     gpg::AndroidPlatformConfiguration platform_configuration;
     platform_configuration.SetActivity(
-//                app_->activity->clazz
-            QtAndroid::androidActivity().object<jclass>()
+                app_->activity->clazz
+//            QtAndroid::androidActivity().object<jclass>()
     );
     gpg::GameServices::Builder builder;
     service_ =

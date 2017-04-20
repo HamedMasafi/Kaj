@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/kaj">
+        <file>qml/Kaj/App/Header.qml</file>
+        <file>qml/Kaj/App/MainWindow.qml</file>
+        <file>qml/Kaj/App/MenuButton.qml</file>
+        <file>qml/Kaj/App/NavigationDrawer.qml</file>
+        <file>qml/Kaj/App/NavigationDrawerTemplate.qml</file>
+        <file>qml/Kaj/App/AppPage.qml</file>
+        <file>qml/Kaj/App/qmldir</file>
+        <file>qml/Kaj/App/StepMenuButton.qml</file>
+    </qresource>
+</RCC>

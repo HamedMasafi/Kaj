@@ -21,6 +21,7 @@
 #   include "units.h"
 #   include "zoomarea.h"
 #   include "scalecontainer.h"
+#   include "platforms.h"
 #endif
 
 QT_BEGIN_NAMESPACE
@@ -29,6 +30,11 @@ QT_BEGIN_NAMESPACE
 static QObject *createSingletonUnits(QQmlEngine *, QJSEngine *)
 {
     return new Units();
+}
+
+static QObject *createSingletonPlatforms(QQmlEngine *, QJSEngine *)
+{
+    return new Platforms();
 }
 
 
@@ -51,6 +57,7 @@ void KajQmlHelper::registerQmlTypes(QQmlApplicationEngine *engine)
     qmlRegisterType<ZoomArea>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ZoomArea");
     qmlRegisterUncreatableType<ScaleContainer>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ScaleContainer", "This is automaticly will be created");
     qmlRegisterSingletonType<Units>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
+    qmlRegisterSingletonType<Platforms>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);
 #endif
 
 #ifdef KAJ_GAME_LIB

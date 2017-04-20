@@ -12,7 +12,8 @@ HEADERS += \
     $$PWD/src/swipegesturemanager_p.h \
     $$PWD/src/kajqmlhelper.h \
     $$PWD/src/kajpluginbase.h \
-    $$PWD/src/kajglobal.h
+    $$PWD/src/kajglobal.h \
+    $$PWD/src/platforms.h
 
 SOURCES += \
     $$PWD/src/swipegesturemanager.cpp \
@@ -20,4 +21,5 @@ SOURCES += \
     $$PWD/src/zoomarea.cpp \
     $$PWD/src/scalecontainer.cpp \
     $$PWD/src/kajpluginbase.cpp \
-    $$PWD/src/kajqmlhelper.cpp
+    $$PWD/src/kajqmlhelper.cpp \
+    $$PWD/src/platforms.cpp

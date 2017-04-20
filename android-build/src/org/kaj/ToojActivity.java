@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import com.google.example.games.basegameutils.BaseGameUtils;
-import com.google.example.games.basegameutils.GameHelper;
+//import com.google.example.games.basegameutils.BaseGameUtils;
+//import com.google.example.games.basegameutils.GameHelper;
 import org.qtproject.qt5.android.bindings.QtActivity;
 
 public class ToojActivity extends QtActivity{
@@ -15,11 +15,11 @@ public class ToojActivity extends QtActivity{
 	private static ToojActivity instance;
 	private boolean _transparentStatusBar = false;
     private boolean _transparentNavigationBar = false;
-    private GameHelper gameHelper;
+    //private GameHelper gameHelper;
     
 	public ToojActivity(){
 		instance = this;
-		        gameHelper = new GameHelper(this, GameHelper.CLIENT_ALL);
+	//	        gameHelper = new GameHelper(this, GameHelper.CLIENT_ALL);
 		Log.i("ToojActivity", "ctor");
 	}
 	
@@ -66,7 +66,7 @@ public class ToojActivity extends QtActivity{
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    gameHelper.beginUserInitiatedSignIn();
+                    //gameHelper.beginUserInitiatedSignIn();
                 }
             });
         } catch (Exception e) {
