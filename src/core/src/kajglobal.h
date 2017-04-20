@@ -3,16 +3,27 @@
 
 #include <QtGlobal>
 
-// class TOOJ_EXPORT ToojGlobal
+// class Kaj_EXPORT KajGlobal
 // This is added for header file exporter
 
-#define KAJ_VERSION 0x000100
-#define KAJ_VERSION_STR "0.1.0"
+#define KAJ_NAMESPACE Kaj
 #define KAJ_QML_URL "Kaj"
-#define KAJ_VERSION_MAJOR 1
-#define KAJ_VERSION_MINOR 0
+#define KAJ_VERSION_MAJOR   1
+#define KAJ_VERSION_MINOR   0
+#define KAJ_VERSION_PATCH   0
+#define KAJ_VERSION_STR     "1.0.0"
 
+#define KAJ_VERSION         QT_VERSION_CHECK(KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, KAJ_VERSION_PATCH)
 
+#ifdef KAJ_NAMESPACE
+#   define KAJ_BEGIN_NAMESPACE     namespace KAJ_NAMESPACE{
+#   define KAJ_END_NAMESPACE       }
+#   define KAJ_WRAP_NAMESPACE(x)   KAJ_NAMESPACE::x
+#else
+#   define KAJ_BEGIN_NAMESPACE
+#   define KAJ_END_NAMESPACE
+#   define KAJ_WRAP_NAMESPACE(x)   x
+#endif
 
 
 #define KAJ_DECL_SINGLETON(type)       \

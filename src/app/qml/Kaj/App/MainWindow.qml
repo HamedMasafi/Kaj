@@ -70,22 +70,7 @@ ApplicationWindow{
 
     header: ToolBar{
         height: 40
-        //            ToolButton {
-        //                id: backButton
-        ////                text: "back"
-        //                opacity: stackView.depth > 1 ? 1 : 0
-        //                onClicked: back()
 
-        //                Image {
-        //                    anchors.rightMargin: 10
-        //                    anchors.leftMargin: 10
-        //                    anchors.bottomMargin: 10
-        //                    anchors.topMargin: 10
-        //                    anchors.fill: parent
-        //                    source: "back.png"
-        //                }
-        //                Behavior on opacity { NumberAnimation{} }
-        //            }
         MenuButton{
             id: backButton
             opacity: stackView.depth > 1 ? 1 : 0
@@ -93,7 +78,7 @@ ApplicationWindow{
             state: "back"
             Behavior on opacity { NumberAnimation{} }
         }
-        Text {
+        Label {
             id: name
             text: stackView.currentItem == null ? "" : stackView.currentItem.title
             font.bold: true

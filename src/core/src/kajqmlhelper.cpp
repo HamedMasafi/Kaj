@@ -50,6 +50,8 @@ KajQmlHelper::KajQmlHelper(QObject *parent) : QObject(parent)
 
 void KajQmlHelper::registerQmlTypes(QQmlApplicationEngine *engine)
 {
+    qDebug() << "Registering Kaj ver" << KAJ_VERSION_STR;
+
     engine->addImportPath("qrc:/kaj/qml/");
 
 #ifdef KAJ_CORE_LIB
@@ -58,12 +60,19 @@ void KajQmlHelper::registerQmlTypes(QQmlApplicationEngine *engine)
     qmlRegisterUncreatableType<ScaleContainer>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ScaleContainer", "This is automaticly will be created");
     qmlRegisterSingletonType<Units>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
     qmlRegisterSingletonType<Platforms>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);
+#else
+#   error Core module does not registered
 #endif
 
 #ifdef KAJ_GAME_LIB
     KajGamePlugin gamePlugin;
     gamePlugin.registerTypes(KAJ_QML_URL ".Game");
 #endif
+
+#ifdef KAJ_APP_LIB
+
+#endif
+
 }
 
 void KajQmlHelper::registerPlugins()

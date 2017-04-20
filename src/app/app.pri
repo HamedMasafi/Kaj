@@ -1,5 +1,6 @@
 INCLUDEPATH += $$PWD/src
 DEPENDPATH += $$PWD/src
 QML_IMPORT_PATH += $$PWD/qml
+DEFINES += KAJ_APP_LIB
 
 RESOURCES += $$PWD/app.qrc
