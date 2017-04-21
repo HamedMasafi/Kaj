@@ -23,3 +23,8 @@ SOURCES += \
     $$PWD/src/kajpluginbase.cpp \
     $$PWD/src/kajqmlhelper.cpp \
     $$PWD/src/platforms.cpp
+
+OTHER_FILES = $$PWD/qml/Kaj/AutoLayout.qml \
+            $$PWD/qml/Kaj/CircleButton.qml \
+            $$PWD/qml/Kaj/CircleImage.qml \
+            $$PWD/qml/Kaj/PagesView.qml

@@ -10,6 +10,7 @@ Module {
     dependencies: [
         "QtGraphicalEffects 1.0",
         "QtQuick 2.3",
-        "QtQuick.Layouts 1.1"
+        "QtQuick.Layouts 1.1",
+        "QtQuick.Window 2.1"
     ]
 }

@@ -38,6 +38,33 @@ static QObject *createSingletonPlatforms(QQmlEngine *, QJSEngine *)
 }
 
 
+class KajModule : public QQmlExtensionPlugin
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
+
+public:
+    void registerTypes(const char *uri)
+    {
+        Q_ASSERT(QLatin1String(uri) == QLatin1String("Kaj"));
+
+        qDebug() << "registerTypes" << KAJ_VERSION_STR;
+
+        qmlRegisterType<SwipeGestureManager>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "SwipeGestureManager");
+        qmlRegisterType<ZoomArea>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ZoomArea");
+        qmlRegisterUncreatableType<ScaleContainer>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ScaleContainer", "This is automaticly will be created");
+        qmlRegisterSingletonType<Units>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
+        qmlRegisterSingletonType<Platforms>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);
+    }
+
+    void initializeEngine(QQmlEngine *engine, const char *uri)
+    {
+        Q_UNUSED(uri);
+        Q_UNUSED(engine);
+    }
+};
+
+
 /*!
  * 
  * This is qdoc
@@ -55,11 +82,11 @@ void KajQmlHelper::registerQmlTypes(QQmlApplicationEngine *engine)
     engine->addImportPath("qrc:/kaj/qml/");
 
 #ifdef KAJ_CORE_LIB
-    qmlRegisterType<SwipeGestureManager>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "SwipeGestureManager");
-    qmlRegisterType<ZoomArea>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ZoomArea");
-    qmlRegisterUncreatableType<ScaleContainer>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ScaleContainer", "This is automaticly will be created");
-    qmlRegisterSingletonType<Units>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
-    qmlRegisterSingletonType<Platforms>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);
+//    qmlRegisterType<SwipeGestureManager>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "SwipeGestureManager");
+//    qmlRegisterType<ZoomArea>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ZoomArea");
+//    qmlRegisterUncreatableType<ScaleContainer>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ScaleContainer", "This is automaticly will be created");
+//    qmlRegisterSingletonType<Units>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
+//    qmlRegisterSingletonType<Platforms>(KAJ_QML_URL, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);
 #else
 #   error Core module does not registered
 #endif

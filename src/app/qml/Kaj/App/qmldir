@@ -1,4 +1,5 @@
 module Kaj.App
+classname KajAppModule
 MainWindow 1.0 MainWindow.qml
 AppPage 1.0 AppPage.qml
 MenuButton 1.0 MenuButton.qml
