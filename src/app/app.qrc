@@ -8,5 +8,6 @@
         <file>qml/Kaj/App/AppPage.qml</file>
         <file>qml/Kaj/App/qmldir</file>
         <file>qml/Kaj/App/StepMenuButton.qml</file>
+        <file>qml/Kaj/App/MainWindowPagesManager.qml</file>
     </qresource>
 </RCC>

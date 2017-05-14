@@ -6,9 +6,7 @@
 
 #include "notification.h"
 
-TOOJ_DECLARE_PLUGIN(Notification)
-
-Notification::Notification(QObject *parent) : ToojPluginBase(parent)
+Notification::Notification(QObject *parent) : KajPluginBase(parent)
 {
 
 }
@@ -22,6 +20,7 @@ void Notification::createNotification(QString text)
                                               "(Ljava/lang/String;)V",
                                               javaNotification.object<jstring>());
 #else
+    Q_UNUSED(text)
     qWarning("Class 'Notification' run only on android");
 #endif
 }

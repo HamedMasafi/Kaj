@@ -4,5 +4,3 @@ MainWindow 1.0 MainWindow.qml
 AppPage 1.0 AppPage.qml
 MenuButton 1.0 MenuButton.qml
 StepMenuButton 1.0 StepMenuButton.qml
-NavigationDrawer 1.0 NavigationDrawer.qml
-NavigationDrawerTemplate 1.0 NavigationDrawerTemplate.qml

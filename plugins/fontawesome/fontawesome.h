@@ -15,11 +15,11 @@ public:
 
 public slots:
 #if QT_QML_LIB
-    static void registerFontAwesome(QQmlApplicationEngine *engine);
+    static void init(const QQmlApplicationEngine *engine);
 #endif
 
 };
 
-KAJ_DECLARE_PLUGIN(FontAwesome)
+KAJ_DECLARE_QML_PLUGIN(FontAwesome)
 
 #endif // FONTAWESOME_H

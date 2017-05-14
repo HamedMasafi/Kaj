@@ -9,10 +9,13 @@ QT_BEGIN_NAMESPACE
 class KAJ_EXPORT Units : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int virtualDpi READ virtualDpi WRITE setVirtualDpi NOTIFY virtualDpiChanged)
+    Q_PROPERTY(qreal virtualDpi READ virtualDpi WRITE setVirtualDpi NOTIFY
+                   virtualDpiChanged)
+    Q_PROPERTY(qreal fontScale READ fontScale WRITE setFontScale NOTIFY
+                   fontScaleChanged)
 
-
-    int m_virtualDpi;
+    qreal m_virtualDpi;
+    qreal m_fontScale;
 
 public:
     explicit Units(QObject *parent = 0);
@@ -26,14 +29,24 @@ public:
     Q_INVOKABLE qreal in(int number);
     Q_INVOKABLE qreal cm(int number);
 
+
+    Q_INVOKABLE qreal fromDp(int number);
+//    Q_INVOKABLE int fromSp(int number);
+//    Q_INVOKABLE int fromPt(int number);
+//    Q_INVOKABLE qreal fromMm(int number);
+//    Q_INVOKABLE qreal fromIn(int number);
+//    Q_INVOKABLE qreal fromCm(int number);
+
     int virtualDpi() const;
+    qreal fontScale() const;
 
 signals:
-
-    void virtualDpiChanged(int arg);
+    void virtualDpiChanged(qreal virtualDpi);
+    void fontScaleChanged(qreal fontScale);
 
 public slots:
-    void setVirtualDpi(int arg);
+    void setVirtualDpi(qreal virtualDpi);
+    void setFontScale(qreal fontScale);
 };
 
 QT_END_NAMESPACE

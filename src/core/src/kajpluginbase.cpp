@@ -10,23 +10,15 @@ bool KajPluginBase::isSupported()
     return true;
 }
 
-QHash<QString, void (*)()> KajPluginRegisterHelper::plugins;
-void KajPluginRegisterHelper::insert(QString name, void (init)())
-{
-    if(!plugins.keys().contains(name))
-        plugins.insert(name, init);
+KAJ_DECL_SINGLETON(KajPluginRegisterHelper)
 
-}
+//QHash<QString, void (*)()> KajPluginRegisterHelper::plugins;
 
-void KajPluginRegisterHelper::registerAll(){
-    foreach (QString className, plugins.keys()) {
-        qDebug() << "Registering" << className << "...";
-        plugins[className]();
-    }
-}
+
+
 
 void registerAll(){
-     KajPluginRegisterHelper::registerAll();
+//     KajPluginRegisterHelper::registerAll();
 }
 
 Q_COREAPP_STARTUP_FUNCTION(registerAll)

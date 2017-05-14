@@ -14,8 +14,10 @@ FontAwesome::FontAwesome(QObject *parent) : KajPluginBase(parent)
 }
 
 #if QT_QML_LIB
-void FontAwesome::registerFontAwesome(QQmlApplicationEngine *engine)
+void FontAwesome::init(const QQmlApplicationEngine *engine)
 {
+    QFontDatabase::addApplicationFont(":/fonts/fontawesome");
+
     engine->rootContext()->setContextProperty("FontAwesome", "FontAwesome");
 
     engine->rootContext()->setContextProperty("fa_adjust", "\uf042");
@@ -572,5 +574,4 @@ void FontAwesome::registerFontAwesome(QQmlApplicationEngine *engine)
 
 void FontAwesome::init()
 {
-    QFontDatabase::addApplicationFont(":/fonts/fontawesome");
 }

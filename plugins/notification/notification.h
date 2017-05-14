@@ -1,9 +1,9 @@
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H
 
-#include "../../core/src/toojpluginbase.h"
+#include "kajpluginbase.h"
 
-class Notification : public ToojPluginBase
+class Notification : public KajPluginBase
 {
     Q_OBJECT
 public:
@@ -13,5 +13,7 @@ public:
 public slots:
     void createNotification(QString text);
 };
+
+KAJ_DECLARE_CPP_PLUGIN(Notification)
 
 #endif // NOTIFICATION_H
