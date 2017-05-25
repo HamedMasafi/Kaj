@@ -5,7 +5,7 @@
 #include <QPoint>
 #include <QDebug>
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 SwipeGestureManagerPrivate::SwipeGestureManagerPrivate(SwipeGestureManager *parent) : q_ptr(parent)
 {
@@ -142,7 +142,7 @@ bool SwipeGestureManager::childMouseEventFilter(QQuickItem *item, QEvent *e)
 
 SwipeGestureManager::~SwipeGestureManager()
 {
+    delete d_ptr;
 }
 
-
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE

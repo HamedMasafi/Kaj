@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async='async'></script>
+    <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(["init", {
+        appId: "%APP_ID%",
+        autoRegister: false, /* Set to true to automatically prompt visitors */
+        subdomainName: 'SUBDOMAIN_NAME_SEE_STEP_1.4',
+        /*
+        subdomainName: Use the value you entered in step 1.4: http://imgur.com/a/f6hqN
+        */
+        httpPermissionRequest: {
+            enable: true
+        },
+        notifyButton: {
+            enable: true /* Set to false to hide */
+        }
+        }]);
+    </script>
+  </head>
+  <body></body>
+</html>

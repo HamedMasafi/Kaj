@@ -6,7 +6,7 @@
 // class Kaj_EXPORT KajGlobal
 // This is added for header file exporter
 
-#define KAJ_NAMESPACE Kaj
+//#define KAJ_NAMESPACE Kaj
 #define KAJ_QML_URL "Kaj"
 #define KAJ_VERSION_MAJOR   1
 #define KAJ_VERSION_MINOR   0
@@ -33,11 +33,11 @@
     static type *_instance;             \
     public: static type *instance() {   \
     if(!_instance)                  \
-    _instance = new type;       \
+        _instance = new type;       \
     return _instance;               \
     }                                   \
     static void setInstacne(type *ins){        \
-    _instance = ins;                \
+        _instance = ins;                \
     } private:
 
 

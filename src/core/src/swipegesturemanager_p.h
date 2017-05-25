@@ -3,7 +3,7 @@
 
 #include "swipegesturemanager.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 class SwipeGestureManagerPrivate{
 public:
@@ -20,7 +20,7 @@ private :
     Q_DECLARE_PUBLIC(SwipeGestureManager)
 };
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE
 
 #endif // SWIPEGESTUREMANAGER_P_H
 

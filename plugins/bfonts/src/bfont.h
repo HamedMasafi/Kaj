@@ -13,6 +13,6 @@ public:
     static void init();
 };
 
-KAJ_DECLARE_PLUGIN(BFont)
+KAJ_DECLARE_CPP_PLUGIN(BFont)
 
 #endif // BFONT_H

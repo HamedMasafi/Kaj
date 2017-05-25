@@ -33,6 +33,6 @@ signals:
     void publicKeyChanged(QString publicKey);
 };
 
-KAJ_DECLARE_PLUGIN(CafeBazaarPlugin)
+KAJ_DECLARE_CPP_PLUGIN(CafeBazaarPlugin)
 
 #endif // CAFEBAZAARPLUGIN_H

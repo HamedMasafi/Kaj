@@ -4,7 +4,7 @@
 #include <QQuickItem>
 #include "kajglobal.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 class SwipeGestureManagerPrivate;
 class KAJ_EXPORT SwipeGestureManager: public QQuickItem
@@ -52,6 +52,6 @@ private:
     Q_DECLARE_PRIVATE(SwipeGestureManager)
 };
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE
 
 #endif // SWIPEGESTUREMANAGER_H

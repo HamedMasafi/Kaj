@@ -36,7 +36,7 @@
 
 #ifdef __cplusplus
 #define KAJ_BEGIN_JNI_METHODS extern "C" {
-#define KAJ_END_JNI_METHODS }
+#define KAJ_END_JNI_METHODS             }
 #else
 #define KAJ_BEGIN_JNI_METHODS
 #define KAJ_END_JNI_METHODS
