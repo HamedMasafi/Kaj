@@ -59,7 +59,7 @@ ApplicationWindow{
             ToolButton{
                 anchors.right: parent.right
                 anchors.rightMargin: 0
-                font.pointSize: Units.sp(14)
+//                font.pointSize: Units.sp(14)
                 font.family: FontAwesome
                 height: parent.height
                 text: fa_ellipsis_v

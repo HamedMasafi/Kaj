@@ -2,9 +2,6 @@
 
 #if (defined (Q_OS_LINUX) || defined (Q_OS_UNIX) || defined (Q_OS_WIN) || defined (Q_OS_MACX)) && !defined (Q_OS_ANDROID)
 
-#include <QWebEngineView>
-#include <QtWebEngine>
-
 KAJ_DECL_SINGLETON(OneSignal)
 
 OneSignal::OneSignal(QObject *parent) : KajPluginBase(parent), m_applicationId(QString::null), isRegistered(false),

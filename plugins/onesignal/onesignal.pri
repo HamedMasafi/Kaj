@@ -19,7 +19,7 @@ OTHER_FILES += ANDROID_JAVA_SOURCES.files
 
 }else{
     #message("OneSignal plugin work only on android, skipping all settings")
-    QT += webengine webenginecore webenginewidgets
+#    QT += webengine webenginecore webenginewidgets
 }
 
 INCLUDEPATH += $$PWD
