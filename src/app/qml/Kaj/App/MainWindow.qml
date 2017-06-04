@@ -42,7 +42,11 @@ ApplicationWindow{
         height: Units.dp(56)
             MenuButton{
                 id: backButton
-                opacity: stackView.depth > 1 ? 1 : 0
+                opacity: stackView.currentItem === null
+                    ? 0
+                    : stackView.currentItem.allowGoBack
+                        ? (stackView.depth > 1 ? 1 : 0)
+                        : 0
                 onClicked: pages.back()
                 state: "back"
                 height: parent.height
@@ -75,6 +79,7 @@ ApplicationWindow{
         id: stackView
         anchors.fill: parent
 
+        onCurrentItemChanged: if (currentItem !== null) currentItem.activated
         Keys.onBackPressed: {
             pages.back()
             return false;
