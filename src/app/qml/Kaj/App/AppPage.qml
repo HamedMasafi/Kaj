@@ -8,6 +8,8 @@ Page {
     signal unloaded
     signal activated
 
+    property bool allowGoBack: true
+
     property MainWindowPagesManager pages;
     property Menu menu: null
 
