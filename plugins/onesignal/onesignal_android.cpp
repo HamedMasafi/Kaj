@@ -19,15 +19,16 @@ KAJ_JAVA_NATIVE_METHOD(OneSignal, signalReceived)(JNIEnv *env, jobject obj, jlon
     ins->metaObject()->invokeMethod(ins, "setAdditionalData", Q_ARG(QString, ed));
 }
 
-KAJ_JAVA_NATIVE_METHOD(OneSignal, signalOpened)(JNIEnv *env, jobject obj, jlong nativePointer, jstring title, jstring message)
+KAJ_JAVA_NATIVE_METHOD(OneSignal, signalOpened)(JNIEnv *env, jobject obj, jlong nativePointer, jstring title, jstring message, jstring extraData)
 {
     Q_UNUSED(obj)
     OneSignal *ins = reinterpret_cast<OneSignal *>(nativePointer);
 
     QString t(env->GetStringUTFChars(title, false));
     QString b(env->GetStringUTFChars(message, false));
+    QString ed(env->GetStringUTFChars(extraData, false));
 //    emit ins->signalOpened(t, b);
-    ins->metaObject()->invokeMethod(ins, "signalOpened", Q_ARG(QString, t), Q_ARG(QString, b));
+    ins->metaObject()->invokeMethod(ins, "signalOpened", Q_ARG(QString, t), Q_ARG(QString, b), Q_ARG(QString, ed));
 }
 
 

@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Layouts 1.1
 
 Rectangle{
     id: button
@@ -19,6 +20,7 @@ Rectangle{
     property string text: 'Button'
     property string icon: ''
     property bool isAwesome: false
+    property bool enables: true
     signal clicked()
 
     Rectangle{
@@ -28,6 +30,28 @@ Rectangle{
         border.color: Qt.rgba(230, 230, 230, 50)
         color: Qt.rgba(250, 250, 250, 50)
         opacity: .4
+    }
+
+    ColumnLayout{
+        anchors.centerIn: parent
+
+        Text {
+            id: name
+            text: button.icon
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.family: "FontAwesome"
+            font.pointSize: 16
+            Layout.alignment: Qt.AlignHCenter
+        }
+        Text {
+            font.family: "B Traffic"
+            text: button.text
+            visible: button.text !== ""
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+            Layout.alignment: Qt.AlignHCenter
+        }
     }
 
     Item{
@@ -40,18 +64,6 @@ Rectangle{
         anchors.topMargin: 0
         height: size / 2
 
-        Text {
-            id: name
-            text: button.icon
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            font.family: "FontAwesome"
-            font.pointSize: 16
-            width: 20
-            height: 20
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
 //        Rectangle{
 //            width: 20
 //            height: 20
@@ -72,16 +84,7 @@ Rectangle{
         x: size / 2
         height: size / 2
 
-        Text {
-            font.family: "B Traffic"
-            text: button.text
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            anchors.right: parent.right
-            anchors.rightMargin: 20
-        }
+
     }
 
     states: [
@@ -107,6 +110,8 @@ Rectangle{
     MouseArea{
         id: mouser
 
+        enabled: button.enabled
+        visible: button.enabled
         anchors.fill: parent
         hoverEnabled: true
 

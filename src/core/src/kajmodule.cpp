@@ -8,7 +8,7 @@
 #include "scalecontainer.h"
 #include "platforms.h"
 #include "application.h"
-#include "notification.h"
+#include "mobility.h"
 
 #ifdef KAJ_GAME_LIB
 #   include "movementanimation.h"
@@ -28,7 +28,7 @@ static QObject *createSingleton##type(QQmlEngine *, QJSEngine *) \
 DECLARE_SINGELTON_METHOD(Units)
 DECLARE_SINGELTON_METHOD(Platforms)
 DECLARE_SINGELTON_METHOD(Application)
-DECLARE_SINGELTON_METHOD(Notification)
+DECLARE_SINGELTON_METHOD(Mobility)
 
 void KajModule::registerTypes(const char *uri)
 {
@@ -39,7 +39,7 @@ void KajModule::registerTypes(const char *uri)
     qmlRegisterType<SwipeGestureManager>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "SwipeGestureManager");
     qmlRegisterType<ZoomArea>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ZoomArea");
     qmlRegisterType<Application>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Application");
-    qmlRegisterSingletonType<Notification>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Notification", createSingletonNotification);
+    qmlRegisterSingletonType<Mobility>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Mobility", createSingletonMobility);
     qmlRegisterSingletonType<Units>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
     qmlRegisterSingletonType<Platforms>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);
     qmlRegisterUncreatableType<ScaleContainer>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ScaleContainer", "This is automaticly will be created");

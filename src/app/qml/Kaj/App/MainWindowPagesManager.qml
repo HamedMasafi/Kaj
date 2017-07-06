@@ -57,6 +57,9 @@ QtObject {
                 if(typeof(item.loaded) === 'function')
                     item.loaded()
 
+                if(typeof(item.activated) === 'function')
+                    item.activated()
+
             } else if (component.status === Component.Error) {
                 console.log("Error loading item:", component.errorString());
             }

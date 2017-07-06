@@ -31,7 +31,7 @@ public:
 
 signals:
     void signalRecived(QString title, QString body, QString extra);
-    void signalOpened(QString title, QString body);
+    void signalOpened(QString title, QString body, QString extra);
     void applicationIdChanged(QString applicationId);
     void userIdChanged(QString userId);
     void registrationIdChanged(QString registrationId);

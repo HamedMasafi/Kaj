@@ -16,7 +16,7 @@ HEADERS += \
     $$PWD/src/platforms.h \
     $$PWD/src/kajmodule.h \
     $$PWD/src/application.h \
-    $$PWD/src/notification.h
+    $$PWD/src/mobility.h
 
 SOURCES += \
     $$PWD/src/swipegesturemanager.cpp \
@@ -28,7 +28,7 @@ SOURCES += \
     $$PWD/src/platforms.cpp \
     $$PWD/src/kajmodule.cpp \
     $$PWD/src/application.cpp \
-    $$PWD/src/notification.cpp
+    $$PWD/src/mobility.cpp
 
 OTHER_FILES = $$PWD/qml/Kaj/AutoLayout.qml \
             $$PWD/qml/Kaj/CircleButton.qml \
