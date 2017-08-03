@@ -27,7 +27,6 @@ static QObject *createSingleton##type(QQmlEngine *, QJSEngine *) \
 
 DECLARE_SINGELTON_METHOD(Units)
 DECLARE_SINGELTON_METHOD(Platforms)
-DECLARE_SINGELTON_METHOD(Application)
 DECLARE_SINGELTON_METHOD(Mobility)
 
 void KajModule::registerTypes(const char *uri)

@@ -26,13 +26,13 @@ public:
 
     QRectF childLastRect;
 
-    int lastClickMsec;
 
+    bool m_handleMouseEvents;
+    qreal m_totalScaleFactor;
+    bool m_isActiveTouch;
     qreal m_minScale;
     qreal m_maxScale;
-    bool isActiveTouch;
-    bool m_handleMouseEvents;
-    qreal totalScaleFactor;
+    int m_lastClickMsec;
 
     void validateRect(QQuickItem *child, QRectF *rc, QRectF *output);
     void copyTouchPoint(QTouchEvent::TouchPoint *from, QTouchEvent::TouchPoint *to);

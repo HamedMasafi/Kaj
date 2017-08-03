@@ -14,7 +14,7 @@ FontAwesome::FontAwesome(QObject *parent) : KajPluginBase(parent)
 }
 
 #if QT_QML_LIB
-void FontAwesome::init(const QQmlApplicationEngine *engine)
+bool FontAwesome::init(const QQmlApplicationEngine *engine)
 {
     QFontDatabase::addApplicationFont(":/fonts/fontawesome");
 
@@ -569,9 +569,8 @@ void FontAwesome::init(const QQmlApplicationEngine *engine)
     engine->rootContext()->setContextProperty("fa_youtube", "\uf167");
     engine->rootContext()->setContextProperty("fa_youtube_play", "\uf16a");
     engine->rootContext()->setContextProperty("fa_youtube_square", "\uf166");
+
+    return true;
 }
 #endif
 
-void FontAwesome::init()
-{
-}

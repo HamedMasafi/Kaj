@@ -22,6 +22,10 @@ QtObject {
             __closePage()
     }
 
+    function backToPage(page) {
+//        stackView.currentItem.
+    }
+
     function replacePage(page, properties){
         __pushPage(page, properties, true);
     }
@@ -53,7 +57,11 @@ QtObject {
                     stackView.push(item, properties)
                 }
 
-                pagesData.push({page: item, props: properties});
+                pagesData.push({
+                                   item: item,
+                                   page: page,
+                                   props: properties
+                               });
                 if(typeof(item.loaded) === 'function')
                     item.loaded()
 

@@ -21,8 +21,8 @@ class OneSignal : public KajPluginBase
 
 public:
     explicit OneSignal(QObject *parent = nullptr);
-    static void init();
-    static void init(const QQmlApplicationEngine *engine);
+    static bool init();
+    static bool init(const QQmlApplicationEngine *engine);
 
     QString applicationId() const;
     QString userId();
@@ -52,7 +52,6 @@ private:
     QString m_additionalData;
 };
 
-KAJ_DECLARE_CPP_PLUGIN(OneSignal)
 KAJ_DECLARE_QML_PLUGIN(OneSignal)
 
 #endif // ONESIGNAL_H

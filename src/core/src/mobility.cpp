@@ -31,7 +31,7 @@ void Mobility::toast(QString text)
 #endif
 }
 
-void Mobility::callNumber(QString number)
+void Mobility::directCallNumber(QString number)
 {
 #if defined(Q_OS_IOS)
         QDesktopServices::openUrl(QUrl(QString("tel://%1").arg(number)));
@@ -83,6 +83,6 @@ void Mobility::callNumber(QString number)
         qDebug() << "Something wrong with Qt activity...";
 #else
     Q_UNUSED(number);
-    qDebug() << "Does nothing here...";
+    qDebug() << "directCallNumber is not working on desktop...";
 #endif
 }

@@ -52,21 +52,21 @@
 class KajPluginRegisterHelper : public QObject
 {
     Q_OBJECT
-    QHash<QString, void (*)()> plugins;
-    QHash<QString, void (*)(const QQmlApplicationEngine *engine)> qmlPlugins;
+    QHash<QString, bool (*)()> plugins;
+    QHash<QString, bool (*)(const QQmlApplicationEngine *engine)> qmlPlugins;
     int n;
 
     KAJ_SINGLETON(KajPluginRegisterHelper)
 
 public:
 
-    void insertCpp(QString name, void (init)())
+    void insertCpp(QString name, bool (init)())
     {
         if(!plugins.keys().contains(name))
             plugins.insert(name, init);
     }
 
-    void insertQml(QString name, void (init)(const QQmlApplicationEngine *engine))
+    void insertQml(QString name, bool (init)(const QQmlApplicationEngine *engine))
     {
         if(!qmlPlugins.keys().contains(name))
             qmlPlugins.insert(name, init);
@@ -74,15 +74,19 @@ public:
 
     void registerPlugins(){
         foreach (QString className, plugins.keys()) {
-            qDebug() << "Registering" << className << "...";
-            plugins[className]();
+            bool ok = plugins[className]();
+            qInfo("Registering cpp plugin %s... %s",
+                  qPrintable(className),
+                  ok ? "OK" : "Error");
         }
     }
 
     void registerPlugins(QQmlApplicationEngine *engine){
         foreach (QString className, qmlPlugins.keys()) {
-            qDebug() << "Registering" << className << "...";
-            qmlPlugins[className](engine);
+            bool ok = qmlPlugins[className](engine);
+            qInfo("Registering qml plugin %s... %s",
+                  qPrintable(className),
+                  ok ? "OK" : "Error");
         }
     }
 

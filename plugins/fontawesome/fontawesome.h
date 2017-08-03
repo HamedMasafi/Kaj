@@ -11,11 +11,10 @@ class FontAwesome : public KajPluginBase
     Q_OBJECT
 public:
     explicit FontAwesome(QObject *parent = 0);
-    static void init();
 
 public slots:
 #if QT_QML_LIB
-    static void init(const QQmlApplicationEngine *engine);
+    static bool init(const QQmlApplicationEngine *engine);
 #endif
 
 };

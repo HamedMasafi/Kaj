@@ -8,11 +8,10 @@ Page {
     signal unloaded
     signal activated
 
+    property bool headerVisiable: true
     property bool allowGoBack: true
 
     property MainWindowPagesManager pages;
     property Menu menu: null
-
-    property bool allowGoBack: true
 }
 

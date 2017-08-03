@@ -8,12 +8,17 @@ class Mobility : public QObject
 {
     Q_OBJECT
 public:
+    enum Duration {
+        SHORT = 0,
+        LONG = 1
+    };
+
     explicit Mobility(QObject *parent = nullptr);
 
 signals:
 
 public slots:
-    void callNumber(QString number);
+    void directCallNumber(QString number);
     void toast(QString text);
 };
 

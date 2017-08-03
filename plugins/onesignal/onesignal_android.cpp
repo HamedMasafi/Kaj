@@ -56,20 +56,17 @@ OneSignal::OneSignal(QObject *parent) : KajPluginBase(parent), m_applicationId(Q
     setInstacne(this);
 }
 
-void OneSignal::init()
-{
-}
-
 static QObject *createSingletonOneSignal(QQmlEngine *, QJSEngine *)
 {
     return new OneSignal;
 }
 
-void OneSignal::init(const QQmlApplicationEngine *engine)
+bool OneSignal::init(const QQmlApplicationEngine *engine)
 {
     Q_UNUSED(engine)
     qmlRegisterType<OneSignal>(KAJ_QML_URI, 1, 0, "OneSignal");
     qmlRegisterSingletonType<OneSignal>(KAJ_QML_URI, 1, 0, "OneSignalInstance", createSingletonOneSignal);
+    return true;
 }
 
 QString OneSignal::applicationId() const
