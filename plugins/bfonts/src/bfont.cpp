@@ -7,7 +7,7 @@ BFont::BFont(QObject *parent) : KajPluginBase(parent)
 
 }
 
-void BFont::init()
+bool BFont::init()
 {
     QStringList fonts = QString(KAJ_BFONTS).split(' ');
     foreach (QString font, fonts) {
@@ -16,5 +16,6 @@ void BFont::init()
 
         QFontDatabase::addApplicationFont(":/fonts/" + font);
     }
+    return fonts.count() > 0;
 }
 

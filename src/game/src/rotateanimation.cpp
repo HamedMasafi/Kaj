@@ -28,7 +28,7 @@ public:
     float speed;
     float speedUp;
     int duration;
-    char *property;
+    QString property;
 
     QObject *target;
     qreal from;
@@ -156,16 +156,13 @@ void RotateAnimation::setRunning(bool running)
     emit runningChanged();
 }
 
-void RotateAnimation::setProperty(QString property)
+void RotateAnimation::setProperty(const QString &property)
 {
     Q_D(RotateAnimation);
     if (d->property == property)
         return;
 
-    QByteArray text = property .toLocal8Bit();
-    d->property =  new char[text.size()];
-    strcpy(d->property, text.data());
-
+    d->property =  property;
     emit propertyChanged();
 }
 
@@ -176,14 +173,15 @@ void RotateAnimation::updateCurrentTime(int currentTime)
 {
     Q_D(RotateAnimation);
 
-    qreal rotation = d->target->property(d->property).toFloat();
+    const char* ch = d->property.toLatin1().data();
+    qreal rotation = d->target->property(ch).toFloat();
 
     if(rotation == d->to || currentTime >= d->duration){
         stop();
         return;
     }
 
-    d->target->setProperty(d->property, d->from + (d->step * (float)currentTime));
+    d->target->setProperty(ch, d->from + (d->step * (float)currentTime));
 }
 
 /*!
@@ -193,7 +191,7 @@ void RotateAnimation::updateState(QAbstractAnimation::State newState, QAbstractA
 {
     Q_D(RotateAnimation);
     if(oldState == Stopped && newState == Running){
-        qreal objectRotate = d->target->property(d->property).toReal();
+        qreal objectRotate = d->target->property(d->property.toLatin1().data()).toReal();
         if(d->from == -1)
             d->from = objectRotate;
 

@@ -23,7 +23,7 @@ public slots:
     void payment(QString name);
 //    void openBazaar();
 
-    static void init();
+    static bool init();
     bool isSupported();
 
     void setPublicKey(QString publicKey);

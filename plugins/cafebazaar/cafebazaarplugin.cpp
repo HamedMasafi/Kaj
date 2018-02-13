@@ -35,9 +35,10 @@ void CafeBazaarPlugin::payment(QString name)
 #endif
 }
 
-void CafeBazaarPlugin::init()
+bool CafeBazaarPlugin::init()
 {
     qmlRegisterType<CafeBazaarPlugin>(KAJ_QML_URI, 1, 0, QT_STRINGIFY(CafeBazaarPlugin));
+    return true;
 }
 
 bool CafeBazaarPlugin::isSupported()

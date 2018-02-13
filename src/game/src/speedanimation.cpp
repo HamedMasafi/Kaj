@@ -9,6 +9,7 @@
 #include <QPoint>
 #include <QPointF>
 #include <QVariant>
+#include <QtMath>
 
 #define LENGTH_POINT(a, b) sqrt(          \
     pow(a.x() - b.x(), 2)           \

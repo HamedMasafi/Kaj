@@ -96,6 +96,7 @@ public:
     }
 };
 
+//Depreacted!
 template<typename T>
 class KajPluginBaseRegistrar : public QObject{
 

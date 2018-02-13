@@ -53,7 +53,7 @@ public slots:
 
     void setRunning(bool running);
 
-    void setProperty(QString property);
+    void setProperty(const QString &property);
 
 signals:
     void speedChanged();

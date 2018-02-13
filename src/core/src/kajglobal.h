@@ -7,7 +7,7 @@
 // This is added for header file exporter
 
 //#define KAJ_NAMESPACE Kaj
-#define KAJ_QML_URL "Kaj"
+#define KAJ_QML_URL         "Kaj"
 #define KAJ_VERSION_MAJOR   1
 #define KAJ_VERSION_MINOR   0
 #define KAJ_VERSION_PATCH   0
@@ -27,7 +27,7 @@
 
 
 #define KAJ_DECL_SINGLETON(type)       \
-    type *type::_instance = 0;
+    type *type::_instance = Q_NULLPTR;
 
 #define KAJ_SINGLETON(type)            \
     static type *_instance;             \
@@ -37,6 +37,16 @@
     return _instance;               \
     }                                   \
     static void setInstacne(type *ins){        \
+        _instance = ins;                \
+    } private:
+
+#define KAJ_SINGLETON_UNIT(type)            \
+    static type *_instance;             \
+    public: static type *instance() {   \
+    return _instance;               \
+    }                                   \
+    static void setInstacne(type *ins){        \
+        if (_instance != Q_NULLPTR) qDebug() << "Instance is not null**" << _instance->objectName(); \
         _instance = ins;                \
     } private:
 

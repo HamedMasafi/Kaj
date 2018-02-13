@@ -65,6 +65,7 @@ ApplicationWindow{
             anchors.verticalCenter: parent.verticalCenter
         }
         ToolButton{
+            id: toolButtonMenu
             anchors.right: parent.right
             anchors.rightMargin: 0
             //                font.pointSize: Units.sp(14)
@@ -72,12 +73,15 @@ ApplicationWindow{
             height: parent.height
             text: fa_ellipsis_v
             visible: stackView.currentItem == null ? false : (stackView.currentItem.menu !== null)
-            onClicked: {
+            onClicked: showMenu();
+
+            function showMenu() {
                 stackView.currentItem.menu.x = parent.width - stackView.currentItem.menu.width
                 stackView.currentItem.menu.open()
             }
         }
     }
+
 
     StackView{
         id: stackView
@@ -85,13 +89,33 @@ ApplicationWindow{
         //        anchors.margins: Units.dp(10)
 
         onCurrentItemChanged: if (currentItem !== null ) currentItem.activated()
+    }
 
-        Keys.onBackPressed: {
-            pages.back()
-            return false;
+    Shortcut{
+        sequence: StandardKey.Back
+        onActivated: pages.back()
+    }
+    Shortcut{
+        sequence: "F10"
+        onActivated: {
+            if (toolButtonMenu.visible)
+                toolButtonMenu.visible = false;
+            else
+                toolButtonMenu.showMenu();
         }
+    }
+
+    Item {
+        focus: true
+
+        Keys.onMenuPressed: if(toolButtonMenu.visible) toolButtonMenu.showMenu()
+//        Keys.onBackPressed: {
+//            pages.back()
+//            return false;
+//        }
 
         Keys.onPressed: {
+
             if(event.key === Qt.Key_Backspace)
                 pages.back()
         }
