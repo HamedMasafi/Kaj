@@ -64,20 +64,30 @@ ApplicationWindow{
             x: (backButton.x + backButton.width) * backButton.opacity + 5
             anchors.verticalCenter: parent.verticalCenter
         }
-        ToolButton{
-            id: toolButtonMenu
+
+        RowLayout{
             anchors.right: parent.right
             anchors.rightMargin: 0
-            //                font.pointSize: Units.sp(14)
-            font.family: FontAwesome
-            height: parent.height
-            text: fa_ellipsis_v
-            visible: stackView.currentItem == null ? false : (stackView.currentItem.menu !== null)
-            onClicked: showMenu();
 
-            function showMenu() {
-                stackView.currentItem.menu.x = parent.width - stackView.currentItem.menu.width
-                stackView.currentItem.menu.open()
+            Repeater{
+                id: pageOptions
+
+                model: stackView.currentItem == null ? null : stackView.currentItem.extraButtons
+            }
+
+            ToolButton{
+                id: toolButtonMenu
+                //                font.pointSize: Units.sp(14)
+                font.family: FontAwesome
+                height: parent.height
+                text: fa_ellipsis_v
+                visible: stackView.currentItem == null ? false : (stackView.currentItem.menu !== null)
+                onClicked: showMenu();
+
+                function showMenu() {
+                    stackView.currentItem.menu.x = parent.width - stackView.currentItem.menu.width
+                    stackView.currentItem.menu.open()
+                }
             }
         }
     }
