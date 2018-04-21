@@ -32,6 +32,18 @@ QtObject {
         __pushPage(page, properties, true);
     }
 
+    function open(page, arg2, arg3, arg4) {
+        var properties, callback, replace;
+        for (var i = 1; i < arguments.length; i++) {
+            var type = typeof(arguments[i])
+            if (type === 'function') callback = arguments[i]
+            if (type === 'boolean') replace = arguments[i]
+            if (type === 'object') properties = arguments[i]
+        }
+
+        __pushPage(page, properties, callback, replace)
+    }
+
     function showPage(page, properties, callback){
         __pushPage(page, properties, callback, false);
     }
