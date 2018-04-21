@@ -40,7 +40,7 @@ ApplicationWindow{
     }
 
     header: ToolBar{
-        height: Units.dp(56)
+//        height: Units.dp(56)
         visible: stackView.currentItem === null
                  ? false
                  : stackView.currentItem.headerVisiable
