@@ -12,6 +12,7 @@ Page {
     property bool headerVisiable: true
     property bool allowGoBack: true
     property ObjectModel extraButtons: null
+    property var result
 
     property MainWindowPagesManager pages;
     property Menu menu: null

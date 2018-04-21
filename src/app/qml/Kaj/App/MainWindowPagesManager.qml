@@ -1,5 +1,5 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.0
+import QtQuick 2.9
+import QtQuick.Controls 2.2
 
 QtObject {
     id: me
@@ -32,11 +32,11 @@ QtObject {
         __pushPage(page, properties, true);
     }
 
-    function showPage(page, properties){
-        __pushPage(page, properties, false);
+    function showPage(page, properties, callback){
+        __pushPage(page, properties, callback, false);
     }
 
-    function __pushPage(page, properties, replace){
+    function __pushPage(page, properties, callback, replace){
         page += ".qml";
 
         if (properties === undefined || properties === null)
@@ -62,7 +62,8 @@ QtObject {
                 pagesData.push({
                                    item: item,
                                    page: page,
-                                   props: properties
+                                   props: properties,
+                                   callback: callback
                                });
                 if(typeof(item.loaded) === 'function')
                     item.loaded()
@@ -93,10 +94,15 @@ QtObject {
 
         stackView.pop();
 
-        item = stackView.get(stackView.depth - 1)
-        if(typeof(item.activated) === 'function')
-            item.activated();
+        var item2 = stackView.get(stackView.depth - 1)
+        if(typeof(item2.activated) === 'function')
+            item2.activated();
 
-        return pagesData.pop();
+        var r = pagesData.pop();
+
+        if(typeof(r.callback) === 'function')
+            r.callback(item.result);
+
+        return r;
     }
 }
