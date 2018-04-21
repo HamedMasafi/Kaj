@@ -22,8 +22,10 @@ QtObject {
             __closePage()
     }
 
-    function backToPage(page) {
-//        stackView.currentItem.
+    function backTo(page) {
+        while(stackView.depth > 1)
+            if (__closePage().page === page)
+                break;
     }
 
     function replacePage(page, properties){
@@ -54,7 +56,7 @@ QtObject {
                     stackView.replace(item, properties);
                     pagesData.pop()
                 } else {
-                    stackView.push(item, properties)
+                    stackView.push(item, properties, StackView.Immediate)
                 }
 
                 pagesData.push({
@@ -87,7 +89,14 @@ QtObject {
 
         var item = stackView.get(stackView.depth - 1)
         if(typeof(item.unloaded) === 'function')
-            item.unloaded()
-        stackView.pop()
+            item.unloaded();
+
+        stackView.pop();
+
+        item = stackView.get(stackView.depth - 1)
+        if(typeof(item.activated) === 'function')
+            item.activated();
+
+        return pagesData.pop();
     }
 }

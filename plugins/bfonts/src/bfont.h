@@ -10,7 +10,7 @@ class BFont : public KajPluginBase
 public:
     BFont(QObject *parent = 0);
 
-    static void init();
+    static bool init();
 };
 
 KAJ_DECLARE_CPP_PLUGIN(BFont)
