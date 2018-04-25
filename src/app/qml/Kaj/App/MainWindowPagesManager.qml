@@ -68,7 +68,7 @@ QtObject {
                     stackView.replace(item, properties);
                     pagesData.pop()
                 } else {
-                    stackView.push(item, properties, StackView.Immediate)
+                    stackView.push(item, properties/*, StackView.Immediate*/)
                 }
 
                 pagesData.push({

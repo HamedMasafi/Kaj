@@ -380,6 +380,7 @@ void ZoomAreaPrivate::setChildGeomery(QRectF childGeomery)
 ZoomArea::ZoomArea(QQuickItem *parent)
     : QQuickItem(parent), d_ptr(new ZoomAreaPrivate(this))
 {
+    setAcceptedMouseButtons(Qt::LeftButton);
     setFiltersChildMouseEvents(true);
 }
 
@@ -399,6 +400,11 @@ qreal ZoomArea::maxScale() const
 {
     Q_D(const ZoomArea);
     return d->m_maxScale;
+}
+
+qreal ZoomArea::childZoom() const
+{
+    return m_childZoom;
 }
 
 void ZoomArea::geometryChanged(const QRectF &newGeometry,
@@ -445,6 +451,12 @@ bool ZoomArea::childMouseEventFilter(QQuickItem *item, QEvent *event)
     if (!isVisible() || !isEnabled())
         return QQuickItem::childMouseEventFilter(item, event);
 
+    QVariant preventStealing = item->property("preventStealing");
+    if (preventStealing.type() == QVariant::Bool && preventStealing.toBool()) {
+qDebug() << "BACK";
+        return QQuickItem::childMouseEventFilter(item, event);
+    }
+
     switch (event->type()) {
     case QEvent::MouseButtonPress:
     case QEvent::MouseButtonRelease:
@@ -467,7 +479,6 @@ void ZoomArea::itemChange(QQuickItem::ItemChange change,
     static bool isBusy = false;
     if (isBusy)
         return;
-
     if (change == QQuickItem::ItemChildAddedChange) {
         isBusy = true;
         if (/*!qobject_cast<ScaleContainer*>(value.item) && */ value.item
@@ -486,6 +497,7 @@ void ZoomArea::touchEvent(QTouchEvent *event)
 
 void ZoomArea::mousePressEvent(QMouseEvent *event)
 {
+    qDebug() << Q_FUNC_INFO;
     QQuickItem::mousePressEvent(event);
 }
 
@@ -518,6 +530,33 @@ void ZoomArea::setMaxScale(qreal maxScale)
 
     d->m_maxScale = maxScale;
     emit maxScaleChanged(maxScale);
+}
+
+void ZoomArea::setChildZoom(qreal childZoom)
+{
+    Q_D(ZoomArea);
+
+    qWarning("Floating point comparison needs context sanity check");
+    if (qFuzzyCompare(m_childZoom, childZoom))
+        return;
+
+    foreach (QQuickItem *child, childItems()) {
+        QRectF rc = child->boundingRect();
+        QRectF output;
+        rc.moveTo(child->position());
+        d->scaleRect(&rc, childZoom, rc.center());
+        d->validateRect(child, &rc, &output);
+        //        d->scaleRect(&d->childLastRect, delta, QPointF(event->pos()));
+
+        if (output != QRectF()
+            && output.size() != child->boundingRect().size()) {
+            child->setPosition(output.topLeft());
+            child->setSize(output.size());
+            d->returnToBounds();
+        }
+    }
+    m_childZoom = childZoom;
+    emit childZoomChanged(m_childZoom);
 }
 
 QT_END_NAMESPACE

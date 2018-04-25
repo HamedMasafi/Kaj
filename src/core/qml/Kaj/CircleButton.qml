@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
 
+//depreacted
 Rectangle{
     id: button
     radius: size / 2

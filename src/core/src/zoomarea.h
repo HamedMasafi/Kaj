@@ -19,6 +19,9 @@ class KAJ_EXPORT ZoomArea : public QQuickItem
     Q_PROPERTY(bool handleMouseEvents READ handleMouseEvents WRITE setHandleMouseEvents NOTIFY handleMouseEventsChanged)
     Q_PROPERTY(qreal minScale READ minScale WRITE setMinScale NOTIFY minScaleChanged)
     Q_PROPERTY(qreal maxScale READ maxScale WRITE setMaxScale NOTIFY maxScaleChanged)
+    Q_PROPERTY(qreal childZoom READ childZoom WRITE setChildZoom NOTIFY childZoomChanged)
+
+    qreal m_childZoom;
 
 public:
     ZoomArea(QQuickItem *parent = 0);
@@ -28,6 +31,8 @@ public:
     qreal minScale() const;
 
     qreal maxScale() const;
+
+    qreal childZoom() const;
 
 protected:
     void geometryChanged(const QRectF & newGeometry, const QRectF & oldGeometry);
@@ -46,10 +51,13 @@ signals:
 
     void maxScaleChanged(qreal maxScale);
 
+    void childZoomChanged(qreal childZoom);
+
 public slots:
     void setHandleMouseEvents(bool handleMouseEvents);
     void setMinScale(qreal minScale);
     void setMaxScale(qreal maxScale);
+    void setChildZoom(qreal childZoom);
 };
 
 QML_DECLARE_TYPE(ZoomArea)

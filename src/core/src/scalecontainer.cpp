@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "scalecontainer.h"
 
 ScaleContainer::ScaleContainer(QQuickItem *parent, QQuickItem *child) : QQuickItem(parent)
@@ -17,12 +19,13 @@ void ScaleContainer::setChild(QQuickItem *child)
 void ScaleContainer::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
 //    Q_ASSERT(childItems().count() == 1);
-
-    Q_UNUSED(newGeometry)
+//    Q_UNUSED(newGeometry)
     Q_UNUSED(oldGeometry)
 
     QQuickItem *child = childItems().at(0);
-    qreal scaleSize = qMin(width() / child->width(), height() / child->height());
+    qreal scaleSize = qMin(newGeometry.width() / child->width(),
+                           newGeometry.height() / child->height());
+    qDebug() << child->scale() << scaleSize;
     child->setPosition(QPointF(
                 (width() - child->width()) / 2,
                 (height() - child->height()) / 2));

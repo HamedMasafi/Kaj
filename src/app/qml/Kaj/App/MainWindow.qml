@@ -6,11 +6,14 @@ import Qt.labs.settings 1.0
 //import QtQuick.Controls.Material 2.0
 
 ApplicationWindow{
+    id: win
     visible: true
     title: stackView.currentItem == null ? "" : stackView.currentItem.title
 
     property string initialPage: ""
     property alias initialItem: stackView.initialItem
+    property bool noTitlebar
+    flags: noTitlebar ? Qt.FramelessWindowHint : 0
 
     function dp(n){
         return Units.dp(n)
@@ -33,14 +36,23 @@ ApplicationWindow{
         property alias data: __pages.pagesData
     }
 
-    Application{
-        onApplicationStateChanged: {
-            //            console.log(state)
-        }
-    }
-
     header: ToolBar{
-//        height: Units.dp(56)
+        MouseArea{
+            enabled: noTitlebar
+            property int lastX
+            property int lastY
+            anchors.fill: parent
+            onPressed: {
+                lastX = mouse.x
+                lastY = mouse.y
+            }
+            onPositionChanged: {
+                console.log( mouse.x - lastX)
+                win.x += mouse.x - lastX
+                win.y += mouse.y - lastY
+            }
+        }
+
         visible: stackView.currentItem === null
                  ? false
                  : stackView.currentItem.headerVisiable
@@ -92,7 +104,6 @@ ApplicationWindow{
             }
         }
     }
-
 
     StackView{
         id: stackView
