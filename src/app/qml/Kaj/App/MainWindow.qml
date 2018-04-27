@@ -97,7 +97,7 @@ ApplicationWindow{
                 onClicked: showMenu();
 
                 function showMenu() {
-                    stackView.currentItem.menu.x = parent.width - stackView.currentItem.menu.width
+                    stackView.currentItem.menu.x = win.width - stackView.currentItem.menu.width
                     stackView.currentItem.menu.open()
                 }
 
