@@ -13,7 +13,7 @@ ApplicationWindow{
     property string initialPage: ""
     property alias initialItem: stackView.initialItem
     property bool noTitlebar
-    flags: noTitlebar ? Qt.FramelessWindowHint : 0
+    flags: noTitlebar ? Qt.FramelessWindowHint : Qt.Window
 
     function dp(n){
         return Units.dp(n)
