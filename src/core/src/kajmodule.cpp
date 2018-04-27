@@ -9,6 +9,7 @@
 #include "platforms.h"
 #include "application.h"
 #include "mobility.h"
+#include "fileutils.h"
 
 #ifdef KAJ_GAME_LIB
 #   include "movementanimation.h"
@@ -28,6 +29,7 @@ static QObject *createSingleton##type(QQmlEngine *, QJSEngine *) \
 DECLARE_SINGELTON_METHOD(Units)
 DECLARE_SINGELTON_METHOD(Platforms)
 DECLARE_SINGELTON_METHOD(Mobility)
+DECLARE_SINGELTON_METHOD(FileUtils)
 
 void KajModule::registerTypes(const char *uri)
 {
@@ -41,6 +43,7 @@ void KajModule::registerTypes(const char *uri)
     qmlRegisterSingletonType<Mobility>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Mobility", createSingletonMobility);
     qmlRegisterSingletonType<Units>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
     qmlRegisterSingletonType<Platforms>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);
+    qmlRegisterSingletonType<FileUtils>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "FileUtils", createSingletonFileUtils);
     qmlRegisterUncreatableType<ScaleContainer>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ScaleContainer", "This is automaticly will be created");
 
 #ifdef KAJ_GAME_LIB
