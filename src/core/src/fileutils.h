@@ -19,7 +19,8 @@ public slots:
     QStringList filesInDir(const QUrl &dirPath);
     bool fileExists(const QUrl &fileUrl);
     bool dirExists(const QUrl &dirUrl);
-
+    bool mkdir(const QUrl &dirUrl);
+    QString dirname(const QUrl &fileUrl);
 };
 
 #endif // FILEUTILS_H

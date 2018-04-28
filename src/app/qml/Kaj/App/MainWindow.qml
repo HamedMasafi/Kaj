@@ -33,7 +33,7 @@ ApplicationWindow{
     Settings {
         id: __settings
 
-        property alias data: __pages.pagesData
+//        property alias data: __pages.pagesData
     }
 
     header: ToolBar{

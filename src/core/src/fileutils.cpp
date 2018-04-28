@@ -56,6 +56,22 @@ QStringList FileUtils::filesInDir(const QUrl &dirUrl)
     return filesInDir(dirUrl.toLocalFile());
 }
 
+bool FileUtils::mkdir(const QUrl &dirUrl)
+{
+    QDir d;
+    return d.mkdir(dirUrl.toLocalFile());
+}
+
+QString FileUtils::dirname(const QUrl &fileUrl)
+{
+    return QFileInfo(fileUrl.toLocalFile()).path();
+}
+
+bool FileUtils::copyFile(const QUrl &from, const QUrl &to)
+{
+    return QFile::copy(from.toLocalFile(), to.toLocalFile());
+}
+
 bool FileUtils::fileExists(const QUrl &fileUrl)
 {
     return QFile(fileUrl.toLocalFile()).exists();
