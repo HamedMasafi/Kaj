@@ -21,6 +21,8 @@ public slots:
     bool dirExists(const QUrl &dirUrl);
     bool mkdir(const QUrl &dirUrl);
     QString dirname(const QUrl &fileUrl);
+    bool removeFile(const QUrl &fileUrl);
+    bool copyFile(const QUrl &from, const QUrl &to);
 };
 
 #endif // FILEUTILS_H

@@ -67,6 +67,11 @@ QString FileUtils::dirname(const QUrl &fileUrl)
     return QFileInfo(fileUrl.toLocalFile()).path();
 }
 
+bool FileUtils::removeFile(const QUrl &fileUrl)
+{
+    return QFile::remove(fileUrl.toLocalFile());
+}
+
 bool FileUtils::copyFile(const QUrl &from, const QUrl &to)
 {
     return QFile::copy(from.toLocalFile(), to.toLocalFile());
