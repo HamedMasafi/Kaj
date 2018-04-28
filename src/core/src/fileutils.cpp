@@ -55,3 +55,13 @@ QStringList FileUtils::filesInDir(const QUrl &dirUrl)
 {
     return filesInDir(dirUrl.toLocalFile());
 }
+
+bool FileUtils::fileExists(const QUrl &fileUrl)
+{
+    return QFile(fileUrl.toLocalFile()).exists();
+}
+
+bool FileUtils::dirExists(const QUrl &dirUrl)
+{
+    return QDir(dirUrl.toLocalFile()).exists();
+}

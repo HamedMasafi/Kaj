@@ -17,6 +17,8 @@ public slots:
     QString readFile(const QUrl &fileUrl);
     void writeFile(const QUrl &filePath, const QString &content);
     QStringList filesInDir(const QUrl &dirPath);
+    bool fileExists(const QUrl &fileUrl);
+    bool dirExists(const QUrl &dirUrl);
 
 };
 
