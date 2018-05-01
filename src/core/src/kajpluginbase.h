@@ -116,10 +116,10 @@ public:
         QString className(T::staticMetaObject.className());
 
         if(type == Cpp)
-            KajPluginRegisterHelper::insertCpp(className, &T::init);
+            KajPluginRegisterHelper::instance()->insertCpp(className, &T::init);
 
         if(type == Qml)
-            KajPluginRegisterHelper::insertQml(className, &T::init);
+            KajPluginRegisterHelper::instance()->insertQml(className, &T::init);
     }
 
     ~KajPluginBaseRegistrar(){
