@@ -18,4 +18,3 @@ bool BFont::init()
     }
     return fonts.count() > 0;
 }
-

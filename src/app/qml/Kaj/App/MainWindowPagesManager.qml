@@ -77,6 +77,9 @@ QtObject {
                                    props: properties,
                                    callback: callback
                                });
+
+//                title = appName + " - " + item.title;
+
                 if(typeof(item.loaded) === 'function')
                     item.loaded()
 
@@ -107,6 +110,9 @@ QtObject {
         stackView.pop();
 
         var item2 = stackView.get(stackView.depth - 1)
+
+//        title = stackView.depth === 0 ? appName
+//                                      : appName + " - " + item2.title;
         if(typeof(item2.activated) === 'function')
             item2.activated();
 
