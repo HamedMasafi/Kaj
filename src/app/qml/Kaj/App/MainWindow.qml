@@ -8,11 +8,15 @@ import Qt.labs.settings 1.0
 ApplicationWindow{
     id: win
     visible: true
-    title: stackView.currentItem == null ? "" : stackView.currentItem.title
+    title: stackView.currentItem === null
+           ? appName
+           : appName + " - " + stackView.currentItem.title
 
     property string initialPage: ""
     property alias initialItem: stackView.initialItem
-    property bool noTitlebar
+    property bool noTitlebar: false
+    property string appName: ''
+
     flags: noTitlebar ? Qt.FramelessWindowHint : Qt.Window
 
     function dp(n){
@@ -56,7 +60,7 @@ ApplicationWindow{
         visible: stackView.currentItem === null
                  ? false
                  : stackView.currentItem.headerVisiable
-        MenuButton{
+        ToolButton{
             id: backButton
             opacity: stackView.currentItem === null
                      ? 0
@@ -64,15 +68,18 @@ ApplicationWindow{
                        ? (stackView.depth > 1 ? 1 : 0)
                        : 0
             onClicked: pages.back()
-            state: "back"
-            height: parent.height
-            width: parent.height
+//            state: "back"
+//            height: parent.height
+//            width: parent.height
+            font.family: FontAwesome
+            text: fa_arrow_left
+            visible: opacity > 0
             Behavior on opacity { NumberAnimation{} }
         }
         Label {
             id: name
             text: stackView.currentItem == null ? "" : stackView.currentItem.title
-            font.bold: true
+//            font.bold: true
             x: (backButton.x + backButton.width) * backButton.opacity + 5
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -101,6 +108,14 @@ ApplicationWindow{
                     stackView.currentItem.menu.open()
                 }
 
+                function hideMenu(){
+                    stackView.currentItem.menu.hide()
+                }
+
+                function toggleMenu() {
+                    stackView.currentItem.menu.x = win.width - stackView.currentItem.menu.width
+                    stackView.currentItem.menu.visible = !stackView.currentItem.menu.visible
+                }
             }
         }
     }
@@ -115,30 +130,25 @@ ApplicationWindow{
 
     Shortcut{
         sequence: StandardKey.Back
-        onActivated: pages.back()
+        onActivated: {
+            if (stackView.depth > 1)
+                pages.back()
+        }
     }
     Shortcut{
         sequence: "F10"
+        context: Shortcut.ApplicationShortcut
         onActivated: {
             if (toolButtonMenu.visible)
-                toolButtonMenu.visible = false;
-            else
-                toolButtonMenu.showMenu();
+                toolButtonMenu.toggleMenu();
         }
     }
 
-    Item {
-        focus: true
-
-        Keys.onMenuPressed: if(toolButtonMenu.visible) toolButtonMenu.showMenu()
-//        Keys.onBackPressed: {
-//            pages.back()
-//            return false;
-//        }
-
-        Keys.onPressed: {
-
-            if(event.key === Qt.Key_Backspace)
+    Shortcut{
+        sequence: "Backspace"
+        context: Shortcut.ApplicationShortcut
+        onActivated: {
+            if (stackView.depth > 1)
                 pages.back()
         }
     }

@@ -4,6 +4,7 @@ import QtQml.Models 2.2
 
 Page {
     clip: true
+    title: ""
 
     signal loaded
     signal unloaded
