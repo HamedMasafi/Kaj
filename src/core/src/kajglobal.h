@@ -1,5 +1,5 @@
-#ifndef TOOJGLOBAL_H
-#define TOOJGLOBAL_H
+#ifndef KAJGLOBAL_H
+#define KAJGLOBAL_H
 
 #include <QtGlobal>
 
@@ -26,28 +26,30 @@
 #endif
 
 
-#define KAJ_DECL_SINGLETON(type)       \
+#define KAJ_DECL_SINGLETON(type)                        \
     type *type::_instance = Q_NULLPTR;
 
-#define KAJ_SINGLETON(type)            \
-    static type *_instance;             \
-    public: static type *instance() {   \
-    if(!_instance)                  \
-        _instance = new type;       \
-    return _instance;               \
-    }                                   \
-    static void setInstacne(type *ins){        \
-        _instance = ins;                \
+#define KAJ_SINGLETON(type)                             \
+    static type *_instance;                             \
+    public: static type *instance() {                   \
+    if(!_instance)                                      \
+        _instance = new type;                           \
+    return _instance;                                   \
+    }                                                   \
+    static void setInstacne(type *ins){                 \
+        _instance = ins;                                \
     } private:
 
-#define KAJ_SINGLETON_UNIT(type)            \
-    static type *_instance;             \
-    public: static type *instance() {   \
-    return _instance;               \
-    }                                   \
-    static void setInstacne(type *ins){        \
-        if (_instance != Q_NULLPTR) qDebug() << "Instance is not null**" << _instance->objectName(); \
-        _instance = ins;                \
+#define KAJ_SINGLETON_UNIT(type)                        \
+    static type *_instance;                             \
+    public: static type *instance() {                   \
+    return _instance;                                   \
+    }                                                   \
+    static void setInstacne(type *ins){                 \
+        if (_instance != Q_NULLPTR) qDebug()            \
+                << "Instance is not null"               \
+                << _instance->objectName();             \
+        _instance = ins;                                \
     } private:
 
 
@@ -61,5 +63,5 @@
 #    endif
 #endif // BUILD_CORE
 
-#endif // TOOJGLOBAL_H
+#endif // KAJGLOBAL_H
 

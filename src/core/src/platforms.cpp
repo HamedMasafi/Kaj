@@ -1,5 +1,7 @@
 #include "platforms.h"
 
+KAJ_BEGIN_NAMESPACE
+
 Platforms::Platforms(QObject *parent) : QObject(parent)
 {
 
@@ -68,3 +70,5 @@ bool Platforms::isMacOsX()
 #endif
 
 }
+
+KAJ_END_NAMESPACE

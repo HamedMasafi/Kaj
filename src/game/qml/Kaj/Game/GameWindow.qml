@@ -1,146 +1,85 @@
-import QtQuick 2.3
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.4
+import QtQuick 2.7
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
+import Kaj 1.0
+import Qt.labs.settings 1.0
 
 ApplicationWindow{
-    width: 100
-    height: 62
+    id: win
 
+    property alias scaleSize: scaleContainer.scaleSize
     property int contentWidth: 400
     property int contentHeight: 800
-    property var initialItem//: pages.initialItem
+    property string initialPage: ""
+    property bool noTitlebar: false
+    property string appName: ''
+    property alias extraChilds: extraChildsContainer.children
 
-    signal loaded();
+    property PagesStackManager pages: PagesStackManager{
+        id: __pages
+        loader: loader
+    }
+    onInitialPageChanged: pages.open(initialPage)
 
-    QtObject{
-        id: __private
-        property variant pages: []
-        property variant properties
+    width: 100
+    height: 62
+    visible: true
+    flags: noTitlebar ? Qt.FramelessWindowHint : Qt.Window
+
+//    title: stackView.currentItem === null
+//           ? appName
+//           : appName + " - " + stackView.currentItem.title
+
+
+
+    function open(p, props) {
+        pages.open(p, props)
+    }
+    function close() {
+        pages.close()
     }
 
-    Component.onCompleted: {
-        scale();
-//        loader.sourceComponent = initialItem
-        console.log("Loading " + initialItem)
-        loaded();
-        openPage(initialItem, {})
+    function dp(n){
+        return Units.dp(n)
     }
 
-    function scale(){
-        //children = o
-
-        var scaleSize = Math.min(width / loader.width, height / loader.height);
-        loader.x = (width - loader.width) / 2
-        loader.y = (height - loader.height) / 2
-        loader.scale = scaleSize;
-//        var i
-//        for(i = 0; i < contentItem.children.length; i++){
-//            var child = contentItem.children[i];
-
-//            var scaleSize = Math.min(width / child.width, height / child.height);
-//            child.x = (width - child.width) / 2
-//            child.y = (height - child.height) / 2
-//            child.scale = scaleSize;
-//        }
+    function sp(n){
+        return Units.sp(n)
     }
 
-    function replacePage(page, properties){
-        __private.pages.pop();
-        openPage(page, properties);
+//    overlay.scale: loader.scale
+    overlay.modal: Rectangle {
+        color: "#8f28282a"
+//        scale: loader.scale
     }
 
-    function openPage(page, properties){
-        loader.sourceComponent = undefined;
+    overlay.modeless: Rectangle {
+        color: "#2f28282a"
+//        scale: loader.scale
+    }
 
-        __private.pages.push({page: page, properties: properties})
-        __private.properties = properties
+    ScaleContainer{
+        id: scaleContainer
+        anchors.fill: parent
+        Loader{
+            id: loader
+            clip: true
+            width: contentWidth
+            height: contentHeight
 
-        loader.source = Qt.resolvedUrl(page);
-        return;
+            onLoaded: {
+                if(typeof(item.loaded) === 'function')
+                    item.loaded()
 
-        var component = Qt.createComponent(Qt.resolvedUrl(page));
-        var i;
-
-        console.log("Loading " + page)
-
-        var loadObject = function(){
-            if (component.status === Component.Ready) {
-
-                var item = component.createObject();
-
-                pages.push({
-                               item: item,
-                               properties: properties,
-                               replace: true,
-                               destroyOnPop: true
-                           });
-
-            } else if (component.status === Component.Error) {
-                console.log("Error loading item:", component.errorString());
+                if(typeof(item.activated) === 'function')
+                    item.activated()
             }
         }
-
-        console.log("Status=" + component.status)
-        if (component.status === Component.Ready)
-            loadObject();
-        else if(component.status === Component.Error)
-            console.log("Error loading component:", component.errorString());
-        else
-            component.statusChanged.connect(loadObject);
-    }
-
-    function close(){
-        pages.pop();
-    }
-
-    onWidthChanged: scale()
-    onHeightChanged: scale()
-
-//    Rectangle{
-//        width: WIDTH
-//        height: HEIGHT
-//        border.color: "black"
-//    }
-//    Image {
-//        source: "qrc:///images/GameBackground"
-//        anchors.fill: parent
-//    }
-    style: ApplicationWindowStyle{
-        background: BorderImage {
-            source: ASSETS + "Images/SelectGame/Background.png"
-            anchors.fill: parent
-            horizontalTileMode: BorderImage.Repeat
-            verticalTileMode: BorderImage.Repeat
-            border{
-                top: 25
-                right: 25
-                bottom: 25
-                left: 25
-            }
+        Loader{
+            id: extraChildsContainer
+            width: contentWidth
+            height: contentHeight
         }
     }
-
-    Loader{
-        id: loader
-        clip: true
-        width: WIDTH
-        height: HEIGHT
-        onLoaded: {
-            for(var key in __private.properties)
-                item[key] = __private.properties[key];
-
-            if(typeof item.loaded === 'function')
-                item.loaded();
-            else
-                console.log("no loaded function")
-        }
-    }
-
-//    StackView{
-//        id: pages
-//        clip: true
-//        width: contentWidth
-//        height: contentHeight
-//    }
 }
 

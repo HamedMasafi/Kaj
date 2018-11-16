@@ -4,4 +4,5 @@ Bullet 1.0 Bullet.qml
 Entity 1.0 Entity.qml
 EntityManager 1.0 EntityManager.qml
 GameWindow 1.0 GameWindow.qml
+GamePage 1.0 GamePage.qml
 Zoom 1.0 Zoom.qml

@@ -3,6 +3,8 @@
 
 #include "kajpluginbase.h"
 
+KAJ_BEGIN_NAMESPACE
+
 class BFont : public KajPluginBase
 {
     Q_OBJECT
@@ -12,6 +14,8 @@ public:
 
     static bool init();
 };
+
+KAJ_END_NAMESPACE
 
 KAJ_DECLARE_CPP_PLUGIN(BFont)
 

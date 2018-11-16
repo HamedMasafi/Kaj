@@ -1,8 +1,11 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "kajglobal.h"
 #include <QtCore/QObject>
 #include <QtCore/qglobal.h>
+
+KAJ_BEGIN_NAMESPACE
 
 class Application : public QObject
 {
@@ -27,5 +30,7 @@ signals:
     void applicationStateChanged(ApplicationState state);
 
 };
+
+KAJ_END_NAMESPACE
 
 #endif // APPLICATION_H

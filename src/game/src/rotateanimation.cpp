@@ -4,7 +4,7 @@
 
 #include "rotateanimation.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 class RotateAnimationPrivate{
 private:
@@ -28,11 +28,12 @@ public:
     float speed;
     float speedUp;
     int duration;
-    QString property;
 
     QObject *target;
     qreal from;
     qreal to;
+
+    QString property;
 };
 
 /*!
@@ -221,4 +222,4 @@ void RotateAnimation::updateState(QAbstractAnimation::State newState, QAbstractA
     }
 }
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE

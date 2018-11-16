@@ -10,7 +10,7 @@ class FontAwesome : public KajPluginBase
 {
     Q_OBJECT
 public:
-    explicit FontAwesome(QObject *parent = 0);
+    explicit FontAwesome(QObject *parent = nullptr);
 
 public slots:
 #if QT_QML_LIB

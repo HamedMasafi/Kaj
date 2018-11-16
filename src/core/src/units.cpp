@@ -5,7 +5,7 @@
 
 #include "units.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 Units::Units(QObject *parent) : QObject(parent), m_fontScale(1)
 {
@@ -81,7 +81,6 @@ void Units::setVirtualDpi(qreal virtualDpi)
 
 void Units::setFontScale(qreal fontScale)
 {
-    qWarning("Floating point comparison needs context sanity check");
     if (qFuzzyCompare(m_fontScale, fontScale))
         return;
 
@@ -89,4 +88,4 @@ void Units::setFontScale(qreal fontScale)
     emit fontScaleChanged(m_fontScale);
 }
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE

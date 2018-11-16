@@ -7,18 +7,18 @@
 #include "gridmap_p.h"
 #include "gridmap.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 GridMapPrivate::GridMapPrivate(GridMap *parent) : q_ptr(parent),
-    gridOpacity(1),
     gridColor(Qt::white),
     imageSource(QUrl()),
+    gridOpacity(1),
     deg(0),
     cols(20),
     rows(20),
-    transformChanged(true),
     hilightedRect(QRect()),
-    highlightColor(Qt::green)
+    highlightColor(Qt::green),
+    transformChanged(true)
 {
 
 }
@@ -192,7 +192,6 @@ void GridMapAttached::invalidateItem() const
 GridMap::GridMap(QQuickItem *parent) : QQuickPaintedItem(parent),
     d_ptr(new GridMapPrivate(this))
 {
-    Q_D(GridMap);
 }
 
 GridMapAttached *GridMap::qmlAttachedProperties(QObject *object)
@@ -312,8 +311,6 @@ QRect GridMap::hilightedRect() const
 // TODO: is not completed
 QPointF GridMap::hotpoint(QQuickItem *child) const
 {
-    Q_D(const GridMap);
-
     if(!child)
         return QPoint();
 
@@ -347,7 +344,6 @@ bool GridMap::isFree(int col, int row, int width, int height) const
 
 bool GridMap::isFree(QRect rc) const
 {
-    Q_D(const GridMap);
     QList<QQuickItem *>  childs = childItems();
     foreach (QQuickItem *child, childs){
         GridMapAttached *attached = qobject_cast<GridMapAttached*>(qmlAttachedPropertiesObject<GridMap>(child));
@@ -450,7 +446,7 @@ void GridMap::invalidate(QQuickItem *child)
     //    }
 
 
-    QRectF childRect = child->boundingRect();
+//    QRectF childRect = child->boundingRect();
     //    if(childRect.size().width() + childRect.size().height()){
     //        GridMapAttached *attached = qobject_cast<GridMapAttached*>(qmlAttachedPropertiesObject<GridMap>(child));
     //        QRectF rc = map(attached->x(), attached->y(), attached->width(), attached->height());
@@ -545,6 +541,7 @@ void GridMap::paint(QPainter *painter)
 
 void GridMap::childEvent(QChildEvent *event)
 {
+    Q_UNUSED(event);
     //    qDebug()<<event;
     //    if(event->added()){
     //        QQmlComponentAttached *attached = QQmlComponent::qmlAttachedProperties(event->child());
@@ -558,4 +555,4 @@ bool GridMap::event(QEvent *e)
     return QQuickPaintedItem::event(e);
 }
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE

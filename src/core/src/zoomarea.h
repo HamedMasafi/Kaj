@@ -6,7 +6,7 @@
 
 #include "kajglobal.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 class ZoomAreaPrivate;
 class KAJ_EXPORT ZoomArea : public QQuickItem
@@ -60,8 +60,8 @@ public slots:
     void setChildZoom(qreal childZoom);
 };
 
-QML_DECLARE_TYPE(ZoomArea)
+KAJ_END_NAMESPACE
 
-QT_END_NAMESPACE
+QML_DECLARE_TYPE(KAJ_WRAP_NAMESPACE(ZoomArea))
 
 #endif // ZOOMAREA_H

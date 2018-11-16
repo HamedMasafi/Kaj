@@ -2,6 +2,8 @@
 
 #include "bfont.h"
 
+KAJ_BEGIN_NAMESPACE
+
 BFont::BFont(QObject *parent) : KajPluginBase(parent)
 {
 
@@ -18,3 +20,5 @@ bool BFont::init()
     }
     return fonts.count() > 0;
 }
+
+KAJ_END_NAMESPACE

@@ -13,7 +13,7 @@
 #include "kajqmlhelper.h"
 #include "kajmodule.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 KajQmlHelper::KajQmlHelper(QObject *parent) : QObject(parent)
 {
@@ -38,4 +38,4 @@ void KajQmlHelper::registerPlugins()
 //    KajPluginRegisterHelper::registerAll();
 }
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE

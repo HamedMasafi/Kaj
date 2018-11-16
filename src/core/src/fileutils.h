@@ -1,7 +1,10 @@
 #ifndef FILEUTILS_H
 #define FILEUTILS_H
 
+#include "kajglobal.h"
 #include <QObject>
+
+KAJ_BEGIN_NAMESPACE
 
 class FileUtils : public QObject
 {
@@ -9,11 +12,11 @@ class FileUtils : public QObject
 public:
     explicit FileUtils(QObject *parent = nullptr);
 
-public slots:
     QString readFile(const QString &filePath);
     void writeFile(const QString &filePath, const QString &content);
     QStringList filesInDir(const QString &dirPath);
 
+public slots:
     QString readFile(const QUrl &fileUrl);
     void writeFile(const QUrl &filePath, const QString &content);
     QStringList filesInDir(const QUrl &dirPath);
@@ -24,5 +27,7 @@ public slots:
     bool removeFile(const QUrl &fileUrl);
     bool copyFile(const QUrl &from, const QUrl &to);
 };
+
+KAJ_END_NAMESPACE
 
 #endif // FILEUTILS_H

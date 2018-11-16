@@ -5,6 +5,10 @@
 #include "gridmap.h"
 #include "kajgameplugin.h"
 
+#ifdef KAJ_NAMESPACE
+    using namespace KAJ_NAMESPACE;
+#endif
+
 KajGamePlugin::KajGamePlugin(QObject *parent) : QQmlExtensionPlugin(parent)
 {
 

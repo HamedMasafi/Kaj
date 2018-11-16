@@ -10,6 +10,8 @@
 
 #include "mobility.h"
 
+KAJ_BEGIN_NAMESPACE
+
 Mobility::Mobility(QObject *parent) : QObject(parent)
 {
 }
@@ -86,3 +88,5 @@ void Mobility::directCallNumber(QString number)
     qDebug() << "directCallNumber is not working on desktop...";
 #endif
 }
+
+KAJ_END_NAMESPACE

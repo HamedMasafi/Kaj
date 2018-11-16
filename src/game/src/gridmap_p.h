@@ -3,7 +3,7 @@
 
 #include "gridmap.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 class GridMapPrivate{
 private:
@@ -42,7 +42,7 @@ public:
     int max(int a, int b, int c, int d) const;
 };
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE
 
 #endif // GRIDMAP_P_H
 

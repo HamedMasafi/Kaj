@@ -13,10 +13,11 @@
 #include <QDebug>
 #include <QHash>
 #include <QMetaObject>
-#include <QApplication>
 
 #define CLASS_NAME(x) #x
 #define KAJ_QML_URI "Kaj.Plugins"
+
+#define KAJ_PLUGIN_QML_URI(x) "Kaj." #x
 
 #define KAJ_JAVA_NATIVE_METHOD(class, method) \
     JNIEXPORT void JNICALL Java_org_kaj_plugins_ ## class ## _ ## method

@@ -5,6 +5,7 @@
         <file>qml/Kaj/CircleImage.qml</file>
         <file>qml/Kaj/AutoLayout.qml</file>
         <file>qml/Kaj/module.qmltypes</file>
-        <file>qml/Kaj/PagesView.qml</file>
+        <file>qml/Kaj/PagesStackManager.qml</file>
+        <file>qml/Kaj/PageBase.qml</file>
     </qresource>
 </RCC>

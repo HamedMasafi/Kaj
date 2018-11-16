@@ -1,5 +1,5 @@
-#include "zoomarea_p.h"
 #include "zoomarea.h"
+#include "zoomarea_p.h"
 #include "scalecontainer.h"
 
 #include <QDebug>
@@ -12,7 +12,7 @@
 
 #include "kajglobal.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 ZoomAreaPrivate::ZoomAreaPrivate(ZoomArea *parent)
     : q_ptr(parent), m_handleMouseEvents(true), m_totalScaleFactor(1),
@@ -559,4 +559,4 @@ void ZoomArea::setChildZoom(qreal childZoom)
     emit childZoomChanged(m_childZoom);
 }
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE

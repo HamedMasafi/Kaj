@@ -6,5 +6,6 @@
         <file>qml/Kaj/Game/GameWindow.qml</file>
         <file>qml/Kaj/Game/qmldir</file>
         <file>qml/Kaj/Game/Zoom.qml</file>
+        <file>qml/Kaj/Game/GamePage.qml</file>
     </qresource>
 </RCC>

@@ -4,6 +4,8 @@
 #include <QFile>
 #include <QUrl>
 
+KAJ_BEGIN_NAMESPACE
+
 FileUtils::FileUtils(QObject *parent) : QObject(parent)
 {
 
@@ -86,3 +88,5 @@ bool FileUtils::dirExists(const QUrl &dirUrl)
 {
     return QDir(dirUrl.toLocalFile()).exists();
 }
+
+KAJ_END_NAMESPACE

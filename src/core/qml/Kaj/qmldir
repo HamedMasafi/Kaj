@@ -3,5 +3,6 @@ classname KajModule
 AutoLayout 1.0 AutoLayout.qml
 CircleButton 1.0 CircleButton.qml
 CircleImage 1.0 CircleImage.qml
-PagesView 1.0 PagesView.qml
+PageBase 1.0 PageBase.qml
+PagesStackManager 1.0 PagesStackManager.qml
 designersupported

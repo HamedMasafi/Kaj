@@ -6,9 +6,10 @@
 
 #include "kajglobal.h"
 
-QT_BEGIN_NAMESPACE
-
 class QPointF;
+
+KAJ_BEGIN_NAMESPACE
+
 class MovementAnimationPrivate;
 class KAJ_EXPORT MovementAnimation : public QAbstractAnimation
 {
@@ -63,6 +64,6 @@ protected:
     void updateState(QAbstractAnimation::State newState, QAbstractAnimation::State oldState);
 };
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE
 
 #endif // MOVEMENTANIMATION_H

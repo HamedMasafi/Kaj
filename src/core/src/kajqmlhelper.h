@@ -1,5 +1,5 @@
-#ifndef TOOJQMLHELPER_H
-#define TOOJQMLHELPER_H
+#ifndef KAJQMLHELPER_H
+#define KAJQMLHELPER_H
 
 #include <QtCore/QObject>
 #include <QtCore/qglobal.h>
@@ -7,9 +7,9 @@
 #include "kajpluginbase.h"
 #include "kajglobal.h"
 
-QT_BEGIN_NAMESPACE
-
 class QQmlApplicationEngine;
+
+KAJ_BEGIN_NAMESPACE
 class KAJ_EXPORT KajQmlHelper : public QObject
 {
     Q_OBJECT
@@ -20,6 +20,6 @@ public:
     static void registerPlugins();
 };
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE
 
-#endif // TOOJQMLHELPER_H
+#endif // KAJQMLHELPER_H

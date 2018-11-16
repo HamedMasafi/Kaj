@@ -3,7 +3,7 @@
 
 #include "zoomarea.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 class ZoomAreaPrivate
 {
@@ -56,7 +56,7 @@ private:
     QRectF m_childGeomery;
 };
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE
 
 #endif // ZOOMAREA_P_H
 

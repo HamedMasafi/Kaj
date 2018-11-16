@@ -2,6 +2,7 @@ INCLUDEPATH += $$PWD/src
 DEPENDPATH += $$PWD/src
 RESOURCES += $$PWD/core.qrc
 DEFINES += KAJ_CORE_LIB
+QML_IMPORT_PATH += $$PWD/qml
 
 HEADERS += \
     $$PWD/src/swipegesturemanager.h \
@@ -17,7 +18,9 @@ HEADERS += \
     $$PWD/src/kajmodule.h \
     $$PWD/src/application.h \
     $$PWD/src/mobility.h \
-    $$PWD/src/fileutils.h
+    $$PWD/src/fileutils.h \
+    $$PWD/src/restrequest.h \
+    $$PWD/src/restrequest_p.h
 
 SOURCES += \
     $$PWD/src/swipegesturemanager.cpp \
@@ -30,12 +33,8 @@ SOURCES += \
     $$PWD/src/kajmodule.cpp \
     $$PWD/src/application.cpp \
     $$PWD/src/mobility.cpp \
-    $$PWD/src/fileutils.cpp
-
-OTHER_FILES = $$PWD/qml/Kaj/AutoLayout.qml \
-            $$PWD/qml/Kaj/CircleButton.qml \
-            $$PWD/qml/Kaj/CircleImage.qml \
-            $$PWD/qml/Kaj/PagesView.qml
+    $$PWD/src/fileutils.cpp \
+    $$PWD/src/restrequest.cpp
 
 static {
     # Create the resource file
@@ -65,3 +64,4 @@ static {
 } else {
 
 }
+

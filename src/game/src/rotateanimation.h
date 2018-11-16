@@ -5,7 +5,7 @@
 
 #include "kajglobal.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 class RotateAnimationPrivate;
 class KAJ_EXPORT RotateAnimation : public QAbstractAnimation
@@ -71,6 +71,6 @@ protected:
     void updateState(QAbstractAnimation::State newState, QAbstractAnimation::State oldState);
 };
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE
 
 #endif // ROTATEANIMATION_H

@@ -8,7 +8,7 @@
 
 #include "kajglobal.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 class GridMap;
 class GridMapPrivate;
@@ -144,9 +144,9 @@ protected:
     bool event(QEvent *);
 };
 
-QML_DECLARE_TYPEINFO(GridMap, QML_HAS_ATTACHED_PROPERTIES)
+KAJ_END_NAMESPACE
 
-QT_END_NAMESPACE
+QML_DECLARE_TYPEINFO(KAJ_WRAP_NAMESPACE(GridMap), QML_HAS_ATTACHED_PROPERTIES)
 
 #endif // GRIDMAP_H
 

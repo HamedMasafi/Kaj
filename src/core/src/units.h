@@ -4,7 +4,7 @@
 #include <QObject>
 #include <kajglobal.h>
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 class KAJ_EXPORT Units : public QObject
 {
@@ -49,6 +49,6 @@ public slots:
     void setFontScale(qreal fontScale);
 };
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE
 
 #endif // UNITS_H

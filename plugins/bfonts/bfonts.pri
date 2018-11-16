@@ -3,6 +3,7 @@ QT += core
 for(f, KAJ_BFONTS){
     exists("$$PWD/resources/$${f}.qrc"){
         RESOURCES += "$$PWD/resources/$${f}.qrc"
+        DEFINES += KAJ_BFONT_$$f=\"\\\"$$f\\\"\"
     }else{
         message(The font $${f} does not exists!)
     }

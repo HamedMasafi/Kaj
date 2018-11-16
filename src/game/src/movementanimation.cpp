@@ -5,7 +5,7 @@
 
 #include "movementanimation.h"
 
-QT_BEGIN_NAMESPACE
+KAJ_BEGIN_NAMESPACE
 
 class MovementAnimationPrivate{
 private:
@@ -211,4 +211,4 @@ void MovementAnimation::updateState(QAbstractAnimation::State newState, QAbstrac
     }
 }
 
-QT_END_NAMESPACE
+KAJ_END_NAMESPACE

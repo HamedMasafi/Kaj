@@ -1,10 +1,13 @@
 #ifndef MOBILITY_H
 #define MOBILITY_H
 
+#include "kajglobal.h"
 #include <QtCore/QObject>
 #include <QtCore/qglobal.h>
 
-class Mobility : public QObject
+KAJ_BEGIN_NAMESPACE
+
+class KAJ_EXPORT Mobility : public QObject
 {
     Q_OBJECT
 public:
@@ -21,5 +24,7 @@ public slots:
     void directCallNumber(QString number);
     void toast(QString text);
 };
+
+KAJ_END_NAMESPACE
 
 #endif // MOBILITY_H

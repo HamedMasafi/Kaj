@@ -1,10 +1,13 @@
 #ifndef PLATFORMS_H
 #define PLATFORMS_H
 
+#include "kajglobal.h"
 #include <QtCore/QObject>
 #include <QtCore/qglobal.h>
 
-class Platforms : public QObject
+KAJ_BEGIN_NAMESPACE
+
+class KAJ_EXPORT Platforms : public QObject
 {
     Q_OBJECT
 public:
@@ -19,5 +22,7 @@ public slots:
     bool isWindows();
     bool isMacOsX();
 };
+
+KAJ_END_NAMESPACE
 
 #endif // PLATFORMS_H

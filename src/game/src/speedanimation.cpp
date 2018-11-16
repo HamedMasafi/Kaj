@@ -11,13 +11,17 @@
 #include <QVariant>
 #include <QtMath>
 
-#define LENGTH_POINT(a, b) sqrt(          \
-    pow(a.x() - b.x(), 2)           \
+#define LENGTH_POINT(a, b) sqrt(            \
+    pow(a.x() - b.x(), 2)                   \
     + pow(a.y() - b.y(), 2));
 
-#define LENGTH_SIZE(a, b) sqrt(          \
+#define LENGTH_SIZE(a, b) sqrt(             \
     pow(a.width() - b.width(), 2)           \
     + pow(a.height() - b.height(), 2));
+
+#define LENGTH_LINE(a, b) sqrt(             \
+    pow(a.dx() - b.dx(), 2)                 \
+    + pow(a.dy() - b.dy(), 2))
 
 SpeedAnimationPrivate::SpeedAnimationPrivate(SpeedAnimation *parent) :
         q_ptr(parent),
@@ -46,17 +50,11 @@ qlonglong SpeedAnimationPrivate::lenght(QVariant &v1, QVariant &v2)
     case QVariant::Double:
         return v2.toDouble() - v1.toDouble();
 
-//    case QVariant::Float:
-//        return v2.toFloat() - v1.toFloat();
+    case QVariant::Line:
+        return LENGTH_LINE(v2.toLine(), v1.toLine());
 
-//    case QVariant::Line:{
-//        QLine l1 = v1.toLine();
-//        QLine l2 = v2.toLine();
-
-////        (l2.dx() - l1.dx())
-//    }
     case QVariant::LineF:
-        break;
+        return LENGTH_LINE(v2.toLineF(), v1.toLineF());
 
     case QVariant::Point:
         return LENGTH_POINT(v2.toPoint(), v1.toPoint());
@@ -218,13 +216,11 @@ QQmlListProperty<QObject> SpeedAnimation::exclude() const
 
 void SpeedAnimation::updateCurrentTime(int currentTime)
 {
-
+    Q_UNUSED(currentTime);
 }
 
 void SpeedAnimation::updateState(QAbstractAnimation::State newState, QAbstractAnimation::State oldState)
 {
-    Q_D(SpeedAnimation);
-
     if(oldState == Stopped && newState == Running){
 //        d->duration = (d->lenght(startValue(), endValue()) / d->speed);
     }

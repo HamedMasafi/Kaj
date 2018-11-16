@@ -27,7 +27,7 @@ defineTest(tCopyToOutput){
         target = $$replace(target, \\\\, /)
         copyCommand += test -d \"$$target\" || mkdir -p \"$$target\" && cp -R \"$$source\" \"$$target\"
     }
-#    message(Copy \"$$source\" to \"$$target\")
+    message(Copy \"$$source\" to \"$$target\")
 
     copydeploymentfolders.commands += $$copyCommand
     first.depends += $(first) copydeploymentfolders
@@ -63,4 +63,4 @@ for(m, KAJ_PLUGINS){
 #write_file($$GENERATED_PLUGINS_HEADER, PLUGIN_HEADER_CONTENT)|error("Aborting.")
 
 #copyData()
-tCopyToOutput(android-build)
+#tCopyToOutput(android-build)
