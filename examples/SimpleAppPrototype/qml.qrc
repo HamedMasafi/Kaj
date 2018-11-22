@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>PageMain.qml</file>
+        <file>PageMenu.qml</file>
+        <file>PageNoBack.qml</file>
+        <file>PageToolbar.qml</file>
+        <file>PageWithArgs.qml</file>
+        <file>PageReturnValue.qml</file>
+        <file>PageDrawer.qml</file>
+        <file>PageDepth.qml</file>
+        <file>hamed.jpg</file>
+    </qresource>
+</RCC>
