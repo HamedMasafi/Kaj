@@ -3,7 +3,7 @@ import "src/core/core.qbs" as Core
 import "src/app/app.qbs" as App
 import "src/game/game.qbs" as Game
 
-StaticLibrary {
+Module {
     name: "Kaj"
 
     Depends { name: 'cpp' }
@@ -26,22 +26,15 @@ StaticLibrary {
         "src/game/qml"
     ]
 
-    Export{
-        Depends { name: 'cpp' }
-        cpp.includePaths: [
-            "include",
-            "src/core/src",
-            "src/app/src",
-            "src/game/src"
-        ]
-        property stringList qmlImportPaths: [
-            "/doc/dev/Qt/Kaj/src/core/qml",
-            "/doc/dev/Qt/Kaj/src/app/qml",
-            "/doc/dev/Qt/Kaj/src/game/qml",
-            "/doc/dev/Qt/Kaj/src/app/qml/App",
-            "/doc/dev/Qt/Kaj/src/game/qml/Game"
-        ]
-    }
+//    Export{
+//        Depends { name: 'cpp' }
+//        cpp.includePaths: [
+//            "include",
+//            "src/core/src",
+//            "src/app/src",
+//            "src/game/src"
+//        ]
+//    }
 
     Group {
         name: "Core"
