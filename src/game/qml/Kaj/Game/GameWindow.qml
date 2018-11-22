@@ -68,6 +68,7 @@ ApplicationWindow{
             width: contentWidth
             height: contentHeight
 
+            Keys.onBackPressed: pages.close()
             onLoaded: {
                 if(typeof(item.loaded) === 'function')
                     item.loaded()

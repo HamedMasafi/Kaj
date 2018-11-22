@@ -28,9 +28,8 @@ bool WebRequestCache::contains(const QString &key) const
     if (!q.first())
         return false;
 
-    bool ok;
-    q.value(0).toInt(&ok);
-    return ok;
+    int n = q.value(0).toInt();
+    return n;
 #else
     return cache.contains(key);
 #endif
@@ -126,17 +125,21 @@ qDebug() << path;
     else
         db.setDatabaseName(path + "/" + name + ".dat");
 
-    db.open();
+    bool ok = db.open();
 
-    db.exec(R"SQL(CREATE TABLE data (
-            id        INTEGER  PRIMARY KEY AUTOINCREMENT,
-            cache_key TEXT     UNIQUE
-                               NOT NULL,
-            value     TEXT,
-            expire    DATETIME NOT NULL,
-            has_file  BOOLEAN  NOT NULL
-                               DEFAULT (0)
-            ))SQL");
+    if (!ok) {
+        qWarning() << "Unable to open database";
+        printError();
+        return;
+    }
+
+    db.exec("CREATE TABLE IF NOT EXISTS data ("
+            "id        INTEGER  PRIMARY KEY AUTOINCREMENT,"
+            "cache_key TEXT     UNIQUE NOT NULL,"
+            "value     TEXT,"
+            "expire    DATETIME NOT NULL,"
+            "has_file  BOOLEAN  NOT NULL DEFAULT (0)"
+            ")");
 
     printError();
 #endif

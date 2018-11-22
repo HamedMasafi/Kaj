@@ -55,7 +55,7 @@ QtObject {
             __currentPage = cp;
             if(typeof(cp.callback) === 'function')
                 cp.callback(loader.item.result);
-            loader.source = cp.page;
+            loader.setSource(cp.page, cp.props);
             console.log("new page is" + cp.page)
             return cp;
         }
