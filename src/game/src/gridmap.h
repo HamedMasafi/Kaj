@@ -24,7 +24,7 @@ class GridMapAttached : public QObject{
     Q_PROPERTY(bool isFloat READ isFloat WRITE setIsFloat NOTIFY isFloatChanged)
 
 public:
-    GridMapAttached(QObject *parent = 0);
+    GridMapAttached(QObject *parent = nullptr);
 
     int x() const;
     int y() const;
@@ -41,13 +41,9 @@ public slots:
 
 signals:
     void xChanged(int x);
-
     void yChanged(int y);
-
     void widthChanged(int width);
-
     void heightChanged(int height);
-
     void isFloatChanged(bool isFloat);
 
 private:
@@ -86,9 +82,7 @@ public:
     Q_INVOKABLE int cols() const;
     Q_INVOKABLE int rows() const;
     Q_INVOKABLE qreal degree() const;
-
     Q_INVOKABLE QPointF demap(QPointF p) const;
-
     Q_INVOKABLE QPoint map(QPoint p) const;
     Q_INVOKABLE QPointF map(QPointF p) const;
     Q_INVOKABLE QRect map(QRect rc) const;
@@ -123,23 +117,16 @@ signals:
     void colsChanged(int cols);
     void rowsChanged(int rows);
     void degreeChanged(qreal degree);
-
     void gridOpacityChanged(qreal gridOpacity);
-
     void gridColorChanged(QColor gridColor);
-
     void imageSourceChanged(QUrl imageSource);
-
     void hilightedRectChanged(QRect hilightedRect);
-
     void highlightColorChanged(QColor highlightColor);
 
 protected:
     void widthChanged();
     void heightChanged();
-
     void paint(QPainter *painter);
-
     void childEvent(QChildEvent *event);
     bool event(QEvent *);
 };

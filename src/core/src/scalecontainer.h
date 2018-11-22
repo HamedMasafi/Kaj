@@ -10,6 +10,33 @@ class QQuickTransform;
 
 KAJ_BEGIN_NAMESPACE
 
+class ScaleContainerAttached : public QObject{
+    Q_OBJECT
+
+    QQuickItem *_parent;
+    Q_PROPERTY(ScaleType scaleType READ scaleType WRITE setScaleType NOTIFY scaleTypeChanged)
+
+public:
+    ScaleContainerAttached(QObject *parent = nullptr);
+
+    enum ScaleType {
+        None,
+        FitAcceptRatio,
+        FitCrop
+    };
+    Q_ENUM(ScaleType)
+    ScaleType scaleType() const;
+
+public slots:
+    void setScaleType(ScaleType scaleType);
+
+signals:
+    void scaleTypeChanged(ScaleType scaleType);
+
+private:
+    ScaleType m_scaleType;
+};
+
 class KAJ_EXPORT ScaleContainer : public QQuickItem
 {
     Q_OBJECT
@@ -21,6 +48,9 @@ class KAJ_EXPORT ScaleContainer : public QQuickItem
 
 public:
     ScaleContainer(QQuickItem *parent = nullptr);
+
+    static ScaleContainerAttached *qmlAttachedProperties(QObject *object);
+
     void setChild(QQuickItem *child);
     qreal scaleSize() const;
 
@@ -39,5 +69,8 @@ protected:
 };
 
 KAJ_END_NAMESPACE
+
+QML_DECLARE_TYPE(KAJ_WRAP_NAMESPACE(ScaleContainer))
+QML_DECLARE_TYPEINFO(KAJ_WRAP_NAMESPACE(ScaleContainer), QML_HAS_ATTACHED_PROPERTIES)
 
 #endif // SCALECONTAINER_H

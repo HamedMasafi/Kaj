@@ -10,7 +10,13 @@
 #include "application.h"
 #include "mobility.h"
 #include "fileutils.h"
-#include "restrequest.h"
+#include "request/webrequest.h"
+#include "request/stringrequest.h"
+#include "request/imagerequest.h"
+#include "request/jsonrequest.h"
+#include "request/variantrequest.h"
+#include "request/webrequestcache.h"
+#include "request/webrequestmanager.h"
 
 #ifdef KAJ_GAME_LIB
 #   include "movementanimation.h"

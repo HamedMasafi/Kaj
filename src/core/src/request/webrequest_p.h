@@ -1,7 +1,7 @@
-#ifndef RESTREQUEST_P_H
-#define RESTREQUEST_P_H
+#ifndef WEBREQUEST_P_H
+#define WEBREQUEST_P_H
 
-#include "restrequest.h"
+#include "webrequest.h"
 
 class QNetworkAccessManager;
 
@@ -23,6 +23,9 @@ public:
     bool m_useCache;
     QVariantMap m_data;
     bool m_includeDataInCacheId;
+    QString m_actualCacheId;
+    bool m_cacheUsed;
+    qint64 m_expirationSeconds;
     WebRequest::Method m_method;
     WebRequestManager *m_manager;
     WebRequestCache *m_cacheManager;
@@ -30,4 +33,4 @@ public:
 
 KAJ_END_NAMESPACE
 
-#endif // RESTREQUEST_P_H
+#endif // WEBREQUEST_P_H

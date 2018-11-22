@@ -2,77 +2,20 @@
 #define WEBREQUEST_H
 
 #include "kajglobal.h"
-#include <QtCore/qglobal.h>
-#include <QtCore/QJsonObject>
-#include <QtCore/QMap>
+
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
+#include <QtCore/QMap>
 #include <QtCore/QVariant>
-#include <QtNetwork/QNetworkRequest>
 
-#ifdef QT_SQL_LIB
-#   include <QtSql/QSqlDatabase>
-#   include <QtGui/QImage>
-#else
-#   include <QtCore/QCache>
-#endif
-
+class QNetworkRequest;
 class QNetworkReply;
-class QNetworkAccessManager;
 
 KAJ_BEGIN_NAMESPACE
 
-class WebRequestManager : public QObject {
-    Q_OBJECT
-
-    Q_PROPERTY(bool isBusy READ isBusy WRITE setIsBusy NOTIFY isBusyChanged)
-
-    int calls;
-    static WebRequestManager *_instance;
-    bool m_isBusy;
-
-    void addCall();
-    void removeCall();
-
-public:
-    WebRequestManager();
-    static WebRequestManager *instance();
-    bool isBusy() const;
-
-    friend class WebRequest;
-
-public slots:
-    void setIsBusy(bool isBusy);
-
-signals:
-    void isBusyChanged(bool isBusy);
-};
-
-class WebRequestCache : public QObject {
-    Q_OBJECT
-
-    static WebRequestCache *_instance;
-#ifdef QT_SQL_LIB
-    QSqlDatabase db;
-#else
-    QCache<QString, QString> cache;
-#endif
-    QString path;
-
-    bool contains(const QString &key) const;
-    int findId(const QString &key) const;
-
-public:
-    static WebRequestCache *instance();
-    WebRequestCache(const QString &name = QString());
-
-    QString value(const QString &key) const;
-    bool setValue(const QString &key, const QByteArray &value, const QDateTime &expire) const;
-    bool setValue(QString key, QString value, QDateTime expire) const;
-    void printError() const;
-};
-
 class WebRequestPrivate;
+class WebRequestManager;
+class WebRequestCache;
 class KAJ_EXPORT WebRequest : public QObject
 {
     Q_OBJECT
@@ -89,6 +32,8 @@ class KAJ_EXPORT WebRequest : public QObject
     Q_PROPERTY(Method method READ method WRITE setMethod NOTIFY methodChanged)
     Q_PROPERTY(WebRequestManager* manager READ manager WRITE setManager NOTIFY managerChanged)
     Q_PROPERTY(WebRequestCache* cacheManager READ cacheManager WRITE setCacheManager NOTIFY cacheManagerChanged)
+    Q_PROPERTY(bool cacheUsed READ cacheUsed WRITE setCacheUsed NOTIFY cacheUsedChanged)
+    Q_PROPERTY(qint64 expirationSeconds READ expirationSeconds WRITE setExpirationSeconds NOTIFY expirationSecondsChanged)
 
 public:
     enum Method {
@@ -108,6 +53,8 @@ public:
     Method method() const;
     WebRequestManager *manager() const;
     WebRequestCache *cacheManager() const;
+    bool cacheUsed() const;
+    qint64 expirationSeconds() const;
 
 protected:
     void sendToServer(QVariantMap props = QMap<QString, QVariant>());
@@ -115,6 +62,10 @@ protected:
     virtual void beforeSend(QVariantMap &map);
     virtual void beforeSend(QNetworkRequest &request);
     virtual void storeInCache(QDateTime expire, QByteArray buffer);
+    virtual bool retriveFromCache(const QString &key);
+    QString actualCacheId() const;
+    QString generateCacheId(QVariantMap props);
+    void setCacheUsed(bool cacheUsed);
 
 signals:
     void replyError(const int &code, const QString &descript);
@@ -128,6 +79,8 @@ signals:
     void methodChanged(Method method);
     void managerChanged(WebRequestManager *manager);
     void cacheManagerChanged(WebRequestCache *cacheManager);
+    void cacheUsedChanged(bool cacheUsed);
+    void expirationSecondsChanged(qint64 expirationSeconds);
 
 private slots:
     void on_net_finished(QNetworkReply *reply);
@@ -143,59 +96,7 @@ public slots:
     void setMethod(Method method);
     void setManager(WebRequestManager *manager);
     void setCacheManager(WebRequestCache *cacheManager);
-};
-
-class KAJ_EXPORT StringRequest : public WebRequest
-{
-    Q_OBJECT
-public:
-    explicit StringRequest(QObject *parent = nullptr);
-
-signals:
-    void finished(QString data);
-
-protected:
-    void processResponse(QByteArray buffer) Q_DECL_OVERRIDE;
-};
-
-class KAJ_EXPORT VariantRequest : public WebRequest
-{
-    Q_OBJECT
-public:
-    explicit VariantRequest(QObject *parent = nullptr);
-
-signals:
-    void finished(QVariant data);
-
-protected:
-    void processResponse(QByteArray buffer) Q_DECL_OVERRIDE;
-};
-
-class KAJ_EXPORT JsonRequest : public WebRequest
-{
-    Q_OBJECT
-public:
-    explicit JsonRequest(QObject *parent = nullptr);
-
-signals:
-    void finished(QJsonObject data);
-
-protected:
-    void processResponse(QByteArray buffer) Q_DECL_OVERRIDE;
-};
-
-class KAJ_EXPORT ImageRequest : public WebRequest
-{
-    Q_OBJECT
-public:
-    explicit ImageRequest(QObject *parent = nullptr);
-
-signals:
-    void finished(QImage data);
-
-protected:
-    void processResponse(QByteArray buffer) Q_DECL_OVERRIDE;
-    void storeInCache(QDateTime expire, QByteArray buffer) Q_DECL_OVERRIDE;
+    void setExpirationSeconds(qint64 expirationSeconds);
 };
 
 KAJ_END_NAMESPACE

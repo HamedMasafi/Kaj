@@ -19,8 +19,14 @@ HEADERS += \
     $$PWD/src/application.h \
     $$PWD/src/mobility.h \
     $$PWD/src/fileutils.h \
-    $$PWD/src/restrequest.h \
-    $$PWD/src/restrequest_p.h
+    $$PWD/src/request/webrequest.h \
+    $$PWD/src/request/webrequestmanager.h \
+    $$PWD/src/request/webrequestcache.h \
+    $$PWD/src/request/stringrequest.h \
+    $$PWD/src/request/imagerequest.h \
+    $$PWD/src/request/jsonrequest.h \
+    $$PWD/src/request/variantrequest.h \
+    $$PWD/src/request/webrequest_p.h
 
 SOURCES += \
     $$PWD/src/swipegesturemanager.cpp \
@@ -34,7 +40,13 @@ SOURCES += \
     $$PWD/src/application.cpp \
     $$PWD/src/mobility.cpp \
     $$PWD/src/fileutils.cpp \
-    $$PWD/src/restrequest.cpp
+    $$PWD/src/request/webrequest.cpp \
+    $$PWD/src/request/webrequestmanager.cpp \
+    $$PWD/src/request/webrequestcache.cpp \
+    $$PWD/src/request/stringrequest.cpp \
+    $$PWD/src/request/imagerequest.cpp \
+    $$PWD/src/request/jsonrequest.cpp \
+    $$PWD/src/request/variantrequest.cpp
 
 static {
     # Create the resource file

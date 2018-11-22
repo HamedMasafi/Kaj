@@ -63,6 +63,7 @@ ApplicationWindow{
         anchors.fill: parent
         Loader{
             id: loader
+            ScaleContainer.scaleType: "FitAcceptRatio"
             clip: true
             width: contentWidth
             height: contentHeight
@@ -75,8 +76,9 @@ ApplicationWindow{
                     item.activated()
             }
         }
-        Loader{
+        Item{
             id: extraChildsContainer
+            ScaleContainer.scaleType: "FitAcceptRatio"
             width: contentWidth
             height: contentHeight
         }

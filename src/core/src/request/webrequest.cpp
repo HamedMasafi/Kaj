@@ -1,221 +1,21 @@
-#include "restrequest.h"
-#include "restrequest_p.h"
+#include "request/webrequest.h"
+#include "webrequest_p.h"
+#include "webrequestcache.h"
+#include "webrequestmanager.h"
 
-#include <QtCore/QDir>
-#include <QtCore/QEventLoop>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
 #include <QtCore/QMetaMethod>
 #include <QtCore/QRegularExpression>
-#include <QtCore/QThread>
 #include <QtNetwork/QHttpPart>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-#ifdef QT_SQL_LIB
-#   include <QtCore/QCoreApplication>
-#   include <QtSql/QSqlQuery>
-#   include <QtSql/QSqlError>
-#   include <QtCore/QStandardPaths>
-#endif
-
 KAJ_BEGIN_NAMESPACE
-
-// RestRequestCallsManager
-WebRequestManager* WebRequestManager::_instance = nullptr;
-
-void WebRequestManager::addCall()
-{
-    calls++;
-    setIsBusy(true);
-}
-
-void WebRequestManager::removeCall()
-{
-    calls--;
-    setIsBusy(calls);
-}
-
-WebRequestManager::WebRequestManager() : calls(0), m_isBusy(false)
-{
-
-}
-
-WebRequestManager *WebRequestManager::instance()
-{
-    if (_instance == nullptr)
-        _instance = new WebRequestManager;
-    return _instance;
-}
-
-bool WebRequestManager::isBusy() const
-{
-    return m_isBusy;
-}
-
-void WebRequestManager::setIsBusy(bool isBusy)
-{
-    if (m_isBusy == isBusy)
-        return;
-
-    m_isBusy = isBusy;
-    emit isBusyChanged(m_isBusy);
-}
-
-//RestRequestCacheManager
-WebRequestCache* WebRequestCache::_instance = nullptr;
-
-bool WebRequestCache::contains(const QString &key) const
-{
-    QSqlQuery q(db);
-    q.prepare("SELECT COUNT(*) FROM data WHERE key=:key");
-    q.bindValue(":key", key);
-    q.exec();
-    if (!q.first())
-        return false;
-    int c = q.value(0).toInt();
-    return c > 0;
-}
-
-int WebRequestCache::findId(const QString &key) const
-{
-    QSqlQuery q(db);
-    q.prepare("SELECT id FROM data WHERE key=:key");
-    q.bindValue(":key", key);
-    q.exec();
-    if (!q.first())
-        return 0;
-
-    return q.value(0).toInt();
-}
-
-WebRequestCache *WebRequestCache::instance()
-{
-    if (_instance == nullptr)
-        _instance = new WebRequestCache;
-    return _instance;
-}
-
-WebRequestCache::WebRequestCache(const QString &name)
-{
-#ifdef QT_SQL_LIB
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-
-    QDir d(path);
-    if (!d.exists())
-        d.mkdir(path);
-
-    if (name == QString())
-        db.setDatabaseName(path + "/cache.dat");
-    else
-        db.setDatabaseName(path + "/" + name + ".dat");
-
-    db.open();
-
-    db.exec("CREATE TABLE IF NOT EXISTS data("
-            "id INTEGER PRIMARY KEY,"
-            "key TEXT,"
-            "value TEXT,"
-            "expire DATETIME,"
-            "type INTEGER"
-            ")");
-
-    printError();
-#endif
-}
-
-QString WebRequestCache::value(const QString &key) const
-{
-#ifdef QT_SQL_LIB
-    QSqlQuery q = db.exec(QString("SELECT id, value, expire FROM data WHERE key='%1'").arg(key));
-    printError();
-    if (!q.first())
-        return QString();
-
-    QDateTime expire =  QDateTime::fromString(q.value("expire").toString());
-
-    if (expire < QDateTime::currentDateTime()) {
-        QSqlQuery qdelete(db);
-        qdelete.prepare("DELETE FROM data WHERE id=:id");
-        qdelete.bindValue(":id", q.value("id"));
-        qdelete.exec();
-        return QString();
-    }
-
-    return q.value("value").toString();
-#else
-    if (cache.contains(key))
-        return *cache.object(key);
-    else
-        return QString();
-#endif
-}
-
-bool WebRequestCache::setValue(const QString &key, const QByteArray &value, const QDateTime &expire) const
-{
-    int id = findId(key);
-
-    QSqlQuery q2(db);
-    if (!id)
-        q2.prepare("UPDATE data SET expire=:expire WHERE key=:key");
-    else
-        q2.prepare("INSERT INTO data (key, expire, type) "
-                  "VALUES (:key, :expire, '2')");
-
-    q2.bindValue(":key", key);
-    q2.bindValue(":expire", expire.toString());
-    q2.exec();
-
-    if (!id)
-        id = q2.lastInsertId().toInt();
-
-    QFile f(path + "/file-" + QString::number(id));
-    if (!f.open(QIODevice::WriteOnly))
-        return false;
-
-    f.write(value);
-    f.close();
-    return true;
-}
-
-bool WebRequestCache::setValue(QString key, QString value, QDateTime expire) const
-{
-#ifdef QT_SQL_LIB
-    bool exists = contains(key);
-
-    QSqlQuery q2(db);
-    if (exists)
-        q2.prepare("UPDATE data SET value=:value, expire=:expire WHERE key=:key");
-    else
-        q2.prepare("INSERT INTO data (key, value, expire, type) "
-                  "VALUES (:key, :value, :expire, '1')");
-
-    q2.bindValue(":key", key);
-    q2.bindValue(":value", value);
-    q2.bindValue(":expire", expire.toString());
-    q2.exec();
-
-    printError();
-    return q2.numRowsAffected() > 0;;
-#else
-    cache.insert(key, &value);
-    return true;
-#endif
-}
-
-void WebRequestCache::printError() const
-{
-#ifdef QT_SQL_LIB
-    if (db.lastError().type() != QSqlError::NoError)
-        qWarning() << "Error database:" << db.lastError().text();
-#endif
-}
 
 WebRequestPrivate::WebRequestPrivate(WebRequest *parent) : q_ptr(parent),
     calls(0), m_isBusy(false), m_cacheId(QString()),
     m_useCache(true), m_data(QVariantMap()), m_includeDataInCacheId(false),
+    m_actualCacheId(QString()), m_expirationSeconds(0),
     m_method(WebRequest::Post)
 {
     net = new QNetworkAccessManager(parent);
@@ -247,27 +47,15 @@ void WebRequest::sendToServer(QVariantMap props)
         }
     }
 
-//    QJsonDocument doc;
-//    doc.setObject(QJsonObject::fromVariantMap(props));
-//    postData = doc.toJson();
-
     if (d->m_useCache) {
-        QString cacheId;
-        if (d->m_cacheId != QString()) {
-            cacheId = d->m_cacheId;
-        } else {
-            if (d->m_includeDataInCacheId)
-                cacheId = d->m_url.toString() + "?" + postData;
-            else
-                cacheId = d->m_url.toString();
-        }
-
-        QString cache = cacheManager()->value(cacheId);
-        if (cache != QString()) {
-            processResponse(cache.toLocal8Bit());
+        QString id = generateCacheId(props);
+        if (retriveFromCache(id)) {
+            setCacheUsed(true);
             return;
         }
     }
+    setCacheUsed(false);
+
     manager()->addCall();
     setIsBusy(true);
 
@@ -377,6 +165,18 @@ WebRequestCache *WebRequest::cacheManager() const
     return d->m_cacheManager;
 }
 
+bool WebRequest::cacheUsed() const
+{
+    Q_D(const WebRequest);
+    return d->m_cacheUsed;
+}
+
+qint64 WebRequest::expirationSeconds() const
+{
+    Q_D(const WebRequest);
+    return d->m_expirationSeconds;
+}
+
 void WebRequest::beforeSend(QVariantMap &map)
 {
     Q_UNUSED(map);
@@ -402,6 +202,49 @@ void WebRequest::storeInCache(QDateTime expire, QByteArray buffer)
         qWarning() << "Unable to store cache";
 }
 
+bool WebRequest::retriveFromCache(const QString &key)
+{
+    QString cache = cacheManager()->value(key);
+    if (cache != QString()) {
+        processResponse(cache.toLocal8Bit());
+        return true;
+    }
+    return false;
+}
+
+QString WebRequest::actualCacheId() const
+{
+    Q_D(const WebRequest);
+    return d->m_actualCacheId;
+}
+
+QString WebRequest::generateCacheId(QVariantMap props)
+{
+    Q_D(WebRequest);
+
+    QString postData = "";
+    if (props.count()) {
+        foreach (auto key, props.keys()) {
+            if (postData != "")
+                postData.append("&");
+
+            postData.append(key + "=" + props.value(key).toString());
+        }
+    }
+    if (d->m_actualCacheId == "") {
+        if (d->m_cacheId != QString()) {
+            d->m_actualCacheId = d->m_cacheId;
+        } else {
+            if (d->m_includeDataInCacheId)
+                d->m_actualCacheId = d->m_url.toString() + "?" + postData;
+            else
+                d->m_actualCacheId = d->m_url.toString();
+        }
+    }
+
+    return d->m_actualCacheId;
+}
+
 void WebRequest::on_net_finished(QNetworkReply *reply)
 {
     Q_D(WebRequest);
@@ -416,12 +259,17 @@ void WebRequest::on_net_finished(QNetworkReply *reply)
     }
 
     if (d->m_useCache) {
-        QString cacheControl = QString(reply->rawHeader("cache-control"));
-        QRegularExpression r("max-age=(\\d+)");
-        QRegularExpressionMatch m = r.match(cacheControl);
         QDateTime expire = QDateTime::currentDateTime();
-        if (m.hasMatch()) {
-            expire = expire.addSecs(m.captured(1).toInt());
+
+        if (d->m_expirationSeconds) {
+            expire = expire.addSecs(d->m_expirationSeconds);
+        } else {
+            QString cacheControl = QString(reply->rawHeader("cache-control"));
+            QRegularExpression r("max-age=(\\d+)");
+            QRegularExpressionMatch m = r.match(cacheControl);
+            if (m.hasMatch()) {
+                expire = expire.addSecs(m.captured(1).toInt());
+            }
         }
         storeInCache(expire, buffer);
     }
@@ -457,6 +305,7 @@ void WebRequest::setCacheId(QString cacheId)
     if (d->m_cacheId == cacheId)
         return;
 
+    d->m_actualCacheId = "";
     d->m_cacheId = cacheId;
     emit cacheIdChanged(d->m_cacheId);
 }
@@ -477,6 +326,7 @@ void WebRequest::setData(QVariantMap data)
     if (d->m_data == data)
         return;
 
+    d->m_actualCacheId = "";
     d->m_data = data;
     emit dataChanged(d->m_data);
 }
@@ -487,6 +337,7 @@ void WebRequest::setIncludeDataInCacheId(bool includeDataInCacheId)
     if (d->m_includeDataInCacheId == includeDataInCacheId)
         return;
 
+    d->m_actualCacheId = "";
     d->m_includeDataInCacheId = includeDataInCacheId;
     emit includeDataInCacheIdChanged(d->m_includeDataInCacheId);
 }
@@ -521,55 +372,24 @@ void WebRequest::setCacheManager(WebRequestCache *cacheManager)
     emit cacheManagerChanged(cacheManager);
 }
 
-JsonRequest::JsonRequest(QObject *parent) : WebRequest(parent)
-{ }
-
-void JsonRequest::processResponse(QByteArray buffer)
+void WebRequest::setExpirationSeconds(qint64 expirationSeconds)
 {
-    QJsonObject obj = QJsonDocument::fromJson(buffer).object();
-    if (obj.isEmpty())
-        emit replyError(0, "");
-    else
-        emit finished(obj);
+    Q_D(WebRequest);
+    if (d->m_expirationSeconds == expirationSeconds)
+        return;
+
+    d->m_expirationSeconds = expirationSeconds;
+    emit expirationSecondsChanged(expirationSeconds);
 }
 
-StringRequest::StringRequest(QObject *parent) : WebRequest(parent)
-{ }
-
-void StringRequest::processResponse(QByteArray buffer)
+void WebRequest::setCacheUsed(bool cacheUsed)
 {
-    emit finished(QString(buffer));
+    Q_D(WebRequest);
+    if (d->m_cacheUsed == cacheUsed)
+        return;
+
+    d->m_cacheUsed = cacheUsed;
+    emit cacheUsedChanged(cacheUsed);
 }
-
-VariantRequest::VariantRequest(QObject *parent) : WebRequest(parent)
-{
-
-}
-
-void VariantRequest::processResponse(QByteArray buffer)
-{
-    //TODO:
-    Q_UNUSED(buffer);
-    emit finished(QVariant());
-}
-
-ImageRequest::ImageRequest(QObject *parent) : WebRequest(parent)
-{
-
-}
-
-void ImageRequest::processResponse(QByteArray buffer)
-{
-    Q_UNUSED(buffer);
-}
-
-void ImageRequest::storeInCache(QDateTime expire, QByteArray buffer)
-{
-    QString cid = cacheId();
-    if (cid.isEmpty())
-        cid = url().toString().replace("'", "");
-    bool ok = cacheManager()->setValue(cid, buffer, expire);
-    if (!ok)
-        qWarning() << "Unable to store cache";}
 
 KAJ_END_NAMESPACE

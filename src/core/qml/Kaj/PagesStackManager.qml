@@ -52,10 +52,11 @@ QtObject {
                 loader.item.unloaded()
 
             var cp = __pages.pop();
-
+            __currentPage = cp;
             if(typeof(cp.callback) === 'function')
                 cp.callback(loader.item.result);
-            loader.source = cp;
+            loader.source = cp.page;
+            console.log("new page is" + cp.page)
             return cp;
         }
     }
@@ -74,6 +75,7 @@ QtObject {
 
         __currentPage = {
             page: p,
+            props: properties,
             callback: callback
         }
         properties.pages =  me;
