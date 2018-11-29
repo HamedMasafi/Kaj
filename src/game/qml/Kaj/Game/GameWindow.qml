@@ -1,4 +1,4 @@
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.1
 import Kaj 1.0
@@ -14,10 +14,19 @@ ApplicationWindow{
     property bool noTitlebar: false
     property string appName: ''
     property alias extraChilds: extraChildsContainer.children
+    property alias backgroundColor: bg.color
 
     property PagesStackManager pages: PagesStackManager{
         id: __pages
         loader: loader
+
+        onLoaded: {
+
+        }
+
+        onUnloading: {
+
+        }
     }
     onInitialPageChanged: pages.open(initialPage)
 
@@ -47,6 +56,10 @@ ApplicationWindow{
         return Units.sp(n)
     }
 
+    function em(n) {
+        return n * font.pointSize;
+    }
+
 //    overlay.scale: loader.scale
     overlay.modal: Rectangle {
         color: "#8f28282a"
@@ -56,6 +69,11 @@ ApplicationWindow{
     overlay.modeless: Rectangle {
         color: "#2f28282a"
 //        scale: loader.scale
+    }
+
+    Rectangle{
+        id: bg
+        anchors.fill: parent
     }
 
     ScaleContainer{
@@ -68,7 +86,9 @@ ApplicationWindow{
             width: contentWidth
             height: contentHeight
 
-            Keys.onBackPressed: pages.close()
+            Keys.onBackPressed: pages.back()
+            Keys.onEscapePressed: console.log("pages.back()")
+
             onLoaded: {
                 if(typeof(item.loaded) === 'function')
                     item.loaded()
@@ -83,6 +103,17 @@ ApplicationWindow{
             width: contentWidth
             height: contentHeight
         }
+    }
+
+    Shortcut{
+        sequences: ["Esc", StandardKey.Back]
+        onActivated: pages.back()
+        context: Qt.ApplicationShortcut
+    }
+
+    onClosing: {
+        if (Qt.platform.os === "android" && pages.back() !== null)
+            close.accepted = false
     }
 }
 

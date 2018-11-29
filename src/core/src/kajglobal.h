@@ -43,10 +43,13 @@
 #define KAJ_SINGLETON_UNIT(type)                        \
     static type *_instance;                             \
     public: static type *instance() {                   \
-    return _instance;                                   \
+        if (_instance == nullptr)                       \
+            _instance = new type;                       \
+        return _instance;                               \
     }                                                   \
     static void setInstacne(type *ins){                 \
-        if (_instance != Q_NULLPTR) qDebug()            \
+        if (_instance != Q_NULLPTR)                     \
+            qDebug()                                    \
                 << "Instance is not null"               \
                 << _instance->objectName();             \
         _instance = ins;                                \

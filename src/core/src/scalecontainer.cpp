@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QSGNode>
 #include "scalecontainer.h"
 
 KAJ_BEGIN_NAMESPACE
@@ -91,6 +92,12 @@ void ScaleContainer::itemChange(QQuickItem::ItemChange change, const QQuickItem:
         connect(data.item, &QQuickItem::childrenRectChanged,
                 this, &ScaleContainer::child_childrenRectChanged);
     }*/
+}
+
+QSGNode *ScaleContainer::updatePaintNode(QSGNode *node, QQuickItem::UpdatePaintNodeData *data)
+{
+    qDebug() << "updatePaintNode" << node->type();
+    return QQuickItem::updatePaintNode(node, data);
 }
 
 ScaleContainerAttached::ScaleContainerAttached(QObject *parent)

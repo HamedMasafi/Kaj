@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QFile>
 #include <QUrl>
+#include <QtCore/QDebug>
 
 KAJ_BEGIN_NAMESPACE
 
@@ -15,8 +16,11 @@ QString FileUtils::readFile(const QString &filePath)
 {
     QFile f(filePath);
 
-    if (!f.exists())
+    if (!f.exists()) {
+        qWarning("File %s does not exists", qPrintable(filePath));
         return "";
+    }
+
     if (!f.open(QIODevice::ReadOnly))
         return "";
 
@@ -45,7 +49,7 @@ QStringList FileUtils::filesInDir(const QString &dirPath)
 
 QString FileUtils::readFile(const QUrl &fileUrl)
 {
-    return readFile(fileUrl.toLocalFile());
+    return readFile(fileUrl.toString());
 }
 
 void FileUtils::writeFile(const QUrl &fileUrl, const QString &content)

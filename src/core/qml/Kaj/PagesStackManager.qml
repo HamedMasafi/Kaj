@@ -8,10 +8,15 @@ QtObject {
     property var __currentPage: null
     property Item currentIrem: null
 
+    signal loaded(Item item);
+    signal unloading(Item item);
+
     onLoaderChanged: {
         loader.loaded.connect(function(item) {
             if (item === undefined)
                 return;
+
+            me.loaded(item);
 
             console.log("item changed: "  + typeof(item))
             if(typeof(item.loaded) === 'function')
@@ -23,6 +28,14 @@ QtObject {
             currentIrem = item;
             properties.pages =  me;
         })
+    }
+
+    function __createData(page, properties, callbackId) {
+        return {
+            page: page,
+            properties: properties,
+            callbackId: callbackId
+        };
     }
 
     /*
@@ -48,6 +61,8 @@ QtObject {
     }
     function close() {
         if (__pages.length > 0) {
+            me.unloading(loader.item);
+
             if(typeof(loader.item.unloaded) === 'function')
                 loader.item.unloaded()
 
@@ -56,10 +71,15 @@ QtObject {
             if(typeof(cp.callback) === 'function')
                 cp.callback(loader.item.result);
             loader.setSource(cp.page, cp.props);
-            console.log("new page is" + cp.page)
+
             return cp;
         }
+        return null
     }
+    function back() {
+        return close();
+    }
+
     function clear() {
         __pages = [];
         loader.source = "";

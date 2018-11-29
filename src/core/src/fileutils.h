@@ -12,11 +12,11 @@ class FileUtils : public QObject
 public:
     explicit FileUtils(QObject *parent = nullptr);
 
-    QString readFile(const QString &filePath);
     void writeFile(const QString &filePath, const QString &content);
     QStringList filesInDir(const QString &dirPath);
 
 public slots:
+    QString readFile(const QString &filePath);
     QString readFile(const QUrl &fileUrl);
     void writeFile(const QUrl &filePath, const QString &content);
     QStringList filesInDir(const QUrl &dirPath);

@@ -39,6 +39,7 @@ public:
     QString fileName(const QString &key) const;
     QString setValue(const QString &key, const QByteArray &value, const QDateTime &expire);
     bool setValue(const QString &key, const QString &value, const QDateTime &expire);
+    bool removeValue(const QString &key);
     void printError() const;
     int clean();
     void clear();

@@ -3,6 +3,8 @@
 
 #include "kajpluginbase.h"
 
+KAJ_BEGIN_NAMESPACE
+
 class Share : public KajPluginBase
 {
     Q_OBJECT
@@ -15,6 +17,9 @@ public:
 signals:
 
 public slots:
+    void share(QString &subject, QString &url);
 };
+
+KAJ_END_NAMESPACE
 
 #endif // SHARE_H

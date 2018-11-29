@@ -14,12 +14,14 @@ android{
         -lfirebase_messaging
 
     HEADERS += \
-        $$PWD/src/googlegcm.h \
         $$PWD/src/gcmlistener.h
 
     SOURCES += \
-        $$PWD/src/googlegcm.cpp \
         $$PWD/src/gcmlistener.cpp
-} else {
-    message(GCM plugin does not work an non-android kits)
 }
+
+    HEADERS += \
+        $$PWD/src/googlegcm.h
+
+    SOURCES += \
+        $$PWD/src/googlegcm.cpp

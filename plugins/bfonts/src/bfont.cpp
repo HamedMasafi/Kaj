@@ -1,4 +1,5 @@
 #include <QFontDatabase>
+#include <QDebug>
 
 #include "bfont.h"
 
@@ -16,7 +17,10 @@ bool BFont::init()
         if(font.startsWith("-D"))
             font.remove(0, 2);
 
-        QFontDatabase::addApplicationFont(":/fonts/" + font);
+        int ret = QFontDatabase::addApplicationFont(":/fonts/" + font);
+
+        if (ret == -1)
+            qWarning("The font '%s' could not be loaded", qPrintable(font));
     }
     return fonts.count() > 0;
 }

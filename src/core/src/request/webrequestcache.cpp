@@ -271,6 +271,24 @@ bool WebRequestCache::setValue(const QString &key, const QString &value, const Q
 #endif
 }
 
+bool WebRequestCache::removeValue(const QString &key)
+{
+#ifdef QT_SQL_LIB
+    QSqlQuery q(db);
+    q.prepare("DELETE FROM data WHERE cache_key=:cache_key");
+
+    q.bindValue(":cache_key", key);
+    q.exec();
+
+    printError();
+    return q.numRowsAffected() > 0;;
+#else
+    //TODO:
+//    cache.insert(key, value);
+    return true;
+#endif
+}
+
 void WebRequestCache::printError() const
 {
 #ifdef QT_SQL_LIB

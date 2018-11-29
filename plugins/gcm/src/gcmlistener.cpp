@@ -3,7 +3,9 @@
 #include "googlegcm.h"
 #include <QDebug>
 
-GcmListener::GcmListener() : firebase::messaging::Listener()
+KAJ_BEGIN_NAMESPACE
+
+GcmListener::GcmListener(GoogleGcm *gcm) : firebase::messaging::PollableListener(), _gcm(gcm)
 {
 
 }
@@ -11,10 +13,18 @@ GcmListener::GcmListener() : firebase::messaging::Listener()
 void GcmListener::OnMessage(const firebase::messaging::Message &message)
 {
 //    GoogleGcm::instance()->
-    qDebug() << QString(message.raw_data.c_str());
+    qDebug() << "Message:" << QString::fromStdString(message.notification->title)
+             << " - "
+             << QString::fromStdString(message.notification->body);
+
+    Message msg(message);
+    emit _gcm->messageRecived(msg);
 }
 
 void GcmListener::OnTokenReceived(const char *token)
 {
-
+    qDebug() << "Token recived" << token;
+    _gcm->setRegistrationToken(QString::fromStdString(token));
 }
+
+KAJ_END_NAMESPACE

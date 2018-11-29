@@ -66,6 +66,7 @@ private slots:
 protected:
     void geometryChanged(const QRectF & newGeometry, const QRectF & oldGeometry);
     void itemChange(ItemChange, const ItemChangeData &) Q_DECL_OVERRIDE;
+    QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *);
 };
 
 KAJ_END_NAMESPACE

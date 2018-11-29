@@ -78,15 +78,22 @@ void WebRequest::sendToServer(QVariantMap props)
 */
 
     if (props.count()) {
-        QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-        foreach (auto key, props.keys()) {
-            QHttpPart textPart;
-            textPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"" + key + "\""));
-            textPart.setBody(props.value(key).toByteArray());
-            multiPart->append(textPart);
-        }
+        if (d->m_method == Get) {
+            QUrl url = request.url();
+            url.setQuery(postData);
+            request.setUrl(url);
+            d->net->get(request);
+        } else {
+            QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+            foreach (auto key, props.keys()) {
+                QHttpPart textPart;
+                textPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"" + key + "\""));
+                textPart.setBody(props.value(key).toByteArray());
+                multiPart->append(textPart);
+            }
 
-        d->net->post(request, postData);
+            d->net->post(request, postData);
+        }
     } else {
         if (d->m_method == Get)
             d->net->get(request);
@@ -250,11 +257,11 @@ void WebRequest::on_net_finished(QNetworkReply *reply)
     Q_D(WebRequest);
 
     auto buffer = reply->readAll();
-    manager()->removeCall();
     if (reply->error() != QNetworkReply::NoError) {
         qWarning() << "Error" << reply->error() << reply->errorString();
         qWarning() << buffer;
         emit replyError(reply->error(), reply->errorString());
+        manager()->removeCall();
         return;
     }
 
@@ -277,6 +284,7 @@ void WebRequest::on_net_finished(QNetworkReply *reply)
 
     d->calls--;
     setIsBusy(d->calls);
+    manager()->removeCall();
 }
 
 void WebRequest::setUrl(QUrl url)

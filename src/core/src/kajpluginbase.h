@@ -19,20 +19,21 @@
 
 #define KAJ_PLUGIN_QML_URI(x) "Kaj." #x
 
-#define KAJ_JAVA_NATIVE_METHOD(class, method) \
+#define KAJ_JAVA_NATIVE_METHOD(class, method)                                   \
     JNIEXPORT void JNICALL Java_org_kaj_plugins_ ## class ## _ ## method
 
-#define KAJ_JAVA_CLASS_NAME(class) \
+#define KAJ_JAVA_CLASS_NAME(class)                                              \
     "org/kaj/plugins/" #class
 
-#define KAJ_DECLARE_PLUGIN(x, type) \
-    namespace { \
-    static const struct x ## _registrator_class_ ## type { \
-        inline x ## _registrator_class_ ## type() { \
-            QString className(x::staticMetaObject.className()); \
-            KajPluginRegisterHelper::instance()->insert ## type(className, &x::init); \
-    } \
-    } x ## _registrator_class_instance_ ## type; \
+#define KAJ_DECLARE_PLUGIN(x, type)                                             \
+    namespace {                                                                 \
+    static const struct x ## _registrator_class_ ## type {                      \
+        inline x ## _registrator_class_ ## type() {                             \
+            QString className(x::staticMetaObject.className());                 \
+            KajPluginRegisterHelper::instance()                                 \
+                        ->insert ## type(className, &x::init);                  \
+    }                                                                           \
+    } x ## _registrator_class_instance_ ## type;                                \
 }
 
 #ifdef __cplusplus
@@ -97,38 +98,6 @@ public:
     }
 };
 
-//Depreacted!
-template<typename T>
-class KajPluginBaseRegistrar : public QObject{
-
-public:
-    enum PluginType{
-        Cpp,
-        Qml
-    };
-
-    KajPluginBaseRegistrar()
-    {
-
-    }
-
-    KajPluginBaseRegistrar(PluginType type)
-    {
-        QString className(T::staticMetaObject.className());
-
-        if(type == Cpp)
-            KajPluginRegisterHelper::instance()->insertCpp(className, &T::init);
-
-        if(type == Qml)
-            KajPluginRegisterHelper::instance()->insertQml(className, &T::init);
-    }
-
-    ~KajPluginBaseRegistrar(){
-
-    }
-
-
-};
 class KajPluginBase : public QObject
 {
     Q_OBJECT
