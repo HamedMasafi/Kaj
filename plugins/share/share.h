@@ -13,13 +13,17 @@ public:
     explicit Share(QObject *parent = 0);
 
     Q_INVOKABLE void shareApp();
-    static void registerQmlType();
+#if QT_QML_LIB
+    static bool init(const QQmlApplicationEngine *engine);
+#endif
 signals:
 
 public slots:
-    void share(QString &subject, QString &url);
+    void shareLink(const QString &subject, const QString &url);
 };
 
 KAJ_END_NAMESPACE
+
+KAJ_DECLARE_QML_PLUGIN(Share)
 
 #endif // SHARE_H

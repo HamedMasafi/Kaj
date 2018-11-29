@@ -1,11 +1,17 @@
 #include "share.h"
 
 #if QT_ANDROIDEXTRAS_LIB
+#include <QAndroidIntent>
 #   include <QAndroidJniObject>
 #   include <QtAndroid>
 #endif
 
 #include <QtQml>
+
+static QObject *createSingletonShare(QQmlEngine *, QJSEngine *)
+{
+    return new Share();
+}
 
 KAJ_BEGIN_NAMESPACE
 
@@ -24,12 +30,14 @@ void Share::shareApp()
 #endif
 }
 
-void Share::registerQmlType()
+bool Share::init(const QQmlApplicationEngine *engine)
 {
-    qmlRegisterType<Share>("Kaj.Share", 1, 0, CLASS_NAME(Share));
+#if QT_QML_LIB
+    qmlRegisterSingletonType<Share>("Kaj.Share", 1, 0, "Share", createSingletonShare);
+#endif
 }
 
-void Share::share(QString &subject, QString &url)
+void Share::shareLink(const QString &subject, const QString &url)
 {
 //    QAndroidJniObject jsText = QAndroidJniObject::fromString(text);
 //    QAndroidJniObject jsUrl = QAndroidJniObject::fromString(url.toString());
@@ -38,29 +46,34 @@ void Share::share(QString &subject, QString &url)
 //                                       "(Ljava/lang/String;Ljava/lang/String;)V",
 //                                       jsText.object<jstring>(), jsUrl.object<jstring>());
 #ifdef Q_OS_ANDROID
-    QAndroidJniObject ACTION_SET_TIMER = QAndroidJniObject::getStaticObjectField("android/content/Intent",
-                                                                                 "ACTION_SEND");
-    QAndroidJniObject intent("android/content/Intent",
-                             "(Ljava/lang/String;)V",
-                             ACTION_SET_TIMER.object());
+    QAndroidIntent it("ACTION_SEND");
+    it.putExtra("EXTRA_SUBJECT", subject.toLocal8Bit());
+    it.putExtra("EXTRA_TEXT", url.toLocal8Bit());
+    QtAndroid::startActivity(it.handle(), 1);
 
-    QAndroidJniObject subjectObject = QAndroidJniObject::fromString(subject);
-    QAndroidJniObject urlObject = QAndroidJniObject::fromString(url);
-    QAndroidJniObject EXTRA_SUBJECT = QAndroidJniObject::getStaticObjectField("android/content/Intent",
-                                                                              "EXTRA_SUBJECT");
-    QAndroidJniObject EXTRA_TEXT = QAndroidJniObject::getStaticObjectField("android/content/Intent",
-                                                                              "EXTRA_TEXT");
-    intent.callObjectMethod("putExtra",
-                            "(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;",
-                            EXTRA_SUBJECT.object(),
-                            subjectObject.object());
+//    QAndroidJniObject ACTION_SET_TIMER = QAndroidJniObject::getStaticField<jint>("android/content/Intent",
+//                                                                                 "ACTION_SEND");
+//    QAndroidJniObject intent("android/content/Intent",
+//                             "(Ljava/lang/String;)V",
+//                             ACTION_SET_TIMER.object());
 
-    intent.callObjectMethod("putExtra",
-                            "(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;",
-                            EXTRA_TEXT.object(),
-                            urlObject.object());
+//    QAndroidJniObject subjectObject = QAndroidJniObject::fromString(subject);
+//    QAndroidJniObject urlObject = QAndroidJniObject::fromString(url);
+//    QAndroidJniObject EXTRA_SUBJECT = QAndroidJniObject::getStaticField<jint>("android/content/Intent",
+//                                                                              "EXTRA_SUBJECT");
+//    QAndroidJniObject EXTRA_TEXT = QAndroidJniObject::getStaticObjectField<jint>("android/content/Intent",
+//                                                                              "EXTRA_TEXT");
+//    intent.callObjectMethod("putExtra",
+//                            "(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;",
+//                            EXTRA_SUBJECT.object(),
+//                            subjectObject.object());
 
-    QtAndroid::startActivity(intent, 1);
+//    intent.callObjectMethod("putExtra",
+//                            "(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;",
+//                            EXTRA_TEXT.object(),
+//                            urlObject.object());
+
+//    QtAndroid::startActivity(intent, 1);
 #endif
 }
 
