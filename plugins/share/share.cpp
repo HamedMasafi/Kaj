@@ -35,6 +35,7 @@ bool Share::init(const QQmlApplicationEngine *engine)
 #if QT_QML_LIB
     qmlRegisterSingletonType<Share>("Kaj.Share", 1, 0, "Share", createSingletonShare);
 #endif
+    return true;
 }
 
 void Share::shareLink(const QString &subject, const QString &url)
@@ -47,8 +48,8 @@ void Share::shareLink(const QString &subject, const QString &url)
 //                                       jsText.object<jstring>(), jsUrl.object<jstring>());
 #ifdef Q_OS_ANDROID
     QAndroidIntent it("ACTION_SEND");
-    it.putExtra("EXTRA_SUBJECT", subject.toLocal8Bit());
-    it.putExtra("EXTRA_TEXT", url.toLocal8Bit());
+    it.putExtra("EXTRA_SUBJECT", subject);
+    it.putExtra("EXTRA_TEXT", url);
     QtAndroid::startActivity(it.handle(), 1);
 
 //    QAndroidJniObject ACTION_SET_TIMER = QAndroidJniObject::getStaticField<jint>("android/content/Intent",
