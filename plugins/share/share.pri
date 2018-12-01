@@ -16,7 +16,11 @@ android: {
 
 INCLUDEPATH += $$PWD
 HEADERS += \
-    $$PWD/share.h
+    $$PWD/share.h \
+    $$PWD/androidintent.h \
+    $$PWD/androidjniarraylist.h
 
 SOURCES += \
-    $$PWD/share.cpp
+    $$PWD/share.cpp \
+    $$PWD/androidintent.cpp \
+    $$PWD/androidjniarraylist.cpp

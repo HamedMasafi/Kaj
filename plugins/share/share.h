@@ -12,7 +12,6 @@ class Share : public KajPluginBase
 public:
     explicit Share(QObject *parent = 0);
 
-    Q_INVOKABLE void shareApp();
 #if QT_QML_LIB
     static bool init(const QQmlApplicationEngine *engine);
 #endif
@@ -20,6 +19,7 @@ signals:
 
 public slots:
     void shareLink(const QString &subject, const QString &url);
+    void shareApp();
 };
 
 KAJ_END_NAMESPACE
