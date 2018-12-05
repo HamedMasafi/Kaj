@@ -60,10 +60,10 @@ void WebRequest::sendToServer(QVariantMap props)
     setIsBusy(true);
 
     QNetworkRequest request;
-    beforeSend(request);
     request.setHeader(QNetworkRequest::ContentTypeHeader,
                       "application/x-www-form-urlencoded");
     request.setUrl(d->m_url);
+    beforeSend(request);
 /*
     QByteArray postData = "";
     foreach (auto key, props.keys()) {

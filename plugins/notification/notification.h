@@ -8,12 +8,14 @@ class Notification : public KajPluginBase
     Q_OBJECT
 public:
     explicit Notification(QObject *parent = 0);
-    static void init();
+#if QT_QML_LIB
+    static bool init(const QQmlApplicationEngine *engine);
+#endif
 
 public slots:
     void createNotification(QString text);
 };
 
-KAJ_DECLARE_CPP_PLUGIN(Notification)
+KAJ_DECLARE_QML_PLUGIN(Notification)
 
 #endif // NOTIFICATION_H

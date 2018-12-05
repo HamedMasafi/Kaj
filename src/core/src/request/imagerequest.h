@@ -13,25 +13,26 @@ KAJ_BEGIN_NAMESPACE
 class KAJ_EXPORT ImageRequest : public WebRequest
 {
     Q_OBJECT
-    Q_PROPERTY(QString fileName READ fileName WRITE setFileName NOTIFY fileNameChanged)
+    Q_PROPERTY(QUrl fileName READ fileName WRITE setFileName NOTIFY fileNameChanged)
 
-    QString m_fileName;
+    QUrl m_fileName;
 
 public:
     explicit ImageRequest(QObject *parent = nullptr);
-    QString fileName() const;
+    QUrl fileName() const;
 
 public slots:
-    void setFileName(QString fileName);
+    void setFileName(QUrl fileName);
 
 signals:
     void finished(QImage data);
-    void fileNameChanged(QString fileName);
+    void fileNameChanged(QUrl fileName);
 
 protected:
     void processResponse(QByteArray buffer) Q_DECL_OVERRIDE;
     void storeInCache(QDateTime expire, QByteArray buffer) Q_DECL_OVERRIDE;
     bool retriveFromCache(const QString &key) Q_DECL_OVERRIDE;
+    void beforeSend(QNetworkRequest &request);
 };
 
 KAJ_END_NAMESPACE

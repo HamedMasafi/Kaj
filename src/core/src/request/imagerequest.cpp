@@ -4,19 +4,21 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
 
+#include <QNetworkRequest>
+
 KAJ_BEGIN_NAMESPACE
 
 ImageRequest::ImageRequest(QObject *parent) : WebRequest(parent)
 {
-
+    setMethod(Get);
 }
 
-QString ImageRequest::fileName() const
+QUrl ImageRequest::fileName() const
 {
     return m_fileName;
 }
 
-void ImageRequest::setFileName(QString fileName)
+void ImageRequest::setFileName(QUrl fileName)
 {
     if (m_fileName == fileName)
         return;
@@ -28,11 +30,11 @@ void ImageRequest::setFileName(QString fileName)
 void ImageRequest::processResponse(QByteArray buffer)
 {
     Q_UNUSED(buffer);
-    QString fn = fileName();
-    if (fn.isEmpty())
-        emit replyError(-1, "Image is null");
+    QUrl fn = fileName();
+    if (fn.isValid())
+        emit finished(QImage(fn.toLocalFile()));
     else
-        emit finished(QImage(fn));
+        emit replyError(-1, "Image is null");
 }
 
 void ImageRequest::storeInCache(QDateTime expire, QByteArray buffer)
@@ -40,18 +42,25 @@ void ImageRequest::storeInCache(QDateTime expire, QByteArray buffer)
     QString cid = actualCacheId();
     if (cid.isEmpty())
         cid = url().toString().replace("'", "");
-    setFileName(cacheManager()->setValue(cid, buffer, expire));
+    QString fn = cacheManager()->setValue(cid, buffer, expire);
+    setFileName(QUrl::fromLocalFile(fn));
 }
 
 bool ImageRequest::retriveFromCache(const QString &key)
 {
     QString fn = cacheManager()->fileName(key);
     if (fn != QString()) {
-        setFileName(fn);
+        setFileName(QUrl::fromLocalFile(fn));
         processResponse(QByteArray());
         return true;
     }
     return false;
+}
+
+void ImageRequest::beforeSend(QNetworkRequest &request)
+{
+    request.setHeader(QNetworkRequest::ContentTypeHeader,
+                      "");
 }
 
 KAJ_END_NAMESPACE

@@ -12,9 +12,34 @@ INCLUDEPATH += $$PWD/include
 DEFINES += KAJ_COMPILE_STATIC
 
 #Function for copy to output
-defineTest(tCopyToOutput){
-    source = $$PWD/$$1
-    target = $$OUT_PWD/$$2
+#defineTest(tCopyToOutput){
+#    source = $$PWD/$$1
+#    target = $$OUT_PWD/$$2
+#    target ~= s,\\\\\\.?\\\\,\\,
+
+#    win32 {
+#        source = $$replace(source, /, \\)
+#        target = $$replace(target, /, \\)
+#        target ~= s,\\\\\\.?\\\\,\\,
+#        copyCommand += xcopy /E /I /Y \"$$source\" \"$$target\"
+#    } else {
+#        source = $$replace(source, \\\\, /)
+#        target = $$replace(target, \\\\, /)
+#        copyCommand += test -d \"$$target\" || mkdir -p \"$$target\" && cp -R \"$$source\" \"$$target\"
+#    }
+#    message(Copy \"$$source\" to \"$$target\")
+
+#    copydeploymentfolders.commands += $$copyCommand
+#    first.depends += $(first) copydeploymentfolders
+#    export(first.depends)
+#    export(copydeploymentfolders.commands)
+#    QMAKE_EXTRA_TARGETS += first copydeploymentfolders
+
+#    export (QMAKE_EXTRA_TARGETS)
+#}
+defineTest(kajInstall){
+    source = $$1
+    target = $$2
     target ~= s,\\\\\\.?\\\\,\\,
 
     win32 {
@@ -26,23 +51,47 @@ defineTest(tCopyToOutput){
         source = $$replace(source, \\\\, /)
         target = $$replace(target, \\\\, /)
         copyCommand += test -d \"$$target\" || mkdir -p \"$$target\" && cp -R \"$$source\" \"$$target\"
+#        copyCommand += mkdir -p \"$$target\" && cp -R \"$$source\" \"$$target\"
     }
     message(Copy \"$$source\" to \"$$target\")
 
-    copydeploymentfolders.commands += $$copyCommand
+    defined(kajCopyCommands, var) {
+        kajCopyCommands = "$$kajCopyCommands && ($$copyCommand)"
+    } else {
+        kajCopyCommands = "($$copyCommand)"
+    }
+    export(kajCopyCommands)
+#    copydeploymentfolders.commands += $$copyCommand
+#    first.depends += $(first) copydeploymentfolders
+#    export(first.depends)
+#    export(copydeploymentfolders.commands)
+#    QMAKE_EXTRA_TARGETS += first copydeploymentfolders
+
+#    export (QMAKE_EXTRA_TARGETS)
+}
+defineTest(kajAndroidInstall){
+    !defined(ANDROID_PACKAGE_SOURCE_DIR, var) {
+        message("ANDROID_PACKAGE_SOURCE_DIR not defined")
+    }
+    kajInstall($$1, $$ANDROID_PACKAGE_SOURCE_DIR)
+}
+defineTest(kajOutputInstall){
+    kajInstall($$PWD/$$1, $$OUT_PWD/$$2)
+}
+
+defineTest(kajInstallDeps) {
+    copydeploymentfolders.commands += $$kajCopyCommands
     first.depends += $(first) copydeploymentfolders
     export(first.depends)
     export(copydeploymentfolders.commands)
     QMAKE_EXTRA_TARGETS += first copydeploymentfolders
-
-    export (QMAKE_EXTRA_TARGETS)
+    export(QMAKE_EXTRA_TARGETS)
 }
-
 #include($$PWD/copyData.pri)
 
-#android.source = android-build
-#android.target = ..
-#COPYFOLDERS += android
+android.source = android-build
+android.target = ..
+COPYFOLDERS += android
 
 !contains(KAJ_MODULES, core) {
     message(Core module is not included. It will be incude automaticaly)
@@ -63,4 +112,6 @@ for(m, KAJ_PLUGINS){
 #write_file($$GENERATED_PLUGINS_HEADER, PLUGIN_HEADER_CONTENT)|error("Aborting.")
 
 #copyData()
-#tCopyToOutput(android-build)
+#kajOutputInstall(android-build)
+
+

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/kaj/animations"/>
+    <qresource prefix="/">
+        <file>qml/Kaj/Animations/Blop.qml</file>
+    </qresource>
+</RCC>

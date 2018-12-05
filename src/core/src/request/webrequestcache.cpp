@@ -64,7 +64,9 @@ int WebRequestCache::clean()
         int id = q.value(0).toInt(&ok);
         if (!ok)
             continue;
-        QFile(generateFileName(id)).remove();
+        ok = QFile::remove(generateFileName(id));
+        if (!ok)
+            qWarning("Unable to remove file %s", qPrintable(generateFileName(id)));
     }
 
     q.prepare("DELETE FROM data WHERE AND expire<:expire");
@@ -160,6 +162,7 @@ QString WebRequestCache::value(const QString &key) const
         qdelete.prepare("DELETE FROM data WHERE id=:id");
         qdelete.bindValue(":id", q.value("id"));
         qdelete.exec();
+        qDebug() << "Value of" << key << "was expired";
         return QString();
     }
 
@@ -191,6 +194,7 @@ QString WebRequestCache::fileName(const QString &key) const
         if (q.value("has_file").toInt() == 1)
             QFile::remove(fileName);
 
+        qDebug() << "File removed";
         return QString();
     }
 
