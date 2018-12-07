@@ -26,7 +26,8 @@ HEADERS += \
     $$PWD/src/request/imagerequest.h \
     $$PWD/src/request/jsonrequest.h \
     $$PWD/src/request/variantrequest.h \
-    $$PWD/src/request/webrequest_p.h
+    $$PWD/src/request/webrequest_p.h \
+    $$PWD/src/shape.h
 
 SOURCES += \
     $$PWD/src/swipegesturemanager.cpp \
@@ -46,7 +47,8 @@ SOURCES += \
     $$PWD/src/request/stringrequest.cpp \
     $$PWD/src/request/imagerequest.cpp \
     $$PWD/src/request/jsonrequest.cpp \
-    $$PWD/src/request/variantrequest.cpp
+    $$PWD/src/request/variantrequest.cpp \
+    $$PWD/src/shape.cpp
 
 static {
     # Create the resource file

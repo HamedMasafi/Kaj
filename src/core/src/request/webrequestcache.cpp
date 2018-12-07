@@ -117,7 +117,7 @@ WebRequestCache::WebRequestCache(const QString &name)
 #ifdef QT_SQL_LIB
     db = QSqlDatabase::addDatabase("QSQLITE");
     path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-qDebug() << path;
+
     QDir d(path);
     if (!d.exists())
         d.mkdir(path);
@@ -178,7 +178,7 @@ QString WebRequestCache::value(const QString &key) const
 QString WebRequestCache::fileName(const QString &key) const
 {
 #ifdef QT_SQL_LIB
-    QSqlQuery q = db.exec(QString("SELECT id, value, expire FROM data WHERE has_file=1 AND cache_key='%1'").arg(key));
+    QSqlQuery q = db.exec(QString("SELECT id, value, expire, has_file FROM data WHERE has_file=1 AND cache_key='%1'").arg(key));
     printError();
     if (!q.first())
         return QString();

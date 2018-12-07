@@ -1,7 +1,7 @@
 android: {
     QT += androidextras
 
-    tCopyToOutput(android-build)
+#    tCopyToOutput(android-build)
 #    manifest.source = android-build
 #    manifest.target = ..
 #    COPYFOLDERS += manifest

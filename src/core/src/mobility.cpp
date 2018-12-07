@@ -33,10 +33,30 @@ void Mobility::toast(QString text)
 #endif
 }
 
+int Mobility::getStatusBarHeight()
+{
+#ifdef Q_OS_ANDROID
+#endif
+}
+
+void Mobility::setFullScreen()
+{
+    //FLAG_FULLSCREEN = 1024
+#ifdef Q_OS_ANDROID
+    QtAndroid::runOnAndroidThread([=] {
+        QAndroidJniObject window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
+        window.callMethod<void>("setFlags", "(II)V", 1024, 1024);
+        QAndroidJniObject view = window.callObjectMethod("getDecorView", "()Landroid/view/View;");
+        int f = 2 | 4;
+        view.callMethod<void>("setSystemUiVisibility", "(I)V", f);
+    });
+#endif
+}
+
 void Mobility::directCallNumber(QString number)
 {
 #if defined(Q_OS_IOS)
-        QDesktopServices::openUrl(QUrl(QString("tel://%1").arg(number)));
+    QDesktopServices::openUrl(QUrl(QString("tel://%1").arg(number)));
 #elif defined(Q_OS_ANDROID)
     // get the Qt android activity
     QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod(

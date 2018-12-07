@@ -84,6 +84,8 @@ void Share::shareLink(const QString &subject, const QString &url)
     intent.putExtra(EXTRA_TEXT, url);
     AndroidIntent chooserIntent = AndroidIntent::createChooser(intent, "به اشتراک گذاری!");
     QtAndroid::startActivity(chooserIntent.handle(), 1);
+#else
+    qWarning("Share works only on android");
 #endif
 }
 

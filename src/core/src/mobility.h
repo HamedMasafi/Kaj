@@ -23,6 +23,8 @@ signals:
 public slots:
     void directCallNumber(QString number);
     void toast(QString text);
+    int getStatusBarHeight();
+    void setFullScreen();
 };
 
 KAJ_END_NAMESPACE
