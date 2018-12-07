@@ -7,21 +7,26 @@ android{
         message(> Download it from https://firebase.google.com/download/cpp)
     }
 
-    INCLUDEPATH += $$FIREBASE_CPP_SDK_DIR/include
+    exists($$FIREBASE_CPP_SDK_DIR){
 
-    LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/armeabi-v7a/gnustl/ \
-        -lfirebase_app \
-        -lfirebase_messaging
+        INCLUDEPATH += $$FIREBASE_CPP_SDK_DIR/include
 
-    HEADERS += \
-        $$PWD/src/gcmlistener.h
+        LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/armeabi-v7a/gnustl/ \
+            -lfirebase_app \
+            -lfirebase_messaging
 
-    SOURCES += \
-        $$PWD/src/gcmlistener.cpp
+        HEADERS += \
+            $$PWD/src/gcmlistener.h
+
+        SOURCES += \
+            $$PWD/src/gcmlistener.cpp
+    } else {
+        message("$$FIREBASE_CPP_SDK_DIR not exixts")
+    }
 }
 
-    HEADERS += \
-        $$PWD/src/googlegcm.h
+HEADERS += \
+    $$PWD/src/googlegcm.h
 
-    SOURCES += \
-        $$PWD/src/googlegcm.cpp
+SOURCES += \
+    $$PWD/src/googlegcm.cpp
