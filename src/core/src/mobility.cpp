@@ -56,10 +56,21 @@ void Mobility::setFullScreen()
 #ifdef Q_OS_ANDROID
     QtAndroid::runOnAndroidThread([=] {
         QAndroidJniObject window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
-        window.callMethod<void>("setFlags", "(II)V", 1024, 1024);
-        QAndroidJniObject view = window.callObjectMethod("getDecorView", "()Landroid/view/View;");
-        int f = 2 | 4;
-        view.callMethod<void>("setSystemUiVisibility", "(I)V", f);
+        const int FLAG_TRANSLUCENT_NAVIGATION = 0x08000000;
+        const int FLAG_TRANSLUCENT_STATUS = 0x04000000;
+        const int FLAG_FORCE_NOT_FULLSCREEN = 0x00000800;
+        const int FLAG_FULLSCREEN = 0x00000400;
+        const int FLAG_LAYOUT_INSET_DECOR = 0x00010000;
+        window.callMethod<void>("setFlags", "(II)V", FLAG_TRANSLUCENT_NAVIGATION, FLAG_TRANSLUCENT_NAVIGATION);
+        window.callMethod<void>("setFlags", "(II)V", FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS);
+        window.callMethod<void>("setFlags", "(II)V", FLAG_FULLSCREEN, FLAG_FULLSCREEN);
+        window.callMethod<void>("setFlags", "(II)V", FLAG_LAYOUT_INSET_DECOR, FLAG_LAYOUT_INSET_DECOR);
+//        window.callMethod<void>("setFlags", "(II)V", 1024, 1024);
+
+//        QAndroidJniObject view = window.callObjectMethod("getDecorView", "()Landroid/view/View;");
+//        const int SYSTEM_UI_FLAG_HIDE_NAVIGATION = 0x00000002;
+
+//        view.callMethod<void>("setSystemUiVisibility", "(I)V", SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     });
 #endif
 }
