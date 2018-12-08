@@ -8,7 +8,7 @@ android{
     }
 
     exists($$FIREBASE_CPP_SDK_DIR){
-
+        DEFINES += KAJ_PLUGIN_GCM
         INCLUDEPATH += $$FIREBASE_CPP_SDK_DIR/include
 
         LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/armeabi-v7a/gnustl/ \

@@ -1,20 +1,20 @@
 #include "googlegcm.h"
 
-#ifdef Q_OS_ANDROID
-#include <firebase/app.h>
-#include <firebase/messaging.h>
-#include "firebase/future.h"
-#include "firebase/util.h"
+#ifdef KAJ_PLUGIN_GCM
+#   include <firebase/app.h>
+#   include <firebase/messaging.h>
+#   include "firebase/future.h"
+#   include "firebase/util.h"
 
 #   include "gcmlistener.h"
 
-#include <android/native_activity.h>
+#   include <android/native_activity.h>
 
-#include <jni.h>
+#   include <jni.h>
 
-#include <QtAndroid>
-#include <QAndroidJniEnvironment>
-#include <QtAndroidExtras>
+#   include <QtAndroid>
+#   include <QAndroidJniEnvironment>
+#   include <QtAndroidExtras>
 #endif
 
 KAJ_DECL_SINGLETON(GoogleGcm)
@@ -23,7 +23,7 @@ KAJ_BEGIN_NAMESPACE
 
 Message::Message(const firebase::messaging::Message &message)
 {
-#ifdef Q_OS_ANDROID
+#ifdef KAJ_PLUGIN_GCM
     if (message.notification) {
         setBody(QString::fromStdString(message.notification->body));
         setTitle(QString::fromStdString(message.notification->title));
@@ -111,7 +111,7 @@ QString GoogleGcm::registrationToken() const
 
 Message *GoogleGcm::polLastMessage()
 {
-#ifdef Q_OS_ANDROID
+#ifdef KAJ_PLUGIN_GCM
     ::firebase::messaging::Message msg;
     listener->PollMessage(&msg);
 
@@ -124,7 +124,7 @@ Message *GoogleGcm::polLastMessage()
 
 bool GoogleGcm::init()
 {
-#ifdef Q_OS_ANDROID
+#ifdef KAJ_PLUGIN_GCM
     GcmListener *listener = new GcmListener(instance());
     instance()->listener = listener;
 //    ::firebase::messaging::PollableListener *listener = new ::firebase::messaging::PollableListener;
@@ -196,6 +196,7 @@ bool GoogleGcm::init(const QQmlApplicationEngine *)
     qmlRegisterSingletonType<GoogleGcm>("Kaj.GoogleGcm", 1, 0, "GoogleGcm", createSingletonGoogleGcm);
     return true;
 }
+#endif
 
 void GoogleGcm::setRegistrationToken(QString registrationToken)
 {
@@ -205,6 +206,5 @@ void GoogleGcm::setRegistrationToken(QString registrationToken)
     m_registrationToken = registrationToken;
     emit registrationTokenChanged(m_registrationToken);
 }
-#endif
 
 KAJ_END_NAMESPACE
