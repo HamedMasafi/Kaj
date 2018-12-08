@@ -6,6 +6,7 @@
 #ifdef Q_OS_ANDROID
 #   include <QtAndroid>
 #   include <QtAndroidExtras>
+#   include <jni.h>
 #endif
 
 #include "mobility.h"
@@ -36,6 +37,16 @@ void Mobility::toast(QString text)
 int Mobility::getStatusBarHeight()
 {
 #ifdef Q_OS_ANDROID
+    QAndroidJniObject window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
+    QAndroidJniObject view = window.callObjectMethod("getDecorView", "()Landroid/view/View;");
+    QAndroidJniObject rect("android/graphics/Rect");
+    view.callMethod<void>("getWindowVisibleDisplayFrame", "(Landroid/graphics/Rect;)V", rect.object());
+    qDebug() << "rect="
+             << rect.getField<jint>("top")
+             << rect.getField<jint>("left")
+             << rect.getField<jint>("right")
+             << rect.getField<jint>("bottom");
+
 #endif
 }
 
