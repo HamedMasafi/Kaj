@@ -32,7 +32,7 @@ WebRequest::WebRequest(QObject *parent)
     setCacheManager(WebRequestCache::instance());
 }
 
-void WebRequest::sendToServer(QVariantMap props)
+void WebRequest::sendToServer(QVariantMap props, bool cache)
 {
     Q_D(WebRequest);
     d->calls++;
@@ -47,7 +47,7 @@ void WebRequest::sendToServer(QVariantMap props)
         }
     }
 
-    if (d->m_useCache) {
+    if (d->m_useCache && cache) {
         QString id = generateCacheId(props);
         if (retriveFromCache(id)) {
             setCacheUsed(true);
@@ -102,7 +102,7 @@ void WebRequest::sendToServer(QVariantMap props)
     }
 }
 
-void WebRequest::send()
+void WebRequest::send(bool cache)
 {
     Q_D(WebRequest);
     if (d->m_data != QVariantMap()) {
@@ -115,7 +115,7 @@ void WebRequest::send()
         if (!prop.isStored())
             map.insert(prop.name(), prop.read(this));
     }
-    sendToServer(map);
+    sendToServer(map, cache);
 }
 
 QUrl WebRequest::url() const

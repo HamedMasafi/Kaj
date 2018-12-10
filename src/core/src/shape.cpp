@@ -16,6 +16,9 @@ Shape::ShapeType Shape::type() const
 
 void Shape::paint(QPainter *painter)
 {
+    if (!width() || !height())
+        return;
+
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setPen(m_color);
     switch (m_type) {
@@ -57,7 +60,7 @@ void Shape::paint(QPainter *painter)
     }
 }
 
-void Shape::settype(Shape::ShapeType type)
+void Shape::setType(Shape::ShapeType type)
 {
     if (m_type == type)
         return;
@@ -78,6 +81,7 @@ void Shape::setColor(QColor color)
         return;
 
     m_color = color;
+    update();
     emit colorChanged(m_color);
 }
 

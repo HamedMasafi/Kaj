@@ -57,7 +57,7 @@ public:
     qint64 expirationSeconds() const;
 
 protected:
-    void sendToServer(QVariantMap props = QMap<QString, QVariant>());
+    void sendToServer(QVariantMap props = QMap<QString, QVariant>(), bool cache = true);
     virtual void processResponse(QByteArray buffer);
     virtual void beforeSend(QVariantMap &map);
     virtual void beforeSend(QNetworkRequest &request);
@@ -86,7 +86,7 @@ private slots:
     void on_net_finished(QNetworkReply *reply);
 
 public slots:
-    void send();
+    void send(bool cache = true);
     void setUrl(QUrl url);
     void setIsBusy(bool isBusy);
     void setCacheId(QString cacheId);

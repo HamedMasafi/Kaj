@@ -9,7 +9,7 @@ KAJ_BEGIN_NAMESPACE
 class Shape : public QQuickPaintedItem
 {
     Q_OBJECT
-    Q_PROPERTY(ShapeType type READ type WRITE settype NOTIFY typeChanged)
+    Q_PROPERTY(ShapeType type READ type WRITE setType NOTIFY typeChanged)
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
 
 public:
@@ -36,7 +36,7 @@ signals:
     void colorChanged(QColor color);
 
 public slots:
-    void settype(ShapeType type);
+    void setType(ShapeType type);
     void setColor(QColor color);
 
 private:
