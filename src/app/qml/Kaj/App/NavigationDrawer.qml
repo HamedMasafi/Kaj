@@ -31,7 +31,7 @@
 
 
 import QtQuick 2.3
-import Tooj 1.0
+import Kaj 1.0
 
 Item {
     id: panel

@@ -1,9 +1,9 @@
-#ifndef TOOJGLOBAL_H
-#define TOOJGLOBAL_H
+#ifndef KAJGLOBAL_H
+#define KAJGLOBAL_H
 
 #include <QtGlobal>
 
-// class TOOJ_EXPORT ToojGlobal
+// class KAJ_EXPORT KAJGlobal
 // This is added for header file exporter
 
 #define KAJ_VERSION 0x000100
@@ -13,15 +13,15 @@
 #define KAJ_VERSION_MINOR 0
 
 
-#ifdef TOOJ_COMPILE_STATIC
-#    define TOOJ_EXPORT
+#ifdef KAJ_COMPILE_STATIC
+#    define KAJ_EXPORT
 #else
-#    if defined(BUILD_TOOJ_CORE)
-#        define TOOJ_EXPORT Q_DECL_EXPORT
+#    if defined(BUILD_KAJ_CORE)
+#        define KAJ_EXPORT Q_DECL_EXPORT
 #    else
-#        define TOOJ_EXPORT Q_DECL_IMPORT
+#        define KAJ_EXPORT Q_DECL_IMPORT
 #    endif
 #endif // BUILD_CORE
 
-#endif // TOOJGLOBAL_H
+#endif // KAJGLOBAL_H
 

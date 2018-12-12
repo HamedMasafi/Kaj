@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
-import Tooj 1.0
 import QtQuick.Controls 1.3
 
 /*!

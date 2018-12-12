@@ -59,7 +59,7 @@
 #ifdef KAJ_COMPILE_STATIC
 #    define KAJ_EXPORT
 #else
-#    if defined(BUILD_TOOJ_CORE)
+#    if defined(BUILD_KAJ_CORE)
 #        define KAJ_EXPORT Q_DECL_EXPORT
 #    else
 #        define KAJ_EXPORT Q_DECL_IMPORT

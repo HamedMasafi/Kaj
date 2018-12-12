@@ -47,7 +47,7 @@ void Notification::createNotification(QString text)
                              1, msg.object());
 
 //    QAndroidJniObject javaNotification = QAndroidJniObject::fromString(text);
-//    QAndroidJniObject::callStaticMethod<void>("org/tooj/plugins/NotificationClient",
+//    QAndroidJniObject::callStaticMethod<void>("org/kaj/plugins/NotificationClient",
 //                                              "notify",
 //                                              "(Ljava/lang/String;)V",
 //                                              javaNotification.object<jstring>());

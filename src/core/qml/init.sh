@@ -1,12 +1,12 @@
 #!/bin/bash
 
 
-echo "module Tooj" > Tooj/qmldir
-for f in Tooj/*.qml; do 
+echo "module Kaj" > Kaj/qmldir
+for f in Kaj/*.qml; do
 	f=$(basename "$f")
 	f="${f%.*}"
-	echo "$f 1.0 $f.qml" >> Tooj/qmldir
+        echo "$f 1.0 $f.qml" >> Kaj/qmldir
 done
 
 
-cat Tooj/qmldir
+cat Kaj/qmldir
