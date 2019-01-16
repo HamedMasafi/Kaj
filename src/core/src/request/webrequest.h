@@ -1,3 +1,22 @@
+/*
+ * Copyright 2017 - Hamed Masafi, <hamed@tooska-co.ir>
+ * This file is part of Kaj.
+ *
+ * Kaj is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * libcalendars is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with libcalendars.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 #ifndef WEBREQUEST_H
 #define WEBREQUEST_H
 
@@ -34,6 +53,7 @@ class KAJ_EXPORT WebRequest : public QObject
     Q_PROPERTY(WebRequestCache* cacheManager READ cacheManager WRITE setCacheManager NOTIFY cacheManagerChanged)
     Q_PROPERTY(bool cacheUsed READ cacheUsed WRITE setCacheUsed NOTIFY cacheUsedChanged)
     Q_PROPERTY(qint64 expirationSeconds READ expirationSeconds WRITE setExpirationSeconds NOTIFY expirationSecondsChanged)
+    Q_PROPERTY(QString loadingText READ loadingText WRITE setLoadingText NOTIFY loadingTextChanged)
 
 public:
     enum Method {
@@ -43,6 +63,7 @@ public:
     Q_ENUMS(Method)
 
     explicit WebRequest(QObject *parent = nullptr);
+    ~WebRequest();
 
     QUrl url() const;
     bool isBusy() const;
@@ -55,6 +76,10 @@ public:
     WebRequestCache *cacheManager() const;
     bool cacheUsed() const;
     qint64 expirationSeconds() const;
+    QString loadingText() const;
+
+    void addFile(const QString &name, const QString &path);
+    void addData(const QString &name, const QVariant &value);
 
 protected:
     void sendToServer(QVariantMap props = QMap<QString, QVariant>(), bool cache = true);
@@ -81,12 +106,14 @@ signals:
     void cacheManagerChanged(WebRequestCache *cacheManager);
     void cacheUsedChanged(bool cacheUsed);
     void expirationSecondsChanged(qint64 expirationSeconds);
+    void loadingTextChanged(QString loadingText);
 
 private slots:
     void on_net_finished(QNetworkReply *reply);
 
 public slots:
     void send(bool cache = true);
+    void sendSync(bool cache = true);
     void setUrl(QUrl url);
     void setIsBusy(bool isBusy);
     void setCacheId(QString cacheId);
@@ -97,6 +124,7 @@ public slots:
     void setManager(WebRequestManager *manager);
     void setCacheManager(WebRequestCache *cacheManager);
     void setExpirationSeconds(qint64 expirationSeconds);
+    void setLoadingText(QString loadingText);
 };
 
 KAJ_END_NAMESPACE

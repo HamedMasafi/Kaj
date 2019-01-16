@@ -18,7 +18,7 @@ public:
 signals:
 
 public slots:
-    void shareLink(const QString &subject, const QString &url);
+    void shareLink(const QString &subject, const QString &text, const QString &url);
     void shareApp();
 };
 

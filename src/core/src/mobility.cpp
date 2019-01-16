@@ -1,3 +1,22 @@
+/*
+ * Copyright 2017 - Hamed Masafi, <hamed@tooska-co.ir>
+ * This file is part of Kaj.
+ *
+ * Kaj is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * libcalendars is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with libcalendars.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 #include <QDesktopServices>
 #include <QDebug>
 #include <QMessageBox>
@@ -17,19 +36,20 @@ Mobility::Mobility(QObject *parent) : QObject(parent)
 {
 }
 
-void Mobility::toast(QString text)
+void Mobility::toast(QString text, ToastDuration duration)
 {
 #ifdef Q_OS_ANDROID
-    QtAndroid::runOnAndroidThread([text] {
+    QtAndroid::runOnAndroidThread([text,duration] {
         QAndroidJniObject javaString = QAndroidJniObject::fromString(text);
         QAndroidJniObject toast = QAndroidJniObject::callStaticObjectMethod("android/widget/Toast", "makeText",
                                                                             "(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;",
                                                                             QtAndroid::androidActivity().object(),
                                                                             javaString.object(),
-                                                                            jint(LONG));
+                                                                            jint(duration));
         toast.callMethod<void>("show");
     });
 #else
+    Q_UNUSED(duration);
     QMessageBox::information(0, qApp->applicationName(), text);
 #endif
 }
@@ -48,9 +68,10 @@ int Mobility::getStatusBarHeight()
              << rect.getField<jint>("bottom");
 
 #endif
+    return 0;
 }
 
-void Mobility::setFullScreen()
+void Mobility::setFullScreen(FullScreenMode mode)
 {
     //FLAG_FULLSCREEN = 1024
 #ifdef Q_OS_ANDROID
@@ -61,17 +82,38 @@ void Mobility::setFullScreen()
         const int FLAG_FORCE_NOT_FULLSCREEN = 0x00000800;
         const int FLAG_FULLSCREEN = 0x00000400;
         const int FLAG_LAYOUT_INSET_DECOR = 0x00010000;
+
+        const int SYSTEM_UI_FLAG_HIDE_NAVIGATION = 0x00000002;
+        const int SYSTEM_UI_FLAG_FULLSCREEN = 0x00000004;
+        const int SYSTEM_UI_FLAG_IMMERSIVE = 0x00000800;
+        const int SYSTEM_UI_FLAG_IMMERSIVE_STICKY = 0x00001000;
+
+        QAndroidJniObject view = window.callObjectMethod("getDecorView", "()Landroid/view/View;");
+        switch (mode) {
+        case LeanBack:
+            view.callMethod<void>("setSystemUiVisibility", "(I)V", SYSTEM_UI_FLAG_FULLSCREEN | SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            break;
+
+        case Immersive:
+            view.callMethod<void>("setSystemUiVisibility", "(I)V", SYSTEM_UI_FLAG_IMMERSIVE
+                                  | SYSTEM_UI_FLAG_FULLSCREEN | SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            break;
+
+        case StickyImmersive:
+            view.callMethod<void>("setSystemUiVisibility", "(I)V", SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                                  | SYSTEM_UI_FLAG_FULLSCREEN | SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            break;
+        }
+/*
         window.callMethod<void>("setFlags", "(II)V", FLAG_TRANSLUCENT_NAVIGATION, FLAG_TRANSLUCENT_NAVIGATION);
         window.callMethod<void>("setFlags", "(II)V", FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS);
         window.callMethod<void>("setFlags", "(II)V", FLAG_FULLSCREEN, FLAG_FULLSCREEN);
         window.callMethod<void>("setFlags", "(II)V", FLAG_LAYOUT_INSET_DECOR, FLAG_LAYOUT_INSET_DECOR);
-//        window.callMethod<void>("setFlags", "(II)V", 1024, 1024);
+*/
 
-//        QAndroidJniObject view = window.callObjectMethod("getDecorView", "()Landroid/view/View;");
-//        const int SYSTEM_UI_FLAG_HIDE_NAVIGATION = 0x00000002;
-
-//        view.callMethod<void>("setSystemUiVisibility", "(I)V", SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     });
+#else
+    Q_UNUSED(mode);
 #endif
 }
 

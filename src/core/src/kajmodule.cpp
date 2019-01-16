@@ -1,3 +1,22 @@
+/*
+ * Copyright 2017 - Hamed Masafi, <hamed@tooska-co.ir>
+ * This file is part of Kaj.
+ *
+ * Kaj is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * libcalendars is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with libcalendars.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 #include "kajmodule.h"
 
 #include "kajglobal.h"
@@ -67,7 +86,7 @@ void KajModule::registerTypes(const char *uri)
     //Web request
     qmlRegisterType<WebRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequest");
     qmlRegisterType<StringRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "StringRequest");
-    qmlRegisterType<JsonRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "JsonRequest");
+    qmlRegisterType<JsonObjectRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "JsonRequest");
     qmlRegisterType<VariantRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "VariantRequest");
     qmlRegisterType<ImageRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ImageRequest");
     qmlRegisterType<WebRequestManager>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequestManager");

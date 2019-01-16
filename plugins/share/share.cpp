@@ -68,21 +68,23 @@ void Share::shareApp()
 
 bool Share::init(const QQmlApplicationEngine *engine)
 {
+    Q_UNUSED(engine);
+
 #if QT_QML_LIB
     qmlRegisterSingletonType<Share>("Kaj.Share", 1, 0, "Share", createSingletonShare);
 #endif
     return true;
 }
 
-void Share::shareLink(const QString &subject, const QString &url)
+void Share::shareLink(const QString &subject, const QString &text, const QString &url)
 {
 #ifdef Q_OS_ANDROID
 
     AndroidIntent intent(ACTION_SEND);
     intent.setType("text/plain");
-    intent.putExtra(EXTRA_SUBJECT, subject);
+    intent.putExtra(EXTRA_SUBJECT, text);
     intent.putExtra(EXTRA_TEXT, url);
-    AndroidIntent chooserIntent = AndroidIntent::createChooser(intent, "به اشتراک گذاری!");
+    AndroidIntent chooserIntent = AndroidIntent::createChooser(intent, subject);
     QtAndroid::startActivity(chooserIntent.handle(), 1);
 #else
     qWarning("Share works only on android");

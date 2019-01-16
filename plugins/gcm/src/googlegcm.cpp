@@ -48,7 +48,7 @@ QString Message::body() const
     return m_body;
 }
 
-QMap<QString, QString> Message::data() const
+Message::Data Message::data() const
 {
     return m_data;
 }
@@ -76,7 +76,7 @@ void Message::setBody(QString body)
     emit bodyChanged(m_body);
 }
 
-void Message::setData(QMap<QString, QString> data)
+void Message::setData(Data data)
 {
     if (m_data == data)
         return;
@@ -187,6 +187,18 @@ bool GoogleGcm::init()
 
 #endif
     return true;
+}
+
+
+void GoogleGcm::polToken()
+{
+#ifdef KAJ_PLUGIN_GCM
+    if (m_registrationToken.isEmpty()) {
+        std::string token;
+        if (listener->PollRegistrationToken(&token))
+            m_registrationToken = QString::fromStdString(token);
+    }
+#endif
 }
 
 #if QT_QML_LIB

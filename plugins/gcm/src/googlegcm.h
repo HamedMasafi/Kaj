@@ -16,9 +16,11 @@ class GcmListener;
 class Message : public QObject
 {
     Q_OBJECT
+    typedef QMap<QString, QString> Data;
+
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
     Q_PROPERTY(QString body READ body WRITE setBody NOTIFY bodyChanged)
-    Q_PROPERTY(QMap<QString, QString> data READ data WRITE setData NOTIFY dataChanged)
+    Q_PROPERTY(Data data READ data WRITE setData NOTIFY dataChanged)
     Q_PROPERTY(QString link READ link WRITE setLink NOTIFY linkChanged)
 
 public:
@@ -26,25 +28,25 @@ public:
 
     QString title() const;
     QString body() const;
-    QMap<QString, QString> data() const;
+    Data data() const;
     QString link() const;
 
 public slots:
     void setTitle(QString title);
     void setBody(QString body);
-    void setData(QMap<QString, QString> data);
+    void setData(Data data);
     void setLink(QString link);
 
 signals:
     void titleChanged(QString title);
     void bodyChanged(QString body);
-    void dataChanged(QMap<QString, QString> data);
+    void dataChanged(Data data);
     void linkChanged(QString link);
 
 private:
     QString m_title;
     QString m_body;
-    QMap<QString, QString> m_data;
+    Data m_data;
     QString m_link;
 };
 
@@ -73,6 +75,8 @@ public slots:
 #if QT_QML_LIB
     static bool init(const QQmlApplicationEngine *engine);
 #endif
+
+    void polToken();
 
     Message *polLastMessage();
     void setRegistrationToken(QString registrationToken);

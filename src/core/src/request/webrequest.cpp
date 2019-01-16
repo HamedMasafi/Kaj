@@ -1,8 +1,29 @@
+/*
+ * Copyright 2017 - Hamed Masafi, <hamed@tooska-co.ir>
+ * This file is part of Kaj.
+ *
+ * Kaj is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * libcalendars is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with libcalendars.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 #include "request/webrequest.h"
 #include "webrequest_p.h"
 #include "webrequestcache.h"
 #include "webrequestmanager.h"
 
+#include <QEventLoop>
+#include <QFile>
 #include <QtCore/QMetaMethod>
 #include <QtCore/QRegularExpression>
 #include <QtNetwork/QHttpPart>
@@ -32,10 +53,19 @@ WebRequest::WebRequest(QObject *parent)
     setCacheManager(WebRequestCache::instance());
 }
 
+WebRequest::~WebRequest()
+{
+    Q_D(WebRequest);
+
+    if (d->calls)
+        for (int i = 0; i < d->calls; ++i)
+            manager()->removeCall(this);
+    delete d;
+}
+
 void WebRequest::sendToServer(QVariantMap props, bool cache)
 {
     Q_D(WebRequest);
-    d->calls++;
     QByteArray postData = "";
     beforeSend(props);
     if (props.count()) {
@@ -54,14 +84,17 @@ void WebRequest::sendToServer(QVariantMap props, bool cache)
             return;
         }
     }
+    d->calls++;
     setCacheUsed(false);
 
-    manager()->addCall();
+    QNetworkRequest request;
+    manager()->addCall(this);
     setIsBusy(true);
 
-    QNetworkRequest request;
-    request.setHeader(QNetworkRequest::ContentTypeHeader,
-                      "application/x-www-form-urlencoded");
+    if (!d->files.count())
+        request.setHeader(QNetworkRequest::ContentTypeHeader,
+                          "application/x-www-form-urlencoded");
+
     request.setUrl(d->m_url);
     beforeSend(request);
 /*
@@ -77,6 +110,42 @@ void WebRequest::sendToServer(QVariantMap props, bool cache)
     net->post(request, postData);
 */
 
+    if (d->files.count()) {
+        QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+        QMap<QString, QString>::iterator i;
+        for (i = d->files.begin(); i != d->files.end(); ++i) {
+            QHttpPart filePart;
+            QFile *f = new QFile(i.value());
+            if (!f->exists())
+                return;
+
+            filePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
+            QString t = QString("Content-Disposition: form-data; name=\"%1\"; filename=\"%2\"")
+                    .arg(i.key()).arg(i.value());
+            filePart.setHeader(QNetworkRequest::ContentDispositionHeader, t);
+            qDebug() << "form-data; name=\"" + i.key() + "\"";
+            f->open(QIODevice::ReadOnly);
+            filePart.setBodyDevice(f);
+            multiPart->append(filePart);
+            f->setParent(multiPart);
+        }
+        QMap<QString, QVariant>::iterator data_it;
+        for (data_it = d->m_data.begin(); data_it != d->m_data.end(); ++data_it) {
+            QHttpPart textPart;
+
+//            filePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
+            QString t = QString("Content-Disposition: form-data; name=\"%1\"")
+                    .arg(data_it.key());
+            textPart.setHeader(QNetworkRequest::ContentDispositionHeader, t);
+            textPart.setBody(data_it.value().toString().toLocal8Bit());
+            multiPart->append(textPart);
+        }
+
+        QNetworkReply *r = d->net->post(request, multiPart);
+        multiPart->setParent(r);
+        return;
+    }
     if (props.count()) {
         if (d->m_method == Get) {
             QUrl url = request.url();
@@ -84,14 +153,6 @@ void WebRequest::sendToServer(QVariantMap props, bool cache)
             request.setUrl(url);
             d->net->get(request);
         } else {
-            QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-            foreach (auto key, props.keys()) {
-                QHttpPart textPart;
-                textPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"" + key + "\""));
-                textPart.setBody(props.value(key).toByteArray());
-                multiPart->append(textPart);
-            }
-
             d->net->post(request, postData);
         }
     } else {
@@ -116,6 +177,15 @@ void WebRequest::send(bool cache)
             map.insert(prop.name(), prop.read(this));
     }
     sendToServer(map, cache);
+}
+
+void WebRequest::sendSync(bool cache)
+{
+    QEventLoop eventLoop;
+    connect(this, &WebRequest::rawDataRecived, &eventLoop, &QEventLoop::quit);
+    connect(this, &WebRequest::replyError, &eventLoop, &QEventLoop::quit);
+    send(cache);
+    eventLoop.exec();
 }
 
 QUrl WebRequest::url() const
@@ -182,6 +252,24 @@ qint64 WebRequest::expirationSeconds() const
 {
     Q_D(const WebRequest);
     return d->m_expirationSeconds;
+}
+
+QString WebRequest::loadingText() const
+{
+    Q_D(const WebRequest);
+    return d->loadingText;
+}
+
+void WebRequest::addFile(const QString &name, const QString &path)
+{
+    Q_D(WebRequest);
+    d->files.insert(name, path);
+}
+
+void WebRequest::addData(const QString &name, const QVariant &value)
+{
+    Q_D(WebRequest);
+    d->m_data.insert(name, value);
 }
 
 void WebRequest::beforeSend(QVariantMap &map)
@@ -261,7 +349,7 @@ void WebRequest::on_net_finished(QNetworkReply *reply)
         qWarning() << "Error" << reply->error() << reply->errorString();
         qWarning() << buffer;
         emit replyError(reply->error(), reply->errorString());
-        manager()->removeCall();
+        manager()->removeCall(this);
         return;
     }
 
@@ -284,7 +372,7 @@ void WebRequest::on_net_finished(QNetworkReply *reply)
 
     d->calls--;
     setIsBusy(d->calls);
-    manager()->removeCall();
+    manager()->removeCall(this);
 }
 
 void WebRequest::setUrl(QUrl url)
@@ -388,6 +476,16 @@ void WebRequest::setExpirationSeconds(qint64 expirationSeconds)
 
     d->m_expirationSeconds = expirationSeconds;
     emit expirationSecondsChanged(expirationSeconds);
+}
+
+void WebRequest::setLoadingText(QString loadingText)
+{
+    Q_D(WebRequest);
+    if (d->loadingText == loadingText)
+        return;
+
+    d->loadingText = loadingText;
+    emit loadingTextChanged(d->loadingText);
 }
 
 void WebRequest::setCacheUsed(bool cacheUsed)
