@@ -24,11 +24,19 @@
 #include <QMutex>
 #include <QObject>
 
+class QNetworkReply;
+class QHttpMultiPart;
+class QNetworkRequest;
+
 KAJ_BEGIN_NAMESPACE
 
 class WebRequest;
+class WebRequestManagerPrivate;
 class WebRequestManager : public QObject {
     Q_OBJECT
+
+    WebRequestManagerPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(WebRequestManager)
 
     Q_PROPERTY(bool isBusy READ isBusy WRITE setIsBusy NOTIFY isBusyChanged)
     Q_PROPERTY(QStringList loadingTesxs READ loadingTesxs NOTIFY loadingTesxsChanged)
@@ -43,6 +51,10 @@ public:
 
     friend class WebRequest;
     QStringList loadingTesxs() const;
+
+    QNetworkReply *request(const QNetworkRequest &request);
+    QNetworkReply *request(const QNetworkRequest &request, QByteArray postData);
+    QNetworkReply *request(const QNetworkRequest &request, QHttpMultiPart *multipart);
 
 private:
     int calls;

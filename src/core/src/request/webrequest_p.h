@@ -34,7 +34,7 @@ class WebRequestPrivate {
 public:
     WebRequestPrivate(WebRequest *parent);
 
-    QNetworkAccessManager *net;
+//    QNetworkAccessManager *net;
     int calls;
     QUrl m_url;
     bool m_isBusy;

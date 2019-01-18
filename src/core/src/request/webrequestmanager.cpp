@@ -19,14 +19,23 @@
 
 #include "webrequest.h"
 #include "webrequestmanager.h"
+#include "webrequestmanager_p.h"
 #include <QDebug>
+#include <QNetworkAccessManager>
 
 KAJ_BEGIN_NAMESPACE
+
+WebRequestManagerPrivate::WebRequestManagerPrivate(WebRequestManager *parent)
+    : q_ptr(parent), networdAccessManager(new QNetworkAccessManager(parent))
+{
+
+}
 
 // RestRequestCallsManager
 WebRequestManager* WebRequestManager::_instance = nullptr;
 
-WebRequestManager::WebRequestManager() : calls(0), m_isBusy(false)
+WebRequestManager::WebRequestManager() : d_ptr(new WebRequestManagerPrivate(this))
+  , calls(0), m_isBusy(false)
 { }
 
 void WebRequestManager::addCall(WebRequest *r)
@@ -70,6 +79,24 @@ QStringList WebRequestManager::loadingTesxs() const
         if (!r->loadingText().isEmpty())
             ret.append(r->loadingText());
     return ret;
+}
+
+QNetworkReply *WebRequestManager::request(const QNetworkRequest &request)
+{
+    Q_D(WebRequestManager);
+    return d->networdAccessManager->get(request);
+}
+
+QNetworkReply *WebRequestManager::request(const QNetworkRequest &request, QByteArray postData)
+{
+    Q_D(WebRequestManager);
+    return d->networdAccessManager->post(request, postData);
+}
+
+QNetworkReply *WebRequestManager::request(const QNetworkRequest &request, QHttpMultiPart *multipart)
+{
+    Q_D(WebRequestManager);
+    return d->networdAccessManager->post(request, multipart);
 }
 
 void WebRequestManager::setIsBusy(bool isBusy)

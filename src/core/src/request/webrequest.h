@@ -109,7 +109,7 @@ signals:
     void loadingTextChanged(QString loadingText);
 
 private slots:
-    void on_net_finished(QNetworkReply *reply);
+    void finished();
 
 public slots:
     void send(bool cache = true);

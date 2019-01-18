@@ -27,7 +27,8 @@ HEADERS += \
     $$PWD/src/request/jsonrequest.h \
     $$PWD/src/request/variantrequest.h \
     $$PWD/src/request/webrequest_p.h \
-    $$PWD/src/shape.h
+    $$PWD/src/shape.h \
+    $$PWD/src/request/webrequestmanager_p.h
 
 SOURCES += \
     $$PWD/src/swipegesturemanager.cpp \
