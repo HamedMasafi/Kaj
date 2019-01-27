@@ -5,4 +5,8 @@ PageBase {
 
     Keys.onBackPressed: console.log("back")
     Keys.onEscapePressed: console.log("Esc")
+
+    property rect safeZone
+
+    background: null
 }

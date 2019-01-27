@@ -12,7 +12,9 @@ QtObject {
     signal unloading(Item item);
 
     onLoaderChanged: {
-        loader.loaded.connect(function(item) {
+        loader.loaded.connect(function() {
+            var item = loader.item
+            console.log("Loaded", item)
             if (item === undefined)
                 return;
 
@@ -26,7 +28,7 @@ QtObject {
                 item.activated()
 
             currentIrem = item;
-            properties.pages =  me;
+//            properties.pages =  me;
         })
     }
 

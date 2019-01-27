@@ -117,6 +117,18 @@ void Mobility::setFullScreen(FullScreenMode mode)
 #endif
 }
 
+Mobility::ConnectionType Mobility::networkConnectionType() const
+{
+#ifdef Q_OS_ANDROID
+    QAndroidJniObject cm = QtAndroid::androidActivity().callObjectMethod("getSystemService",
+                                                                         "(Ljava.lang.String;)Ljava/lang/Object;",
+                                                                         QAndroidJniObject::fromString("connectivity").object());
+    QAndroidJniObject info = cm.callObjectMethod("getActiveNetworkInfo", "()Landroid/net/NetworkInfo;");
+    jint type = info.callMethod<jint>("getType");
+    return static_cast<ConnectionType>(type);
+#endif
+}
+
 void Mobility::directCallNumber(QString number)
 {
 #if defined(Q_OS_IOS)

@@ -43,6 +43,25 @@ public:
     };
     Q_ENUM(FullScreenMode)
 
+    enum ConnectionType {
+        NONE        = -1,
+        MOBILE      = 0,
+        WIFI        = 1,
+        MOBILE_MMS  = 2,
+        MOBILE_SUPL = 3,
+        MOBILE_DUN  = 4,
+        MOBILE_HIPRI = 5,
+        WIMAX       = 6,
+        BLUETOOTH   = 7,
+        DUMMY       = 8,
+        ETHERNET    = 9,
+        MOBILE_FOTA = 10,
+        MOBILE_IMS  = 11,
+        MOBILE_CBS  = 12,
+        WIFI_P2P    = 13
+    };
+    Q_ENUM(ConnectionType)
+
     explicit Mobility(QObject *parent = nullptr);
 
 signals:
@@ -52,6 +71,7 @@ public slots:
     void toast(QString text, ToastDuration duration = Short);
     int getStatusBarHeight();
     void setFullScreen(FullScreenMode mode = StickyImmersive);
+    ConnectionType networkConnectionType() const;
 };
 
 KAJ_END_NAMESPACE

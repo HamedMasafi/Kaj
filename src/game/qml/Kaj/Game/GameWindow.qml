@@ -15,13 +15,15 @@ ApplicationWindow{
     property string appName: ''
     property alias extraChilds: extraChildsContainer.children
     property alias backgroundColor: bg.color
+    property rect safeZone
+    property alias backgroundItem: backgroundContainer.children
 
     property PagesStackManager pages: PagesStackManager{
         id: __pages
         loader: loader
 
         onLoaded: {
-
+            item.safeZone = win.safeZone
         }
 
         onUnloading: {
@@ -35,11 +37,30 @@ ApplicationWindow{
     visible: true
     flags: noTitlebar ? Qt.FramelessWindowHint : Qt.Window
 
+    onWidthChanged: calsSafeZone();
+    onHeightChanged: calsSafeZone();
 //    title: stackView.currentItem === null
 //           ? appName
 //           : appName + " - " + stackView.currentItem.title
 
+    function calsSafeZone(){
+        var scaleX = win.width / 2
+        var scaleY = win.height / 3
 
+        if (scaleX < scaleY) {
+            safeZone.width = win.width
+            safeZone.height = (3 * safeZone.width) / 2
+        } else {
+            safeZone.height = win.height
+            safeZone.width = (2 * safeZone.height) / 3
+        }
+
+        safeZone.width /= scaleContainer.scaleSize
+        safeZone.height /= scaleContainer.scaleSize
+        safeZone.x = (win.width - safeZone.width) / 2
+        safeZone.y = (win.height - safeZone.height) / 2
+
+    }
 
     function open(p, props) {
         pages.open(p, props)
@@ -79,6 +100,12 @@ ApplicationWindow{
     ScaleContainer{
         id: scaleContainer
         anchors.fill: parent
+        Item{
+            id: backgroundContainer
+            ScaleContainer.scaleType: "FitCrop"
+            width: contentWidth
+            height: contentHeight
+        }
         Loader{
             id: loader
             ScaleContainer.scaleType: "FitAcceptRatio"
@@ -115,5 +142,13 @@ ApplicationWindow{
         if (Qt.platform.os === "android" && pages.back() !== null)
             close.accepted = false
     }
+
+//    Rectangle{
+//        anchors.centerIn: parent
+//        height: safeZone.height
+//        width: safeZone.width
+//        color: 'green'
+//        opacity: .4
+//    }
 }
 

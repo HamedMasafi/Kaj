@@ -24,6 +24,7 @@
 
 #include <QEventLoop>
 #include <QFile>
+#include <QUrlQuery>
 #include <QtCore/QMetaMethod>
 #include <QtCore/QRegularExpression>
 #include <QtNetwork/QHttpPart>
@@ -46,7 +47,7 @@ WebRequestPrivate::WebRequestPrivate(WebRequest *parent) : q_ptr(parent),
 WebRequest::WebRequest(QObject *parent)
     : QObject(parent), d_ptr(new WebRequestPrivate(this))
 {
-    Q_D(WebRequest);
+//    Q_D(WebRequest);
 //    connect(d->net, &QNetworkAccessManager::finished, this, &WebRequest::on_net_finished);
 
     setManager(WebRequestManager::instance());
@@ -67,15 +68,18 @@ void WebRequest::sendToServer(QVariantMap props, bool cache)
 {
     Q_D(WebRequest);
     QByteArray postData = "";
+    QUrlQuery queryData;
     beforeSend(props);
     if (props.count()) {
         foreach (auto key, props.keys()) {
             if (postData != "")
                 postData.append("&");
 
+            queryData.addQueryItem(key, props.value(key).toString());
             postData.append(key + "=" + props.value(key).toString());
         }
     }
+    postData = queryData.toString(QUrl::FullyEncoded).toUtf8();
 
     if (d->m_useCache && cache) {
         QString id = generateCacheId(props);
@@ -146,7 +150,6 @@ void WebRequest::sendToServer(QVariantMap props, bool cache)
         reply = manager()->request(request, multiPart);
 //                d->net->post(request, multiPart);
         multiPart->setParent(reply);
-        return;
     } else {
         if (props.count()) {
             if (d->m_method == Get) {
@@ -154,18 +157,18 @@ void WebRequest::sendToServer(QVariantMap props, bool cache)
                 url.setQuery(postData);
                 request.setUrl(url);
                 //            d->net->get(request);
-                manager()->request(request);
+                reply = manager()->request(request);
             } else {
                 //            d->net->post(request, postData);
-                manager()->request(request, postData);
+                reply = manager()->request(request, postData);
             }
         } else {
             if (d->m_method == Get)
                 //            d->net->get(request);
-                manager()->request(request);
+                reply = manager()->request(request);
             else
                 //            d->net->post(request, QByteArray());
-                manager()->request(request, QByteArray());
+                reply = manager()->request(request, QByteArray());
         }
     }
     connect(reply, &QNetworkReply::finished, this, &WebRequest::finished);
@@ -354,6 +357,7 @@ void WebRequest::finished()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
     auto buffer = reply->readAll();
+    qDebug() << "buffer is" << buffer;
     if (reply->error() != QNetworkReply::NoError) {
         qWarning() << "Error" << reply->error() << reply->errorString();
         qWarning() << buffer;
