@@ -133,23 +133,26 @@ bool GoogleGcm::init()
     QAndroidJniEnvironment jni;
 
     qDebug() << "api key" << ::firebase::AppOptions().api_key();
+    ::firebase::AppOptions opt;
+
     ::firebase::App *app = ::firebase::App::Create(::firebase::AppOptions(),
                                                    (JNIEnv*)(jni),
                                                    QtAndroid::androidActivity().object());
     ::firebase::ModuleInitializer initializer;
-    initializer.Initialize(
-                app, listener, [](::firebase::App* app, void* userdata) {
-        ::firebase::messaging::PollableListener* listener =
-                static_cast<::firebase::messaging::PollableListener*>(userdata);
-        firebase::messaging::MessagingOptions options;
-        // Prevent the app from requesting permission to show notifications
-        // immediately upon starting up. Since it the prompt is being
-        // suppressed, we must manually display it with a call to
-        // RequestPermission() elsewhere.
-        options.suppress_notification_permission_prompt = true;
-        qDebug() << "RequestPermission() elsewhere.";
-        return ::firebase::messaging::Initialize(*app, listener, options);
-    });
+    ::firebase::messaging::Initialize(*app, listener);
+//    initializer.Initialize(
+//                app, listener, [](::firebase::App* app, void* userdata) {
+//        ::firebase::messaging::PollableListener* listener =
+//                static_cast<::firebase::messaging::PollableListener*>(userdata);
+//        firebase::messaging::MessagingOptions options;
+//        // Prevent the app from requesting permission to show notifications
+//        // immediately upon starting up. Since it the prompt is being
+//        // suppressed, we must manually display it with a call to
+//        // RequestPermission() elsewhere.
+////        options.suppress_notification_permission_prompt = true;
+//        qDebug() << "RequestPermission() elsewhere.";
+//        return ::firebase::messaging::Initialize(*app, listener, options);
+//    });
 
     if (initializer.InitializeLastResult().error() != 0) {
         qDebug() << "Failed to initialize Firebase Messaging: " <<

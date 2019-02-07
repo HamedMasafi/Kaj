@@ -87,7 +87,7 @@ void ScaleContainer::geometryChanged(const QRectF &newGeometry, const QRectF &ol
                                    (width() - child->width()) / 2,
                                    (height() - child->height()) / 2));
             child->setScale(scaleSizeMin);
-            setScaleSize(scaleSizeMin);
+//            setScaleSize(scaleSizeMin);
             break;
 
         case ScaleContainerAttached::FitCrop:
@@ -95,10 +95,10 @@ void ScaleContainer::geometryChanged(const QRectF &newGeometry, const QRectF &ol
                                    (width() - child->width()) / 2,
                                    (height() - child->height()) / 2));
             child->setScale(scaleSizeMax);
-            setScaleSize(scaleSizeMax);
             break;
         }
     }
+    setScaleSize(scaleSizeMin);
 //    setScaleSize(scaleSize);
 }
 

@@ -39,7 +39,7 @@ class WebRequestManager : public QObject {
     Q_DECLARE_PRIVATE(WebRequestManager)
 
     Q_PROPERTY(bool isBusy READ isBusy WRITE setIsBusy NOTIFY isBusyChanged)
-    Q_PROPERTY(QStringList loadingTesxs READ loadingTesxs NOTIFY loadingTesxsChanged)
+    Q_PROPERTY(QStringList loadingTexts READ loadingTexts NOTIFY loadingTextsChanged)
 
     static WebRequestManager *_instance;
     QMutex mutex;
@@ -50,7 +50,7 @@ public:
     bool isBusy() const;
 
     friend class WebRequest;
-    QStringList loadingTesxs() const;
+    QStringList loadingTexts() const;
 
     QNetworkReply *request(const QNetworkRequest &request);
     QNetworkReply *request(const QNetworkRequest &request, QByteArray postData);
@@ -69,7 +69,7 @@ public slots:
 
 signals:
     void isBusyChanged(bool isBusy);
-    void loadingTesxsChanged(QStringList loadingTesxs);
+    void loadingTextsChanged(QStringList loadingTexts);
 };
 
 KAJ_END_NAMESPACE

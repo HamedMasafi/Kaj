@@ -121,7 +121,7 @@ Mobility::ConnectionType Mobility::networkConnectionType() const
 {
 #ifdef Q_OS_ANDROID
     QAndroidJniObject cm = QtAndroid::androidActivity().callObjectMethod("getSystemService",
-                                                                         "(Ljava.lang.String;)Ljava/lang/Object;",
+                                                                         "(Ljava/lang/String;)Ljava/lang/Object;",
                                                                          QAndroidJniObject::fromString("connectivity").object());
     QAndroidJniObject info = cm.callObjectMethod("getActiveNetworkInfo", "()Landroid/net/NetworkInfo;");
     jint type = info.callMethod<jint>("getType");

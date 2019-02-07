@@ -43,7 +43,7 @@ void WebRequestManager::addCall(WebRequest *r)
     mutex.lock();
     calls++;
     requests.append(r);
-    emit loadingTesxsChanged(loadingTesxs());
+    emit loadingTextsChanged(loadingTexts());
 //    qDebug() << "Calls: " << calls << "++";
     setIsBusy(true);
     mutex.unlock();
@@ -54,7 +54,7 @@ void WebRequestManager::removeCall(WebRequest *r)
     mutex.lock();
     calls--;
     requests.removeOne(r);
-    emit loadingTesxsChanged(loadingTesxs());
+    emit loadingTextsChanged(loadingTexts());
 //    qDebug() << "Calls: " << calls << "--";
     setIsBusy(calls);
     mutex.unlock();
@@ -72,7 +72,7 @@ bool WebRequestManager::isBusy() const
     return m_isBusy;
 }
 
-QStringList WebRequestManager::loadingTesxs() const
+QStringList WebRequestManager::loadingTexts() const
 {
     QStringList ret;
     foreach (WebRequest *r, requests)
