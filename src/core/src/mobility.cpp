@@ -127,6 +127,7 @@ Mobility::ConnectionType Mobility::networkConnectionType() const
     jint type = info.callMethod<jint>("getType");
     return static_cast<ConnectionType>(type);
 #endif
+    return NONE;
 }
 
 void Mobility::directCallNumber(QString number)
