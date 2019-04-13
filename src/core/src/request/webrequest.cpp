@@ -312,9 +312,9 @@ void WebRequest::storeInCache(QDateTime expire, QByteArray buffer)
 bool WebRequest::retriveFromCache(const QString &key)
 {
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    QString cache = codec->toUnicode(cacheManager()->value(key).toLocal8Bit());
+    QString cache = codec->toUnicode(cacheManager()->value(key).toUtf8());
     if (cache != QString()) {
-        processResponse(cache.toLocal8Bit());
+        processResponse(cache.toUtf8());
         return true;
     }
     return false;
