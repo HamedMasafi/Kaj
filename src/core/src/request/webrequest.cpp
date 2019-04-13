@@ -24,6 +24,7 @@
 
 #include <QEventLoop>
 #include <QFile>
+#include <QTextCodec>
 #include <QUrlQuery>
 #include <QtCore/QMetaMethod>
 #include <QtCore/QRegularExpression>
@@ -310,7 +311,8 @@ void WebRequest::storeInCache(QDateTime expire, QByteArray buffer)
 
 bool WebRequest::retriveFromCache(const QString &key)
 {
-    QString cache = cacheManager()->value(key);
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    QString cache = codec->toUnicode(cacheManager()->value(key).toLocal8Bit());
     if (cache != QString()) {
         processResponse(cache.toLocal8Bit());
         return true;
@@ -356,7 +358,8 @@ void WebRequest::finished()
     Q_D(WebRequest);
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
-    auto buffer = reply->readAll();
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    auto buffer = codec->toUnicode(reply->readAll());
     qDebug() << "buffer is" << buffer;
     if (reply->error() != QNetworkReply::NoError) {
         qWarning() << "Error" << reply->error() << reply->errorString();
@@ -379,9 +382,9 @@ void WebRequest::finished()
                 expire = expire.addSecs(m.captured(1).toInt());
             }
         }
-        storeInCache(expire, buffer);
+        storeInCache(expire, buffer.toUtf8());
     }
-    processResponse(buffer);
+    processResponse(buffer.toUtf8());
 
     d->calls--;
     setIsBusy(d->calls);
