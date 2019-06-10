@@ -7,6 +7,7 @@
 
 #include <QFontDatabase>
 
+#define CONTEXT_PROPERTY(name, data)   engine->rootContext()->setContextProperty("fa_" #name , #data);
 
 FontAwesome::FontAwesome(QObject *parent) : KajPluginBase(parent)
 {

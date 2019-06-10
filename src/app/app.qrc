@@ -9,5 +9,8 @@
         <file>qml/Kaj/App/qmldir</file>
         <file>qml/Kaj/App/StepMenuButton.qml</file>
         <file>qml/Kaj/App/MainWindowPagesManager.qml</file>
+        <file>qml/Kaj/App/NavigationPage.qml</file>
+        <file>qml/Kaj/App/NavigationItem.qml</file>
+        <file>qml/Kaj/App/NavigationSeprator.qml</file>
     </qresource>
 </RCC>

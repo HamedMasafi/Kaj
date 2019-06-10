@@ -1,6 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
-import QtQuick.Layouts 1.1
+import QtQuick.Layouts 1.12
 import Kaj 1.0
 import Qt.labs.settings 1.0
 //import QtQuick.Controls.Material 2.0
@@ -16,6 +16,7 @@ ApplicationWindow{
     property alias initialItem: stackView.initialItem
     property bool noTitlebar: false
     property string appName: ''
+    property variant direction: Qt.LeftToRight
 
     flags: noTitlebar ? Qt.FramelessWindowHint : Qt.Window
 
@@ -41,6 +42,10 @@ ApplicationWindow{
     }
 
     header: ToolBar{
+        visible: stackView.currentItem === null
+                 ? false
+                 : stackView.currentItem.headerVisiable
+
         MouseArea{
             enabled: noTitlebar
             property int lastX
@@ -56,65 +61,77 @@ ApplicationWindow{
                 win.y += mouse.y - lastY
             }
         }
-
-        visible: stackView.currentItem === null
-                 ? false
-                 : stackView.currentItem.headerVisiable
-        ToolButton{
-            id: backButton
-            opacity: stackView.currentItem === null
-                     ? 0
-                     : stackView.currentItem.allowGoBack
-                       ? (stackView.depth > 1 ? 1 : 0)
-                       : 0
-            onClicked: pages.back()
-//            state: "back"
-//            height: parent.height
-//            width: parent.height
-            font.family: FontAwesome
-            text: fa_arrow_left
-            visible: opacity > 0
-            Behavior on opacity { NumberAnimation{} }
-        }
-        Label {
-            id: name
-            text: stackView.currentItem == null ? "" : stackView.currentItem.title
-//            font.bold: true
-            x: (backButton.x + backButton.width) * backButton.opacity + 5
-            anchors.verticalCenter: parent.verticalCenter
-        }
-
         RowLayout{
-            anchors.right: parent.right
-            anchors.rightMargin: 0
-
-            Repeater{
-                id: pageOptions
-
-                model: stackView.currentItem == null ? null : stackView.currentItem.extraButtons
-            }
+            layoutDirection: direction
+            anchors.fill: parent
+            anchors.rightMargin: dp(8)
+            anchors.leftMargin: dp(8)
 
             ToolButton{
-                id: toolButtonMenu
-                //                font.pointSize: Units.sp(14)
+                id: backButton
+                opacity: stackView.currentItem === null
+                         ? 0
+                         : stackView.currentItem.allowGoBack
+                           ? (stackView.depth > 1 ? 1 : 0)
+                           : 0
+                onClicked: pages.back()
+                //            state: "back"
+                //            height: parent.height
+                //            width: parent.height
                 font.family: FontAwesome
-                height: parent.height
-                text: fa_ellipsis_v
-                visible: stackView.currentItem == null ? false : (stackView.currentItem.menu !== null)
-                onClicked: showMenu();
+                text: direction == Qt.RightToLeft ? fa_arrow_right : fa_arrow_left
+                visible: opacity > 0
+                Behavior on opacity { NumberAnimation{} }
+            }
+            Label {
+                id: name
+                text: stackView.currentItem == null ? "" : stackView.currentItem.title
+                //            font.bold: true
+                x: (backButton.x + backButton.width) * backButton.opacity + 5
+//                anchors.verticalCenter: parent.verticalCenter
+                Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
 
-                function showMenu() {
-                    stackView.currentItem.menu.x = win.width - stackView.currentItem.menu.width
-                    stackView.currentItem.menu.open()
+            RowLayout{
+//                anchors.right: parent.right
+//                anchors.rightMargin: 0
+                layoutDirection: direction
+
+                Repeater{
+                    id: pageOptions
+
+                    model: stackView.currentItem == null ? null : stackView.currentItem.extraButtons
                 }
 
-                function hideMenu(){
-                    stackView.currentItem.menu.hide()
-                }
+                ToolButton{
+                    id: toolButtonMenu
+                    //                font.pointSize: Units.sp(14)
+                    font.family: FontAwesome
+                    height: parent.height
+                    text: fa_ellipsis_v
+                    visible: stackView.currentItem == null ? false : (stackView.currentItem.menu !== null)
+                    onClicked: showMenu();
 
-                function toggleMenu() {
-                    stackView.currentItem.menu.x = win.width - stackView.currentItem.menu.width
-                    stackView.currentItem.menu.visible = !stackView.currentItem.menu.visible
+                    function showMenu() {
+                        if (direction == Qt.RightToLeft)
+                            stackView.currentItem.menu.x = 0
+                        else
+                            stackView.currentItem.menu.x = win.width - stackView.currentItem.menu.width
+                        stackView.currentItem.menu.open()
+                    }
+
+                    function hideMenu(){
+                        stackView.currentItem.menu.hide()
+                    }
+
+                    function toggleMenu() {
+                        if (direction == Qt.RightToLeft)
+                            stackView.currentItem.menu.x = 0
+                        else
+                            stackView.currentItem.menu.x = win.width - stackView.currentItem.menu.width
+                        stackView.currentItem.menu.visible = !stackView.currentItem.menu.visible
+                    }
                 }
             }
         }

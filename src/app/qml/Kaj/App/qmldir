@@ -4,3 +4,6 @@ MainWindow 1.0 MainWindow.qml
 AppPage 1.0 AppPage.qml
 MenuButton 1.0 MenuButton.qml
 StepMenuButton 1.0 StepMenuButton.qml
+NavigationPage 1.0 NavigationPage.qml
+NavigationItem 1.0 NavigationItem.qml
+NavigationSeprator 1.0 NavigationSeprator.qml

@@ -39,7 +39,7 @@ WebRequestPrivate::WebRequestPrivate(WebRequest *parent) : q_ptr(parent),
     calls(0), m_isBusy(false), m_cacheId(QString()),
     m_useCache(true), m_data(QVariantMap()), m_includeDataInCacheId(false),
     m_actualCacheId(QString()), m_expirationSeconds(0),
-    m_method(WebRequest::Post)
+    m_method(WebRequest::Post), useUtf8(true)
 {
 //    net = new QNetworkAccessManager(parent);
 //    net->setObjectName("net");
@@ -272,6 +272,12 @@ QString WebRequest::loadingText() const
     return d->loadingText;
 }
 
+bool WebRequest::useUtf8() const
+{
+    Q_D(const WebRequest);
+    return d->useUtf8;
+}
+
 void WebRequest::addFile(const QString &name, const QString &path)
 {
     Q_D(WebRequest);
@@ -311,11 +317,21 @@ void WebRequest::storeInCache(QDateTime expire, QByteArray buffer)
 
 bool WebRequest::retriveFromCache(const QString &key)
 {
-    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    QString cache = codec->toUnicode(cacheManager()->value(key).toUtf8());
-    if (cache != QString()) {
-        processResponse(cache.toUtf8());
-        return true;
+    Q_D(WebRequest);
+
+    if (d->useUtf8) {
+        QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+        QString cache = codec->toUnicode(cacheManager()->value(key).toUtf8());
+        if (cache != QString()) {
+            processResponse(cache.toUtf8());
+            return true;
+        }
+    } else {
+        QString cache = cacheManager()->value(key);
+        if (cache != QString()) {
+            processResponse(cache.toLocal8Bit());
+            return true;
+        }
     }
     return false;
 }
@@ -359,7 +375,8 @@ void WebRequest::finished()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    auto buffer = codec->toUnicode(reply->readAll());
+    auto rawBuffer = reply->readAll();
+    auto buffer = codec->toUnicode(rawBuffer);
     qDebug() << "buffer is" << buffer;
     if (reply->error() != QNetworkReply::NoError) {
         qWarning() << "Error" << reply->error() << reply->errorString();
@@ -382,9 +399,15 @@ void WebRequest::finished()
                 expire = expire.addSecs(m.captured(1).toInt());
             }
         }
-        storeInCache(expire, buffer.toUtf8());
+        if (d->useUtf8)
+            storeInCache(expire, buffer.toUtf8());
+        else
+            storeInCache(expire, rawBuffer);
     }
-    processResponse(buffer.toUtf8());
+    if (d->useUtf8)
+        processResponse(buffer.toUtf8());
+    else
+        processResponse(rawBuffer);
 
     d->calls--;
     setIsBusy(d->calls);
@@ -502,6 +525,16 @@ void WebRequest::setLoadingText(QString loadingText)
 
     d->loadingText = loadingText;
     emit loadingTextChanged(d->loadingText);
+}
+
+void WebRequest::setUseUtf8(bool useUtf8)
+{
+    Q_D(WebRequest);
+    if (d->useUtf8 == useUtf8)
+        return;
+
+    d->useUtf8 = useUtf8;
+    emit useUtf8Changed(d->useUtf8);
 }
 
 void WebRequest::setCacheUsed(bool cacheUsed)

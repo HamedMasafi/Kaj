@@ -50,6 +50,7 @@ public:
     WebRequestManager *m_manager;
     WebRequestCache *m_cacheManager;
     QMap<QString, QString> files;
+    bool useUtf8;
 };
 
 KAJ_END_NAMESPACE

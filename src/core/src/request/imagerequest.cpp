@@ -30,6 +30,7 @@ KAJ_BEGIN_NAMESPACE
 ImageRequest::ImageRequest(QObject *parent) : WebRequest(parent)
 {
     setMethod(Get);
+    setUseUtf8(false);
 }
 
 QUrl ImageRequest::fileName() const

@@ -54,6 +54,7 @@ class KAJ_EXPORT WebRequest : public QObject
     Q_PROPERTY(bool cacheUsed READ cacheUsed WRITE setCacheUsed NOTIFY cacheUsedChanged)
     Q_PROPERTY(qint64 expirationSeconds READ expirationSeconds WRITE setExpirationSeconds NOTIFY expirationSecondsChanged)
     Q_PROPERTY(QString loadingText READ loadingText WRITE setLoadingText NOTIFY loadingTextChanged)
+    Q_PROPERTY(bool useUtf8 READ useUtf8 WRITE setUseUtf8 NOTIFY useUtf8Changed)
 
 public:
     enum Method {
@@ -77,9 +78,11 @@ public:
     bool cacheUsed() const;
     qint64 expirationSeconds() const;
     QString loadingText() const;
+    bool useUtf8() const;
 
     void addFile(const QString &name, const QString &path);
     void addData(const QString &name, const QVariant &value);
+
 
 protected:
     void sendToServer(QVariantMap props = QMap<QString, QVariant>(), bool cache = true);
@@ -108,6 +111,8 @@ signals:
     void expirationSecondsChanged(qint64 expirationSeconds);
     void loadingTextChanged(QString loadingText);
 
+    void useUtf8Changed(bool useUtf8);
+
 private slots:
     void finished();
 
@@ -125,6 +130,7 @@ public slots:
     void setCacheManager(WebRequestCache *cacheManager);
     void setExpirationSeconds(qint64 expirationSeconds);
     void setLoadingText(QString loadingText);
+    void setUseUtf8(bool useUtf8);
 };
 
 KAJ_END_NAMESPACE

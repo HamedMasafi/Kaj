@@ -5,4 +5,5 @@ CircleButton 1.0 CircleButton.qml
 CircleImage 1.0 CircleImage.qml
 PageBase 1.0 PageBase.qml
 PagesStackManager 1.0 PagesStackManager.qml
+NavigationPage 1.0 NavigationPage.qml
 designersupported

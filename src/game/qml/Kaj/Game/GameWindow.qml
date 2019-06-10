@@ -88,11 +88,21 @@ ApplicationWindow{
     overlay.modal: Rectangle {
         color: "#8f28282a"
 //        scale: loader.scale
+
+        transform: Scale{
+            xScale: scaleContainer.xScale
+            yScale: scaleContainer.yScale
+        }
     }
 
     overlay.modeless: Rectangle {
         color: "#2f28282a"
 //        scale: loader.scale
+
+        transform: Scale{
+            xScale: scaleContainer.xScale
+            yScale: scaleContainer.yScale
+        }
     }
 
     Rectangle{
