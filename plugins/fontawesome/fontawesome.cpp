@@ -6,8 +6,11 @@
 #endif
 
 #include <QFontDatabase>
+#include "tool/_fontawesome_defines.h"
+#define CONTEXT_PROPERTY(name, data)   engine->rootContext()->setContextProperty("fa_" #name , data);
+#define STATIC_MEMBER_IMPL(name, data) const QString FontAwesome::fa_##name = data;
 
-#define CONTEXT_PROPERTY(name, data)   engine->rootContext()->setContextProperty("fa_" #name , #data);
+__fa_foreach(STATIC_MEMBER_IMPL)
 
 FontAwesome::FontAwesome(QObject *parent) : KajPluginBase(parent)
 {
@@ -20,6 +23,9 @@ bool FontAwesome::init(const QQmlApplicationEngine *engine)
     QFontDatabase::addApplicationFont(":/fonts/fontawesome");
 
     engine->rootContext()->setContextProperty("FontAwesome", "FontAwesome");
+
+//    __fa_foreach(CONTEXT_PROPERTY)
+
 
     engine->rootContext()->setContextProperty("fa_adjust", "\uf042");
     engine->rootContext()->setContextProperty("fa_adn", "\uf170");
@@ -575,3 +581,6 @@ bool FontAwesome::init(const QQmlApplicationEngine *engine)
 }
 #endif
 
+
+
+#include "tool/_fontawesome_undefs.h"

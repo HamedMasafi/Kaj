@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/kaj">
+        <file>qml/Kaj/Game/Box2D/BoxBody.qml</file>
+        <file>qml/Kaj/Game/Box2D/ChainBody.qml</file>
+        <file>qml/Kaj/Game/Box2D/CircleBody.qml</file>
+        <file>qml/Kaj/Game/Box2D/EdgeBody.qml</file>
+        <file>qml/Kaj/Game/Box2D/ImageBoxBody.qml</file>
+        <file>qml/Kaj/Game/Box2D/PhysicsItem.qml</file>
+        <file>qml/Kaj/Game/Box2D/PolygonBody.qml</file>
+        <file>qml/Kaj/Game/Box2D/qmldir</file>
+        <file>qml/Kaj/Game/Box2D/RectangleBoxBody.qml</file>
+        <file>qml/Kaj/Game/Box2D/ScreenBoundaries.qml</file>
+    </qresource>
+</RCC>

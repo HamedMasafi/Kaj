@@ -3,6 +3,7 @@
 icons_file_name="_variables.less"
 defines="_fontawesome_defines.h"
 undef="_fontawesome_undefs.h"
+qml="_fontawesome_qml.h"
 
 if [[ $(find "$icons_file_name" -mtime +1 -print) ]]; then
   echo "File $icons_file_name exists and is older than 1 days"
@@ -19,6 +20,7 @@ regex='\@fa\-var\-([^:]*)?\: "\\f([^;]*)";'
 prev_name=""
 echo "" > $defines
 echo "" > $undef
+echo "" > $qml
 
 while IFS= read -r line
 do
@@ -37,7 +39,11 @@ do
             echo "#define __fa_$name(x) __fa_$prev_name(x) x($name, $data)" >> $defines
         fi
         
+        echo "engine->rootContext()->setContextProperty(\"fa_$name\", $data);" >> $qml
+
+        echo "#ifdef __fa_$name" >> $undef
         echo "#undef __fa_$name" >> $undef
+        echo "#endif" >> $undef
         prev_name=$name
     fi  
 done < "$icons_file_name"

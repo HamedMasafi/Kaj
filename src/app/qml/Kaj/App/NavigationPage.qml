@@ -19,6 +19,14 @@ AppPage {
                               _source: model[i].target,
                           })
         }
+
+        if (model.length > 0)
+            loader.source = model[0].target;
+    }
+
+    onLoaded: {
+        topBar.currentIndex = 0;
+        bottomBarRepeater.itemAt(0).down = true;
     }
 
     ListModel{
@@ -151,6 +159,7 @@ AppPage {
         layoutDirection: Qt.RightToLeft
 
         Repeater{
+            id: bottomBarRepeater
             model: _model
             TabButton {
                 Layout.fillWidth: true
@@ -165,8 +174,12 @@ AppPage {
 
     Loader {
         id: loader
-        anchors.bottomMargin: bottomBar.visible ? bottomBar.height : 0
-        anchors.topMargin: topBar.visible ? topBar.height : 0
-        anchors.fill: parent
+        anchors{
+            rightMargin: dp(8)
+            leftMargin: dp(8)
+            bottomMargin: dp(8) + (bottomBar.visible ? bottomBar.height : 0)
+            topMargin: dp(8) + (topBar.visible ? topBar.height : 0)
+            fill: parent
+        }
     }
 }

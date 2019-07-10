@@ -47,6 +47,9 @@
 #ifdef KAJ_APP_LIB
 #endif
 
+#ifdef  KAJ_BOX2D_LIB
+#  include "../../box2d/kajbox2dplugin.h"
+#endif
 #ifdef KAJ_NAMESPACE
     using namespace KAJ_NAMESPACE;
 #endif
@@ -100,6 +103,11 @@ void KajModule::registerTypes(const char *uri)
 #endif
 
 #ifdef KAJ_APP_LIB
+#endif
+
+#ifdef KAJ_BOX2D_LIB
+    KajBox2DPlugin plugin;
+    plugin.registerTypes("Kaj.Game.Box2D");
 #endif
 }
 

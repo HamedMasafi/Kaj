@@ -2,6 +2,8 @@ INCLUDEPATH += $$PWD/src
 DEPENDPATH += $$PWD/src
 RESOURCES += $$PWD/game.qrc
 DEFINES += KAJ_GAME_LIB
+QML_IMPORT_PATH += $$PWD/qml
+QML_DESIGNER_IMPORT_PATH += $$PWD/qml
 
 HEADERS += \
     $$PWD/src/gridmap.h \

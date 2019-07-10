@@ -3,6 +3,7 @@ DEPENDPATH += $$PWD/src
 RESOURCES += $$PWD/core.qrc
 DEFINES += KAJ_CORE_LIB
 QML_IMPORT_PATH += $$PWD/qml
+QML_DESIGNER_IMPORT_PATH += $$PWD/qml/Kaj
 
 HEADERS += \
     $$PWD/src/swipegesturemanager.h \
