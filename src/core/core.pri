@@ -7,6 +7,7 @@ QML_DESIGNER_IMPORT_PATH += $$PWD/qml/Kaj
 
 HEADERS += \
     $$PWD/src/appcolors.h \
+    $$PWD/src/contactsmodel.h \
     $$PWD/src/swipegesturemanager.h \
     $$PWD/src/units.h \
     $$PWD/src/zoomarea.h \
@@ -34,6 +35,7 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/src/appcolors.cpp \
+    $$PWD/src/contactsmodel.cpp \
     $$PWD/src/swipegesturemanager.cpp \
     $$PWD/src/units.cpp \
     $$PWD/src/zoomarea.cpp \

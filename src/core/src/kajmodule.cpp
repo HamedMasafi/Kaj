@@ -38,6 +38,7 @@
 #include "request/webrequestmanager.h"
 #include "shape.h"
 #include "appcolors.h"
+#include "contactsmodel.h"
 
 #ifdef KAJ_GAME_LIB
 #   include "kajgameplugin.h"
@@ -85,6 +86,7 @@ void KajModule::registerTypes(const char *uri)
     qmlRegisterType<Application>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Application");
     qmlRegisterType<ScaleContainer>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ScaleContainer");
     qmlRegisterType<Shape>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Shape");
+    qmlRegisterType<ContactsModel>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ContactsModel");
     qmlRegisterSingletonType<Mobility>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Mobility", createSingletonMobility);
     qmlRegisterSingletonType<Units>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
     qmlRegisterSingletonType<Platforms>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);

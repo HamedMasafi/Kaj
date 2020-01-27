@@ -73,7 +73,6 @@ public slots:
     int getStatusBarHeight();
     void setFullScreen(FullScreenMode mode = StickyImmersive);
     ConnectionType networkConnectionType() const;
-    QVariant contacts();
 };
 
 KAJ_END_NAMESPACE
