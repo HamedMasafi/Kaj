@@ -35,4 +35,9 @@ void JsonObjectRequest::processResponse(QByteArray buffer)
         emit finished(obj);
 }
 
+void JsonObjectRequest::beforeSend(QNetworkRequest &request)
+{
+
+}
+
 KAJ_END_NAMESPACE

@@ -23,6 +23,7 @@
 #include "kajglobal.h"
 #include <QtCore/QObject>
 #include <QtCore/qglobal.h>
+#include <QVariant>
 
 KAJ_BEGIN_NAMESPACE
 
@@ -72,6 +73,7 @@ public slots:
     int getStatusBarHeight();
     void setFullScreen(FullScreenMode mode = StickyImmersive);
     ConnectionType networkConnectionType() const;
+    QVariant contacts();
 };
 
 KAJ_END_NAMESPACE

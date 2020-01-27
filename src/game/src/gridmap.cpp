@@ -190,9 +190,9 @@ GridMap *GridMapAttached::parentGrid() const
         parentItem = parentItem->parentItem();
         return qobject_cast<GridMap*>(parentItem);
     } else {
-        qWarning("Layout must be attached to Item elements");
+        qWarning("GridMap must be attached to Item elements");
     }
-    return 0;
+    return nullptr;
 }
 
 void GridMapAttached::invalidateItem() const
@@ -230,11 +230,19 @@ int GridMap::rows() const
     return d->rows;
 }
 
-QPointF GridMap::demap(QPointF p) const
+QPointF GridMap::demap(const QPointF &p) const
 {
     Q_D(const GridMap);
 
     return d->detransform.map(p);
+}
+
+QRect GridMap::demap(const QRect &rc) const
+{
+    Q_D(const GridMap);
+
+    return QRect(d->detransform.map(rc.topLeft()),
+                  d->detransform.map(rc.bottomRight()));
 }
 
 QPoint GridMap::map(QPoint p) const
@@ -489,6 +497,18 @@ void GridMap::invalidate(QQuickItem *child)
     }
 }
 
+void GridMap::validatePos(QQuickItem *child)
+{
+    GridMapAttached *attached = qobject_cast<GridMapAttached*>(qmlAttachedPropertiesObject<GridMap>(child));
+
+    if(!attached->isFloat()){
+
+        QRectF rc = map(attached->x(), attached->y(), attached->width(), attached->height());
+        child->setPosition(rc.topLeft());
+        child->setSize(rc.size());
+    }
+}
+
 void GridMap::setHilightedRect(QRect hilightedRect)
 {
     Q_D(GridMap);
@@ -511,6 +531,23 @@ void GridMap::setHighlightColor(QColor highlightColor)
     update();
     d->highlightColor = highlightColor;
     emit highlightColorChanged(highlightColor);
+}
+
+void GridMap::clearHilightedRect()
+{
+    setHilightedRect(QRect());
+}
+
+int GridMap::cellWidth() const
+{
+    Q_D(const GridMap);
+    return d->cell_width;
+}
+
+int GridMap::cellHeigth() const
+{
+    Q_D(const GridMap);
+    return d->cell_height;
 }
 
 void GridMap::widthChanged()
@@ -560,6 +597,9 @@ void GridMap::paint(QPainter *painter)
 
 void GridMap::childEvent(QChildEvent *event)
 {
+    if (event->added()) {
+        qDebug() << event->child();
+    }
     Q_UNUSED(event);
     //    qDebug()<<event;
     //    if(event->added()){

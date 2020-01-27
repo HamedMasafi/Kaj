@@ -91,6 +91,7 @@ protected:
     virtual void beforeSend(QNetworkRequest &request);
     virtual void storeInCache(QDateTime expire, QByteArray buffer);
     virtual bool retriveFromCache(const QString &key);
+    virtual QByteArray body();
     QString actualCacheId() const;
     QString generateCacheId(QVariantMap props);
     void setCacheUsed(bool cacheUsed);

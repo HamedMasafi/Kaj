@@ -80,18 +80,18 @@ defineTest(kajOutputInstall){
 }
 
 defineTest(kajInstallDeps) {
-    copydeploymentfolders.commands += $$kajCopyCommands
-    first.depends += $(first) copydeploymentfolders
-    export(first.depends)
-    export(copydeploymentfolders.commands)
-    QMAKE_EXTRA_TARGETS += first copydeploymentfolders
-    export(QMAKE_EXTRA_TARGETS)
+#    copydeploymentfolders.commands += $$kajCopyCommands
+#    first.depends += $(first) copydeploymentfolders
+#    export(first.depends)
+#    export(copydeploymentfolders.commands)
+#    QMAKE_EXTRA_TARGETS += first copydeploymentfolders
+#    export(QMAKE_EXTRA_TARGETS)
 }
 #include($$PWD/copyData.pri)
 
-android.source = android-build
-android.target = ..
-COPYFOLDERS += android
+#android.source = android-build
+#android.target = ..
+#COPYFOLDERS += android
 
 !contains(KAJ_MODULES, core) {
     message(Core module is not included. It will be incude automaticaly)

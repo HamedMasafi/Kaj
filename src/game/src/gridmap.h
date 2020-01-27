@@ -101,7 +101,8 @@ public:
     Q_INVOKABLE int cols() const;
     Q_INVOKABLE int rows() const;
     Q_INVOKABLE qreal degree() const;
-    Q_INVOKABLE QPointF demap(QPointF p) const;
+    Q_INVOKABLE QPointF demap(const QPointF &p) const;
+    Q_INVOKABLE QRect demap(const QRect &rc) const;
     Q_INVOKABLE QPoint map(QPoint p) const;
     Q_INVOKABLE QPointF map(QPointF p) const;
     Q_INVOKABLE QRect map(QRect rc) const;
@@ -129,8 +130,13 @@ public slots:
     void setGridColor(QColor gridColor);
     void setImageSource(QUrl imageSource);
     void invalidate(QQuickItem *child);
+    void validatePos(QQuickItem *child);
     void setHilightedRect(QRect hilightedRect);
     void setHighlightColor(QColor highlightColor);
+
+    void clearHilightedRect();
+    int cellWidth() const;
+    int cellHeigth() const;
 
 signals:
     void colsChanged(int cols);

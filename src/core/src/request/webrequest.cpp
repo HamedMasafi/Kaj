@@ -172,6 +172,7 @@ void WebRequest::sendToServer(QVariantMap props, bool cache)
                 reply = manager()->request(request, QByteArray());
         }
     }
+    reply->ignoreSslErrors();
     connect(reply, &QNetworkReply::finished, this, &WebRequest::finished);
 }
 
@@ -334,6 +335,11 @@ bool WebRequest::retriveFromCache(const QString &key)
         }
     }
     return false;
+}
+
+QByteArray WebRequest::body()
+{
+
 }
 
 QString WebRequest::actualCacheId() const

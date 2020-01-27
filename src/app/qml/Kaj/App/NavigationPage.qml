@@ -39,7 +39,6 @@ AppPage {
         height: rootWindow.height
         edge: Qt.RightEdge
         visible: false
-        enabled: false
         dragMargin: 0
 
         Pane {

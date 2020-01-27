@@ -75,7 +75,6 @@ class KajPluginRegisterHelper : public QObject
     Q_OBJECT
     QHash<QString, bool (*)()> plugins;
     QHash<QString, bool (*)(const QQmlApplicationEngine *engine)> qmlPlugins;
-    int n;
 
     KAJ_SINGLETON(KajPluginRegisterHelper)
 

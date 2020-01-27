@@ -37,11 +37,10 @@
 #include "request/webrequestcache.h"
 #include "request/webrequestmanager.h"
 #include "shape.h"
+#include "appcolors.h"
 
 #ifdef KAJ_GAME_LIB
-#   include "movementanimation.h"
-#   include "rotateanimation.h"
-#   include "gridmap.h"
+#   include "kajgameplugin.h"
 #endif
 
 #ifdef KAJ_APP_LIB
@@ -70,6 +69,11 @@ static QObject *createSingletonRestRequestCallsManager(QQmlEngine *, QJSEngine *
     return WebRequestManager::instance();
 }
 
+static QObject *createSingletonAppColors(QQmlEngine *, QJSEngine *)
+{
+    return AppColors::instance();
+}
+
 void KajModule::registerTypes(const char *uri)
 {
     Q_ASSERT(QLatin1String(uri) == QLatin1String("Kaj"));
@@ -85,6 +89,7 @@ void KajModule::registerTypes(const char *uri)
     qmlRegisterSingletonType<Units>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
     qmlRegisterSingletonType<Platforms>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);
     qmlRegisterSingletonType<FileUtils>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "FileUtils", createSingletonFileUtils);
+    qmlRegisterSingletonType<AppColors>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "AppColors", createSingletonAppColors);
 
     //Web request
     qmlRegisterType<WebRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequest");
@@ -97,9 +102,11 @@ void KajModule::registerTypes(const char *uri)
     qmlRegisterSingletonType<WebRequestManager>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequestManagerInstance", createSingletonRestRequestCallsManager);
 
 #ifdef KAJ_GAME_LIB
-    qmlRegisterType<MovementAnimation>("Kaj.Game", KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "MovementAnimation");
-    qmlRegisterType<RotateAnimation>("Kaj.Game", KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "RotateAnimation");
-    qmlRegisterType<GridMap>("Kaj.Game", KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "GridMap");
+    KajGamePlugin gamePlugin;
+    gamePlugin.registerTypes("Kaj.Game");
+//    qmlRegisterType<MovementAnimation>("Kaj.Game", KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "MovementAnimation");
+//    qmlRegisterType<RotateAnimation>("Kaj.Game", KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "RotateAnimation");
+//    qmlRegisterType<GridMap>("Kaj.Game", KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "GridMap");
 #endif
 
 #ifdef KAJ_APP_LIB

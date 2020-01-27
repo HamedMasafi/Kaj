@@ -21,6 +21,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QApplication>
+#include <QVariantList>
 
 #ifdef Q_OS_ANDROID
 #   include <QtAndroid>
@@ -128,6 +129,80 @@ Mobility::ConnectionType Mobility::networkConnectionType() const
     return static_cast<ConnectionType>(type);
 #endif
     return NONE;
+}
+
+QVariant Mobility::contacts()
+{
+    /*
+ContentResolver cr = getContentResolver();
+    Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+            null, null, null, null);
+
+    if ((cur != null ? cur.getCount() : 0) > 0) {
+        while (cur != null && cur.moveToNext()) {
+            String id = cur.getString(
+                    cur.getColumnIndex(ContactsContract.Contacts._ID));
+            String name = cur.getString(cur.getColumnIndex(
+                    ContactsContract.Contacts.DISPLAY_NAME));
+
+            if (cur.getInt(cur.getColumnIndex(
+                    ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                Cursor pCur = cr.query(
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                        new String[]{id}, null);
+                while (pCur.moveToNext()) {
+                    String phoneNo = pCur.getString(pCur.getColumnIndex(
+                            ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    Log.i(TAG, "Name: " + name);
+                    Log.i(TAG, "Phone Number: " + phoneNo);
+                }
+                pCur.close();
+            }
+        }
+    }
+    if(cur!=null){
+        cur.close();
+    }*/
+
+#ifdef Q_OS_ANDROID
+    QEventLoop loop;
+    QtAndroid::requestPermissions(QStringList() << "android.permission.READ_CONTACTS", [&loop](const QtAndroid::PermissionResultMap &){
+        loop.quit();
+    });
+    loop.exec();
+    auto CONTENT_URI = QAndroidJniObject::getStaticObjectField("android/provider/ContactsContract$Contacts",
+                                                               "CONTENT_URI",
+                                                               "Landroid/net/Uri;");
+    QAndroidJniObject cr = QtAndroid::androidActivity().callObjectMethod("getContentResolver",
+                                                                         "()Landroid/content/ContentResolver;");
+
+    auto cur = cr.callObjectMethod("query", "(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;",
+                                   CONTENT_URI.object(),
+                             nullptr, nullptr, nullptr, nullptr);
+
+    QVariantList contacts;
+    if (cur.isValid()) {
+        while (true) {
+            jboolean b = cur.callMethod<jboolean>("moveToNext");
+            if (!b)
+                break;
+
+            auto index = cur.callMethod<jint>("getColumnIndex", "(Ljava/lang/String;)I",
+                                 QAndroidJniObject::fromString("_id").object());
+            auto name = cur.callObjectMethod("getString", "(I)Ljava/lang/String;", index);
+            QVariantMap v;
+            v.insert("name", name.toString());
+            contacts.append(v);
+            qDebug() << "name=" << name.toString();
+        }
+    }
+
+    return contacts;
+#else
+    return QVariantList();
+#endif
 }
 
 void Mobility::directCallNumber(QString number)
