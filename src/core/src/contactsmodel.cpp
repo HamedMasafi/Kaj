@@ -10,6 +10,7 @@ QList<ContactsModel::Contact*> ContactsModel::_contacts;
 
 ContactsModel::ContactsModel(QObject *parent) : QAbstractListModel(parent)
 {
+#ifdef Q_OS_ANDROID
     QEventLoop loop;
     QtAndroid::requestPermissions(QStringList() << "android.permission.READ_CONTACTS", [&loop](const QtAndroid::PermissionResultMap &){
         loop.quit();
@@ -20,6 +21,7 @@ ContactsModel::ContactsModel(QObject *parent) : QAbstractListModel(parent)
         initData();
     beginInsertRows(QModelIndex(), _contacts.length(), _contacts.length());
     endInsertRows();
+#endif
 }
 
 void ContactsModel::initData()
@@ -102,9 +104,6 @@ void ContactsModel::initData()
             _contacts.append(contact);
         }
     }
-
-#else
-    return QVariantList();
 #endif
 }
 
@@ -160,7 +159,7 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
         QVariantList l;
         foreach (auto p, d->phones) {
             QVariantMap map;
-            map.insert("type", p->type);
+            map.insert("type", p->typeName);
             map.insert("phone", p->phone);
             l.append(map);
         }

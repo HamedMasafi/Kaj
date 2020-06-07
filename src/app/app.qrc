@@ -12,5 +12,7 @@
         <file>qml/Kaj/App/NavigationPage.qml</file>
         <file>qml/Kaj/App/NavigationItem.qml</file>
         <file>qml/Kaj/App/NavigationSeprator.qml</file>
+        <file>qml/Kaj/App/AppWindowTitle.qml</file>
+        <file>qml/Kaj/App/AppBar.qml</file>
     </qresource>
 </RCC>

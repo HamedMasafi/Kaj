@@ -40,7 +40,21 @@ ApplicationWindow{
 
 //        property alias data: __pages.pagesData
     }
+    header: AppBar{
+        layoutDirection: direction
+        title: stackView.currentItem == null
+               ? ""
+               : stackView.currentItem.title
 
+        showBackButton: stackView.currentItem === null
+                        ? false
+                        : stackView.currentItem.allowGoBack
+                          ? (stackView.depth > 1 ? true : false)
+                          : false
+        onBackButtonClicked: pages.back();
+        menu: stackView.currentItem.menu
+    }
+/*
     header: ToolBar{
         visible: stackView.currentItem === null
                  ? false
@@ -67,6 +81,20 @@ ApplicationWindow{
             anchors.rightMargin: dp(8)
             anchors.leftMargin: dp(8)
 
+            /*AppWindowTitle {
+                showBackButton: stackView.currentItem === null
+                                ? false
+                                : stackView.currentItem.allowGoBack
+                                  ? (stackView.depth > 1 ? true : false)
+                                  : false
+                titleText: stackView.currentItem == null ? "" : stackView.currentItem.title
+                onButtonClicked: pages.back()
+                direction: win.direction
+                Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }* /
+
             ToolButton{
                 id: backButton
                 opacity: stackView.currentItem === null
@@ -87,10 +115,12 @@ ApplicationWindow{
                 id: name
                 text: stackView.currentItem == null ? "" : stackView.currentItem.title
                 //            font.bold: true
-                x: (backButton.x + backButton.width) * backButton.opacity + 5
+                x: (backButton.x - name.width) * backButton.opacity + 5
+
 //                anchors.verticalCenter: parent.verticalCenter
                 Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: true
+                font.pointSize: 14
             }
 
             RowLayout{
@@ -136,7 +166,7 @@ ApplicationWindow{
             }
         }
     }
-
+*/
     StackView{
         id: stackView
         anchors.fill: parent

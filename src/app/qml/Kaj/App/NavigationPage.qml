@@ -7,6 +7,11 @@ AppPage {
     id: appPage
     property list<Item> model
     property color primaryColor: 'white'
+    property int currentIndex: 0
+
+    property alias drawerEnabled: drawer.visible
+    property alias topBarEnabled: topBar.visible
+    property alias bottomBarEnabled: bottomBar.visible
 
     onModelChanged: {
         var i;
@@ -25,8 +30,8 @@ AppPage {
     }
 
     onLoaded: {
-        topBar.currentIndex = 0;
-        bottomBarRepeater.itemAt(0).down = true;
+//        topBar.currentIndex = 0;
+//        bottomBarRepeater.itemAt(0).down = true;
     }
 
     ListModel{
@@ -39,7 +44,7 @@ AppPage {
         height: rootWindow.height
         edge: Qt.RightEdge
         visible: false
-        dragMargin: 0
+        dragMargin: 30
 
         Pane {
             id: pane
@@ -133,7 +138,11 @@ AppPage {
         id: topBar
         visible: false
         LayoutMirroring.enabled: true
+        LayoutMirroring.childrenInherit: true
+
         width: parent.width
+        currentIndex: appPage.currentIndex
+
         Repeater{
             model: _model
             TabButton {
@@ -141,7 +150,10 @@ AppPage {
                 icon.source: _icon
                 display: "TextOnly"
 
-                onClicked: loader.setSource(_source)
+                onClicked: {
+                    appPage.currentIndex = TabBar.index
+                    loader.setSource(_source)
+                }
             }
         }
     }
@@ -166,13 +178,19 @@ AppPage {
                 text: _text
                 icon.source: _icon
                 display: "IconOnly"
-                onClicked: loader.setSource(_source)
+                down: loader.source == 'qrc:' + _source
+                onClicked: {
+                    appPage.currentIndex = index
+                    loader.setSource(_source)
+                }
             }
         }
     }
 
     Loader {
         id: loader
+        clip: true
+        onSourceChanged: console.log(source)
         anchors{
             rightMargin: dp(8)
             leftMargin: dp(8)
