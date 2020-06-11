@@ -8,6 +8,7 @@ QML_DESIGNER_IMPORT_PATH += $$PWD/qml/Kaj
 HEADERS += \
     $$PWD/src/appcolors.h \
     $$PWD/src/contactsmodel.h \
+    $$PWD/src/icons.h \
     $$PWD/src/swipegesturemanager.h \
     $$PWD/src/units.h \
     $$PWD/src/zoomarea.h \
@@ -36,6 +37,7 @@ HEADERS += \
 SOURCES += \
     $$PWD/src/appcolors.cpp \
     $$PWD/src/contactsmodel.cpp \
+    $$PWD/src/icons.cpp \
     $$PWD/src/swipegesturemanager.cpp \
     $$PWD/src/units.cpp \
     $$PWD/src/zoomarea.cpp \
@@ -55,6 +57,26 @@ SOURCES += \
     $$PWD/src/request/jsonrequest.cpp \
     $$PWD/src/request/variantrequest.cpp \
     $$PWD/src/shape.cpp
+
+contains(KAJ_PLUGINS, fontawesome) {
+    KAJ_ICON += fontawesome
+    DEFINES += KAJ_ICON=\\\"fontawesome\\\"
+    SOURCES += $$PWD/src/icons_fa.cpp
+    message(KAJ_ICON set to fontawesome)
+} else {
+    contains(KAJ_PLUGINS, mdi) {
+        KAJ_ICON += mdi
+        DEFINES += "KAJ_ICON=\"mdi\""
+        SOURCES += $$PWD/src/icons_mdi.cpp
+        message(KAJ_ICON set to mdi)
+    } else {
+        KAJ_PLUGINS += fontawesome
+        KAJ_ICON += fontawesome
+        DEFINES += KAJ_ICON=\\\"fontawesome\\\"
+        SOURCES += $$PWD/src/icons_fa.cpp
+        message(KAJ_ICON set to fontawesome)
+    }
+}
 
 static {
     # Create the resource file

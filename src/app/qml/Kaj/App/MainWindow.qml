@@ -53,6 +53,9 @@ ApplicationWindow{
                           : false
         onBackButtonClicked: pages.back();
         menu: stackView.currentItem.menu
+        extraButtons: stackView.currentItem == null
+               ? null
+               : stackView.currentItem.extraButtons
     }
 /*
     header: ToolBar{

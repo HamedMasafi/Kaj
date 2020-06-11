@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
+import QtQml.Models 2.12
+import Kaj 1.0
 
 ToolBar {
     id: appBar
@@ -16,12 +18,19 @@ ToolBar {
     signal backButtonClicked();
     state: layoutDirection == Qt.RightToLeft ? 'rtl' : 'ltr'
 
-    RowLayout{
+    property ObjectModel extraButtons: null
+
+    onExtraButtonsChanged: console.log("extra buttons")
+    RowLayout {
         id: layout
         layoutDirection: direction
         anchors.fill: parent
 
         Item {
+            Layout.preferredWidth: dp(8)
+        }
+        Item {
+            id: titleContainer
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -31,10 +40,9 @@ ToolBar {
 //                    color: 'red'
 //                }
                 id: backButton
-                opacity: showBackButton ? 0 : 1
+                opacity: showBackButton ? 1 : 0
                 onClicked: appBar.backButtonClicked()
-                font.family: FontAwesome
-                text: direction == Qt.RightToLeft ? fa_arrow_right : fa_arrow_left
+                font.family: Icons.fontName()
                 visible: opacity > 0
                 Behavior on opacity { NumberAnimation{} }
                 anchors.verticalCenter: parent.verticalCenter
@@ -52,23 +60,21 @@ ToolBar {
         Repeater{
             id: pageOptions
 
-            model: stackView.currentItem == null
-                   ? null
-                   : stackView.currentItem.extraButtons
+            model: extraButtons
         }
 
-        Switch {
-            onClicked: appBar.state =
-                       appBar.state == 'rtl'
-                            ? 'ltr'
-                            : 'rtl'
-        }
+//        Switch {
+//            onClicked: appBar.state =
+//                       appBar.state == 'rtl'
+//                            ? 'ltr'
+//                            : 'rtl'
+//        }
 
         ToolButton{
             id: toolButtonMenu
-            font.family: FontAwesome
+            font.family: Icons.fontName()
             height: parent.height
-            text: fa_ellipsis_v
+            text: Icons.get(Icons.Ellipsis)
             visible: appBar.showMenu
             onClicked: showMenu();
 
@@ -115,7 +121,7 @@ ToolBar {
 
             PropertyChanges {
                 target: backButton
-                text: fa_arrow_left
+                text: Icons.get(Icons.ArrowLeft)
             }
         },
         State {
@@ -133,12 +139,15 @@ ToolBar {
             }
             PropertyChanges {
                 target: titleLabel
-                x: (backButton.x - titleLabel.width) * backButton.opacity + 5
+                x: titleContainer.width
+                   - (backButton.width) * backButton.opacity
+                   - titleLabel.width
+                   - 5
             }
 
             PropertyChanges {
                 target: backButton
-                text: fa_arrow_right
+                text: Icons.get(Icons.ArrowRight)
             }
         }
     ]

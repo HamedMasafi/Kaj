@@ -105,14 +105,14 @@ void ScaleContainer::geometryChanged(const QRectF &newGeometry, const QRectF &ol
 void ScaleContainer::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &data)
 {
     QQuickItem::itemChange(change, data);
-    /*if (change == QQuickItem::ItemChildAddedChange) {
+    if (change == QQuickItem::ItemChildAddedChange) {
 //        transform->appendToItem(data.item);
         data.item->setPosition(QPointF(
                     (width() - data.item->width()) / 2,
                     (height() - data.item->height()) / 2));
         connect(data.item, &QQuickItem::childrenRectChanged,
                 this, &ScaleContainer::child_childrenRectChanged);
-    }*/
+    }
 }
 
 QSGNode *ScaleContainer::updatePaintNode(QSGNode *node, QQuickItem::UpdatePaintNodeData *data)

@@ -22,6 +22,7 @@
 #include <QtMath>
 #include <QDebug>
 #include <QPainter>
+#include <QPainterPath>
 
 #include "gridmap_p.h"
 #include "gridmap.h"

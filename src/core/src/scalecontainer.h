@@ -43,7 +43,7 @@ public:
         FitAcceptRatio,
         FitCrop
     };
-    Q_ENUM(ScaleType)
+    Q_ENUMS(ScaleType)
     ScaleType scaleType() const;
 
 public slots:

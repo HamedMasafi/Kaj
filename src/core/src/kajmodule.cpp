@@ -39,6 +39,8 @@
 #include "shape.h"
 #include "appcolors.h"
 #include "contactsmodel.h"
+#include "icons.h"
+#include "safezone.h"
 
 #ifdef KAJ_GAME_LIB
 #   include "kajgameplugin.h"
@@ -64,6 +66,7 @@ DECLARE_SINGELTON_METHOD(Units)
 DECLARE_SINGELTON_METHOD(Platforms)
 DECLARE_SINGELTON_METHOD(Mobility)
 DECLARE_SINGELTON_METHOD(FileUtils)
+DECLARE_SINGELTON_METHOD(Icons)
 
 static QObject *createSingletonRestRequestCallsManager(QQmlEngine *, QJSEngine *)
 {
@@ -87,11 +90,13 @@ void KajModule::registerTypes(const char *uri)
     qmlRegisterType<ScaleContainer>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ScaleContainer");
     qmlRegisterType<Shape>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Shape");
     qmlRegisterType<ContactsModel>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ContactsModel");
+    qmlRegisterType<SafeZone>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "SafeZone");
     qmlRegisterSingletonType<Mobility>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Mobility", createSingletonMobility);
     qmlRegisterSingletonType<Units>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
     qmlRegisterSingletonType<Platforms>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);
     qmlRegisterSingletonType<FileUtils>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "FileUtils", createSingletonFileUtils);
     qmlRegisterSingletonType<AppColors>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "AppColors", createSingletonAppColors);
+    qmlRegisterSingletonType<Icons>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Icons", createSingletonIcons);
 
     //Web request
     qmlRegisterType<WebRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequest");

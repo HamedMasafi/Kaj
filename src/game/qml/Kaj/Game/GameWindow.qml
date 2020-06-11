@@ -7,7 +7,7 @@ import Qt.labs.settings 1.0
 ApplicationWindow{
     id: win
 
-    property alias scaleSize: scaleContainer.xScale
+    property alias scaleSize: safeZoneElement.contentScale
     property int contentWidth: 400
     property int contentHeight: 800
     property string initialPage: ""
@@ -15,15 +15,15 @@ ApplicationWindow{
     property string appName: ''
     property alias extraChilds: extraChildsContainer.children
     property alias backgroundColor: bg.color
-    property rect safeZone
     property alias backgroundItem: backgroundContainer.children
+
 
     property PagesStackManager pages: PagesStackManager{
         id: __pages
         loader: loader
 
         onLoaded: {
-            item.safeZone = win.safeZone
+//            item.safeZone = win.safeZone
             console.log("safe zone is", win.safeZone)
         }
 
@@ -38,31 +38,13 @@ ApplicationWindow{
     visible: true
     flags: noTitlebar ? Qt.FramelessWindowHint : Qt.Window
 
-    onWidthChanged: calsSafeZone();
-    onHeightChanged: calsSafeZone();
-    Component.onCompleted: calsSafeZone()
-//    title: stackView.currentItem === null
-//           ? appName
-//           : appName + " - " + stackView.currentItem.title
-
-    function calsSafeZone(){
-        var scaleX = win.width / 2
-        var scaleY = win.height / 3
-
-        if (scaleX > scaleY) {
-            safeZone.width = win.width
-            safeZone.height = (3 * safeZone.width) / 2
-        } else {
-            safeZone.height = win.height
-            safeZone.width = (2 * safeZone.height) / 3
-        }
-
-        safeZone.width *= scaleContainer.scaleSize
-        safeZone.height *= scaleContainer.scaleSize
-        safeZone.x = (win.width - safeZone.width) / 2
-        safeZone.y = (win.height - safeZone.height) / 2
-
-        console.log("safe zone is", win.safeZone, scaleContainer.scaleSize)
+    SafeZone {
+        id: safeZoneElement
+        onContentScaleChanged: console.log(contentScale)
+        contentSize.width: contentWidth
+        contentSize.height: contentHeight
+        windowSize.width: width
+        windowSize.height: height
     }
 
     function open(p, props) {
@@ -111,67 +93,47 @@ ApplicationWindow{
     }
 
     Item {
-//        id: scaleItem
-        property real xScale: 1
-        property real yScale: 1
-        onWidthChanged: {
-            xScale = win.width / win.contentWidth
-            console.log("x scale", xScale)
-        }
-        onHeightChanged: {
-            yScale = win.height / win.contentHeight
-            console.log("y scale", yScale)
-        }
-//    }
-//    ScaleContainer{
-        id: scaleContainer
+        id: scaleItem
         anchors.fill: parent
 
         Item{
             id: backgroundContainer
-            ScaleContainer.scaleType: "FitCrop"
+
             width: contentWidth
             height: contentHeight
             children: loader.item.background
 
-            transform: Scale {
-                xScale: scaleContainer.xScale
-                yScale: scaleContainer.yScale
-            }
+            scale: safeZoneElement.backgroundScale
+            anchors.centerIn: parent
         }
         Loader{
             id: loader
-            ScaleContainer.scaleType: "FitAcceptRatio"
             clip: true
-            width: contentWidth
-            height: contentHeight
 
             Keys.onBackPressed: pages.back()
             Keys.onEscapePressed: console.log("pages.back()")
 
+            width: contentWidth
+            height: contentHeight
+            anchors.centerIn: parent
+            scale: safeZoneElement.contentScale
+
             onLoaded: {
+                console.log("Loaded")
                 if(typeof(item.loaded) === 'function')
                     item.loaded()
 
                 if(typeof(item.activated) === 'function')
                     item.activated()
             }
-
-            transform: Scale {
-                xScale: scaleContainer.xScale
-                yScale: scaleContainer.yScale
-            }
         }
         Item{
             id: extraChildsContainer
-            ScaleContainer.scaleType: "FitAcceptRatio"
+
             width: contentWidth
             height: contentHeight
-
-            transform: Scale {
-                xScale: scaleContainer.xScale
-                yScale: scaleContainer.yScale
-            }
+            scale: safeZoneElement.contentScale
+            anchors.centerIn: parent
         }
     }
 
@@ -185,13 +147,5 @@ ApplicationWindow{
         if (Qt.platform.os === "android" && pages.back() !== null)
             close.accepted = false
     }
-
-//    Rectangle{
-//        anchors.centerIn: parent
-//        height: safeZone.height
-//        width: safeZone.width
-//        color: 'green'
-//        opacity: .4
-//    }
 }
 
