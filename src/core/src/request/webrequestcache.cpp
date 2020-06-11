@@ -139,13 +139,13 @@ WebRequestCache::WebRequestCache(const QString &name)
 
     QDir d(path);
     if (!d.exists())
-        d.mkdir(path);
+        d.mkpath(path);
 
     if (name == QString())
         db.setDatabaseName(path + "/cache.dat");
     else
         db.setDatabaseName(path + "/" + name + ".dat");
-qDebug() << path;
+
     bool ok = db.open();
 
     if (!ok) {

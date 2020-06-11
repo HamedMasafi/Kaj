@@ -1,5 +1,8 @@
 #include "googlegcm.h"
 
+#include <QThread>
+#include <QApplication>
+
 #ifdef KAJ_PLUGIN_GCM
 #   include <firebase/app.h>
 #   include <firebase/messaging.h>
@@ -7,7 +10,9 @@
 #   include "firebase/util.h"
 
 #   include "gcmlistener.h"
+#endif
 
+#ifdef Q_OS_ANDROID
 #   include <android/native_activity.h>
 
 #   include <jni.h>
@@ -130,14 +135,19 @@ bool GoogleGcm::init()
 //    ::firebase::messaging::PollableListener *listener = new ::firebase::messaging::PollableListener;
 
 
-    QAndroidJniEnvironment jni;
 
     qDebug() << "api key" << ::firebase::AppOptions().api_key();
     ::firebase::AppOptions opt;
 
+#ifdef Q_OS_ANDROID
+    QAndroidJniEnvironment jni;
     ::firebase::App *app = ::firebase::App::Create(::firebase::AppOptions(),
                                                    (JNIEnv*)(jni),
                                                    QtAndroid::androidActivity().object());
+#else
+    ::firebase::App *app = ::firebase::App::Create(::firebase::AppOptions(),
+                                                   qApp->applicationName().toLocal8Bit().data());
+#endif
     ::firebase::ModuleInitializer initializer;
     ::firebase::messaging::Initialize(*app, listener);
 //    initializer.Initialize(
@@ -199,7 +209,7 @@ void GoogleGcm::polToken()
     if (m_registrationToken.isEmpty()) {
         std::string token;
         if (listener->PollRegistrationToken(&token))
-            m_registrationToken = QString::fromStdString(token);
+            setRegistrationToken(QString::fromStdString(token));
     }
 #endif
 }

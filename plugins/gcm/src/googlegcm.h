@@ -5,7 +5,7 @@
 
 namespace firebase {
     namespace messaging {
-        class Message;
+        struct Message;
     }
 }
 
@@ -60,7 +60,7 @@ class GoogleGcm : public KajPluginBase
     Q_PROPERTY(QString registrationToken READ registrationToken WRITE setRegistrationToken NOTIFY registrationTokenChanged)
 
     QString m_registrationToken;
-#ifdef Q_OS_ANDROID
+#ifdef KAJ_PLUGIN_GCM
     GcmListener *listener;
 #endif
 
