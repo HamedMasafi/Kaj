@@ -1,0 +1,58 @@
+#!/bin/bash
+
+name="mdi"
+icons_file_name="_variables.scss"
+defines="_${name}_defines.h"
+undef="_${name}_undefs.h"
+functions="_${name}_functions.h"
+qml="_${name}_qml.h"
+
+if [[ $(find "$icons_file_name" -mtime +1 -print) ]]; then
+  echo "File $icons_file_name exists and is older than 1 days"
+  rm $icons_file_name
+fi
+
+if [[ ! -f $icons_file_name ]]; then
+    wget https://cdn.materialdesignicons.com/5.3.45/scss/_variables.scss $icons_file_name
+fi
+
+regex='\s{2}\"([^:]*)?\"\: F([^,]*),?'
+#names=`cat $icons_file_name`
+
+prev_name=""
+echo "" > $defines
+echo "" > $undef
+echo "" > $qml
+echo "" > $functions
+
+while IFS= read -r line
+do
+    if [[ $line =~ $regex ]]
+    then
+        name="${BASH_REMATCH[1]}"
+        data="${BASH_REMATCH[2]}"
+        name="${name//-/_}"    
+        data="\"\\u$data\""
+        #echo "${name} = ${data}"
+        #echo $prev_name
+        
+        if [ -z "$prev_name" ]; then
+            echo "#define __mdi_$name(x) x($name, $data)" >> $functions
+        else
+            echo "#define __mdi_$name(x) __mdi_$prev_name(x) x($name, $data)" >> $functions
+        fi
+        
+        echo "#define __mdi_$name $data" >> $defines
+        
+        echo "engine->rootContext()->setContextProperty(\"mdi_$name\", $data);" >> $qml
+
+        echo "#ifdef __mdi_$name" >> $undef
+        echo "#undef __mdi_$name" >> $undef
+        echo "#endif" >> $undef
+        prev_name=$name
+    fi  
+done < "$icons_file_name"
+
+
+
+echo "#define __mdi_foreach(x) __mdi_$prev_name(x)" >> $functions
