@@ -9,19 +9,20 @@ INCLUDEPATH += $$PWD
         DEFINES += KAJ_PLUGIN_GCM
         INCLUDEPATH += $$FIREBASE_CPP_SDK_DIR/include
 
-        android {
+        android: {
             contains(ANDROID_TARGET_ARCH,armeabi-v7a)  {
                 LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/armeabi-v7a/c++
             }
             contains(ANDROID_TARGET_ARCH,arm64-v8a)  {
-                LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/arm64-v8a/gnustl
+                LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/arm64-v8a/c++
             }
             contains(ANDROID_TARGET_ARCH,x86)  {
-                LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/x86/gnustl
+                LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/x86/c++
             }
             contains(ANDROID_TARGET_ARCH,x86_64)  {
-                LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/x86_64/gnustl
+                LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/x86_64/c++
             }
+            message("ANDROID_TARGET_ARCH $$ANDROID_TARGET_ARCH");
         }
         linux {
             LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/linux/x86_64
