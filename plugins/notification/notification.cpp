@@ -6,11 +6,6 @@
 
 #include "notification.h"
 
-static QObject *createSingletonNotification(QQmlEngine *, QJSEngine *)
-{
-    return new Notification();
-}
-
 Notification::Notification(QObject *parent) : KajPluginBase(parent)
 {
 
@@ -19,6 +14,7 @@ Notification::Notification(QObject *parent) : KajPluginBase(parent)
 #if QT_QML_LIB
 bool Notification::init(const QQmlApplicationEngine *engine)
 {
+    Q_UNUSED(engine)
     qmlRegisterType<Notification>("Kaj.Notification", 1, 0, "Notification");
     return true;
 }
