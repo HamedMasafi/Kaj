@@ -29,13 +29,13 @@
 #include "application.h"
 #include "mobility.h"
 #include "fileutils.h"
-#include "request/webrequest.h"
-#include "request/stringrequest.h"
-#include "request/imagerequest.h"
-#include "request/jsonrequest.h"
-#include "request/variantrequest.h"
-#include "request/webrequestcache.h"
-#include "request/webrequestmanager.h"
+//#include "request/webrequest.h"
+//#include "request/stringrequest.h"
+//#include "request/imagerequest.h"
+//#include "request/jsonrequest.h"
+//#include "request/variantrequest.h"
+//#include "request/webrequestcache.h"
+//#include "request/webrequestmanager.h"
 #include "shape.h"
 #include "appcolors.h"
 #include "contactsmodel.h"
@@ -68,10 +68,10 @@ DECLARE_SINGELTON_METHOD(Mobility)
 DECLARE_SINGELTON_METHOD(FileUtils)
 DECLARE_SINGELTON_METHOD(Icons)
 
-static QObject *createSingletonRestRequestCallsManager(QQmlEngine *, QJSEngine *)
-{
-    return WebRequestManager::instance();
-}
+//static QObject *createSingletonRestRequestCallsManager(QQmlEngine *, QJSEngine *)
+//{
+//    return WebRequestManager::instance();
+//}
 
 static QObject *createSingletonAppColors(QQmlEngine *, QJSEngine *)
 {
@@ -99,14 +99,14 @@ void KajModule::registerTypes(const char *uri)
     qmlRegisterSingletonType<Icons>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Icons", createSingletonIcons);
 
     //Web request
-    qmlRegisterType<WebRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequest");
-    qmlRegisterType<StringRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "StringRequest");
-    qmlRegisterType<JsonObjectRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "JsonRequest");
-    qmlRegisterType<VariantRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "VariantRequest");
-    qmlRegisterType<ImageRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ImageRequest");
-    qmlRegisterType<WebRequestManager>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequestManager");
-    qmlRegisterType<WebRequestCache>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequestCache");
-    qmlRegisterSingletonType<WebRequestManager>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequestManagerInstance", createSingletonRestRequestCallsManager);
+//    qmlRegisterType<WebRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequest");
+//    qmlRegisterType<StringRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "StringRequest");
+//    qmlRegisterType<JsonObjectRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "JsonRequest");
+//    qmlRegisterType<VariantRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "VariantRequest");
+//    qmlRegisterType<ImageRequest>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ImageRequest");
+//    qmlRegisterType<WebRequestManager>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequestManager");
+//    qmlRegisterType<WebRequestCache>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequestCache");
+//    qmlRegisterSingletonType<WebRequestManager>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "WebRequestManagerInstance", createSingletonRestRequestCallsManager);
 
 #ifdef KAJ_GAME_LIB
     KajGamePlugin gamePlugin;
