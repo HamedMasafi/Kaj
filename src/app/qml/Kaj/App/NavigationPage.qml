@@ -12,7 +12,9 @@ AppPage {
     property alias drawerEnabled: drawer.visible
     property alias topBarEnabled: topBar.visible
     property alias bottomBarEnabled: bottomBar.visible
+    property string mainTitle: ''
 
+    title: mainTitle + ' - ' + model[currentIndex].title
     onModelChanged: {
         var i;
         _model.clear()

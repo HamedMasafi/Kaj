@@ -49,6 +49,13 @@ QtObject {
     }
 
     function __pushPage(page, properties, callback, replace){
+        if (pagesData.length > 0 && page[0] !== '/')
+        {
+            var prevUrl = pagesData[pagesData.length - 1].page;
+            prevUrl = prevUrl.substring(0, prevUrl.lastIndexOf('/'));
+            page = prevUrl + "/" + page;
+        }
+
         page += ".qml";
 
         if (properties === undefined || properties === null)

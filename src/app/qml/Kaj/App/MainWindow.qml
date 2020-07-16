@@ -52,7 +52,9 @@ ApplicationWindow{
                           ? (stackView.depth > 1 ? true : false)
                           : false
         onBackButtonClicked: pages.back();
-        menu: stackView.currentItem.menu
+        menu: stackView.currentItem == null
+              ? null
+              : stackView.currentItem.menu
         extraButtons: stackView.currentItem == null
                ? null
                : stackView.currentItem.extraButtons
