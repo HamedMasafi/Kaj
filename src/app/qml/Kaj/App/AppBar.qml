@@ -34,7 +34,7 @@ ToolBar {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            ToolButton{
+            RoundButton{
 //                Rectangle{
 //                    anchors.fill: parent
 //                    color: 'red'
@@ -43,6 +43,7 @@ ToolBar {
                 opacity: showBackButton ? 1 : 0
                 onClicked: appBar.backButtonClicked()
                 font.family: Icons.fontName()
+                flat: true
                 visible: opacity > 0
                 Behavior on opacity { NumberAnimation{} }
                 anchors.verticalCenter: parent.verticalCenter

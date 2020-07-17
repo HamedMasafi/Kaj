@@ -29,10 +29,10 @@ KAJ_BEGIN_NAMESPACE
 Units::Units(QObject *parent) : QObject(parent), m_fontScale(1)
 {
 #if defined (Q_OS_ANDROID) || defined (Q_OS_IOS)
-        m_virtualDpi = qApp->primaryScreen()->physicalDotsPerInch();
 #else
         m_virtualDpi = 160;
 #endif
+        m_virtualDpi = qApp->primaryScreen()->physicalDotsPerInch();
 //#ifdef Q_OS_ANDROID
 //    auto ba = qgetenv("QT_ANDROID_THEME_DISPLAY_DPI");
 //    bool ok;
