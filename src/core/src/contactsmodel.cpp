@@ -1,5 +1,8 @@
 #include "contactsmodel.h"
 
+//#include <QThread>
+//#include <thread>
+
 #ifdef Q_OS_ANDROID
 #   include <QtAndroid>
 #   include <QtAndroidExtras>
@@ -27,6 +30,7 @@ ContactsModel::ContactsModel(QObject *parent) : QAbstractListModel(parent)
 void ContactsModel::initData()
 {
 #ifdef Q_OS_ANDROID
+    setIsBusy(true);
 
     auto CONTENT_URI = QAndroidJniObject::getStaticObjectField("android/provider/ContactsContract$Contacts",
                                                                "CONTENT_URI",
@@ -104,6 +108,11 @@ void ContactsModel::initData()
             _contacts.append(contact);
         }
     }
+    std::sort(_contacts.begin(), _contacts.end(), [](Contact *l, Contact *r){
+        return l->name < r->name;
+    });
+
+    setIsBusy(false);
 #endif
 }
 
@@ -179,4 +188,29 @@ QHash<int, QByteArray> ContactsModel::roleNames() const
     r.insert(Qt::UserRole + 3, "phones");
     r.insert(Qt::UserRole + 4, "phones_count");
     return r;
+}
+
+bool ContactsModel::isBusy() const
+{
+    return m_isBusy;
+}
+
+void ContactsModel::loadAsync()
+{
+//    std::thread th = std::thread([this](){
+//        if (!_contacts.size())
+//            initData();
+//        beginInsertRows(QModelIndex(), _contacts.length(), _contacts.length());
+//        endInsertRows();
+//    });
+//    th.join();
+}
+
+void ContactsModel::setIsBusy(bool isBusy)
+{
+    if (m_isBusy == isBusy)
+        return;
+
+    m_isBusy = isBusy;
+    emit isBusyChanged(m_isBusy);
 }

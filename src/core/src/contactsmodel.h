@@ -7,6 +7,8 @@ class ContactsModel : public QAbstractListModel
 {
     Q_OBJECT
 
+    Q_PROPERTY(bool isBusy READ isBusy WRITE setIsBusy NOTIFY isBusyChanged)
+
     enum Type {
         TYPE_HOME = 1,
         TYPE_MOBILE = 2,
@@ -55,11 +57,20 @@ public:
 private:
     void initData();
 QString typeToString(const Type &t)const;
-    // QAbstractItemModel interface
+// QAbstractItemModel interface
+bool m_isBusy;
+
 public:
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
     QHash<int, QByteArray> roleNames() const;
+    bool isBusy() const;
+public slots:
+    void loadAsync();
+
+    void setIsBusy(bool isBusy);
+signals:
+    void isBusyChanged(bool isBusy);
 };
 
 #endif // CONTACTSMODEL_H
