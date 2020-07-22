@@ -40,7 +40,7 @@
 #include "appcolors.h"
 #include "contactsmodel.h"
 #include "icons.h"
-//#include "safezone.h"
+#include "safezone.h"
 
 #ifdef KAJ_GAME_LIB
 #   include "kajgameplugin.h"
@@ -90,7 +90,7 @@ void KajModule::registerTypes(const char *uri)
     qmlRegisterType<ScaleContainer>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ScaleContainer");
     qmlRegisterType<Shape>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Shape");
     qmlRegisterType<ContactsModel>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "ContactsModel");
-//    qmlRegisterType<SafeZone>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "SafeZone");
+    qmlRegisterType<SafeZone>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "SafeZone");
     qmlRegisterSingletonType<Mobility>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Mobility", createSingletonMobility);
     qmlRegisterSingletonType<Units>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Units", createSingletonUnits);
     qmlRegisterSingletonType<Platforms>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "Platforms", createSingletonPlatforms);
