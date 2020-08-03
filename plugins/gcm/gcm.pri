@@ -6,10 +6,8 @@ INCLUDEPATH += $$PWD
     message(> Download it from https://firebase.google.com/download/cpp)
 } else {
     exists($$FIREBASE_CPP_SDK_DIR){
-        DEFINES += KAJ_PLUGIN_GCM
-        INCLUDEPATH += $$FIREBASE_CPP_SDK_DIR/include
-
         android: {
+            DEFINES += KAJ_PLUGIN_GCM
             contains(ANDROID_TARGET_ARCH,armeabi-v7a)  {
                 LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/armeabi-v7a/c++
             }
@@ -28,15 +26,19 @@ INCLUDEPATH += $$PWD
             LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/linux/x86_64
         }
 
-        LIBS += \
-            -lfirebase_messaging \
-            -lfirebase_app
+#        defined(KAJ_PLUGIN_GCM) {
+            message(Kaj gcm module enabled)
+            INCLUDEPATH += $$FIREBASE_CPP_SDK_DIR/include
+            LIBS += \
+                -lfirebase_messaging \
+                -lfirebase_app
 
-        HEADERS += \
-            $$PWD/src/gcmlistener.h
+            HEADERS += \
+                $$PWD/src/gcmlistener.h
 
-        SOURCES += \
-            $$PWD/src/gcmlistener.cpp
+            SOURCES += \
+                $$PWD/src/gcmlistener.cpp
+#        }
     } else {
         message("$$FIREBASE_CPP_SDK_DIR not exixts")
     }
