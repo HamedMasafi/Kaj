@@ -15,6 +15,11 @@ static QObject *createSingleton##type(QQmlEngine *, QJSEngine *) \
 
 DECLARE_SINGELTON_METHOD(Units)
 
+KajQmlCoreModule::KajQmlCoreModule() : QQmlExtensionPlugin()
+{
+
+}
+
 void KajQmlCoreModule::registerTypes(const char *uri)
 {
     Q_ASSERT(QLatin1String(uri) == QLatin1String("Kaj"));
