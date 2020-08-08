@@ -1,16 +1,17 @@
 TEMPLATE = subdirs
 CONFIG += ordered
 SUBDIRS = \
-    core \
-    app \
-    game \
-    animations \
-    rest
+    qmlcore
+#    core \
+#    app \
+#    game \
+#    animations \
+#    rest \
+#    icons \
+#    qmlcore \
+#    mobility
 
 # android: SUBDIRS += android
-
-core.depends += core
-rest.depends += core network qml
-app.depends += core qml quick
-game.depends += core qml quick
-animations.depends += core qml quick
+#app.depends += qmlcore icons
+#game.depends += qmlcore
+#animations.depends += qmlcore

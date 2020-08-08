@@ -1,0 +1,53 @@
+#!/bin/bash
+
+icons_file_name="_variables.less"
+defines="_fontawesome_defines.h"
+undef="_fontawesome_undefs.h"
+qml="_fontawesome_qml.h"
+
+if [[ $(find "$icons_file_name" -mtime +1 -print) ]]; then
+  echo "File $icons_file_name exists and is older than 1 days"
+  rm $icons_file_name
+fi
+
+if [[ ! -f $icons_file_name ]]; then
+    wget https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/less/_variables.less
+fi
+
+regex='\@fa\-var\-([^:]*)?\: "\\f([^;]*)";'
+#names=`cat $icons_file_name`
+
+prev_name=""
+echo "" > $defines
+echo "" > $undef
+echo "" > $qml
+
+while IFS= read -r line
+do
+    if [[ $line =~ $regex ]]
+    then
+        name="${BASH_REMATCH[1]}"
+        data="${BASH_REMATCH[2]}"
+        name="${name//-/_}"    
+        data="\"\\uf$data\""
+        #echo "${name} = ${data}"
+        #echo $prev_name
+        
+        if [ -z "$prev_name" ]; then
+            echo "#define __fa_$name(x) x($name, $data)" >> $defines
+        else
+            echo "#define __fa_$name(x) __fa_$prev_name(x) x($name, $data)" >> $defines
+        fi
+        
+        echo "engine->rootContext()->setContextProperty(\"fa_$name\", $data);" >> $qml
+
+        echo "#ifdef __fa_$name" >> $undef
+        echo "#undef __fa_$name" >> $undef
+        echo "#endif" >> $undef
+        prev_name=$name
+    fi  
+done < "$icons_file_name"
+
+
+
+echo "#define __fa_foreach(x) __fa_$prev_name(x)" >> $defines
