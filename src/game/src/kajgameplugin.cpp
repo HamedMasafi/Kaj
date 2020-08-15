@@ -23,6 +23,7 @@
 #include "rotateanimation.h"
 #include "gridmap.h"
 #include "kajgameplugin.h"
+#include "safezone.h"
 
 #ifdef KAJ_NAMESPACE
     using namespace KAJ_NAMESPACE;
@@ -38,4 +39,5 @@ void KajGamePlugin::registerTypes(const char *uri)
     qmlRegisterType<MovementAnimation>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "MovementAnimation");
     qmlRegisterType<RotateAnimation>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "RotateAnimation");
     qmlRegisterType<GridMap>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "GridMap");
+    qmlRegisterType<SafeZone>(uri, KAJ_VERSION_MAJOR, KAJ_VERSION_MINOR, "SafeZone");
 }

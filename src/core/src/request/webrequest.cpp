@@ -378,6 +378,7 @@ QString WebRequest::generateCacheId(QVariantMap props)
 void WebRequest::finished()
 {
     Q_D(WebRequest);
+    qDebug() << Q_FUNC_INFO;
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
