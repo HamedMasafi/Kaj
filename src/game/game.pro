@@ -1,7 +1,7 @@
 CONFIG += no_app_extension_api_only
 load(qt_build_config)
 
-TARGET = QtKajGame
+TARGET = QKajGame
 QT = core quick qml
 
 MODULE = kajgame

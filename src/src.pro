@@ -1,10 +1,10 @@
 TEMPLATE = subdirs
 CONFIG += ordered
 SUBDIRS = \
-    qmlcore
-#    core \
-#    app \
-#    game \
+    core \
+    qml \
+    app \
+    game
 #    animations \
 #    rest \
 #    icons \
