@@ -17,6 +17,11 @@ ApplicationWindow{
     property bool noTitlebar: false
     property string appName: ''
     property variant direction: Qt.LeftToRight
+    property string currentPageTitle: stackView.currentItem == null
+                                      ? ""
+                                      : stackView.currentItem.title
+
+    property alias depth: stackView.depth
 
     flags: noTitlebar ? Qt.FramelessWindowHint : Qt.Window
 

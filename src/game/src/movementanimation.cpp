@@ -204,7 +204,7 @@ void MovementAnimation::updateState(QAbstractAnimation::State newState, QAbstrac
         {
             float x = d->target->property("x").toFloat();
             float y = d->target->property("y").toFloat();
-            d->from == QPointF(x, y);
+            d->from = QPointF(x, y);
         } else {
             d->target->setProperty("x", d->from.x());
             d->target->setProperty("y", d->from.y());
