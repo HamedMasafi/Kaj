@@ -1,0 +1,54 @@
+#!/bin/bash
+
+icons_file_name="bootstrap-icons.css"
+defines="_bootstrap_defines.h"
+undef="_bootstrap_undefs.h"
+qml="_bootstrap_qml.h"
+
+if [[ $(find "$icons_file_name" -mtime +1 -print) ]]; then
+  echo "File $icons_file_name exists and is older than 1 days"
+  rm $icons_file_name
+fi
+
+if [[ ! -f $icons_file_name ]]; then
+    wget https://raw.githubusercontent.com/twbs/icons/main/font/bootstrap-icons.css
+fi
+
+regex='\.bi\-(\S+)::before \{ content: \"\\f(\S+)\"; \}'
+#names=`cat $icons_file_name`
+
+prev_name=""
+echo "" > $defines
+echo "" > $undef
+echo "" > $qml
+
+while IFS= read -r line
+do
+    echo $line
+    if [[ $line =~ $regex ]]
+    then
+        name="${BASH_REMATCH[1]}"
+        data="${BASH_REMATCH[2]}"
+        name="${name//-/_}"    
+        data="\"\\uf$data\""
+        #echo "${name} = ${data}"
+        #echo $prev_name
+        
+        if [ -z "$prev_name" ]; then
+            echo "#define __fa_$name(x) x($name, $data)" >> $defines
+        else
+            echo "#define __fa_$name(x) __fa_$prev_name(x) x($name, $data)" >> $defines
+        fi
+        
+        echo "engine->rootContext()->setContextProperty(\"fa_$name\", $data);" >> $qml
+
+        echo "#ifdef __fa_$name" >> $undef
+        echo "#undef __fa_$name" >> $undef
+        echo "#endif" >> $undef
+        prev_name=$name
+    fi  
+done < "$icons_file_name"
+
+
+
+echo "#define __fa_foreach(x) __fa_$prev_name(x)" >> $defines
