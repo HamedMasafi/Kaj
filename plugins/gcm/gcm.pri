@@ -7,7 +7,8 @@ INCLUDEPATH += $$PWD
 } else {
     exists($$FIREBASE_CPP_SDK_DIR){
         android: {
-#            DEFINES += KAJ_PLUGIN_GCM
+            DEFINES += KAJ_PLUGIN_GCM
+            KAJ_PLUGIN_GCM = 1
             contains(ANDROID_TARGET_ARCH,armeabi-v7a)  {
                 LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/android/armeabi-v7a/c++
             }
@@ -26,12 +27,12 @@ INCLUDEPATH += $$PWD
             LIBS += -L$$FIREBASE_CPP_SDK_DIR/libs/linux/x86_64
         }
 
-        defined(KAJ_PLUGIN_GCM) {
+        defined(KAJ_PLUGIN_GCM, var) {
             message(Kaj gcm module enabled)
             INCLUDEPATH += $$FIREBASE_CPP_SDK_DIR/include
-#            LIBS += \
-#                -lfirebase_messaging \
-#                -lfirebase_app
+            LIBS += \
+                -lfirebase_messaging \
+                -lfirebase_app
 
             HEADERS += \
                 $$PWD/src/gcmlistener.h

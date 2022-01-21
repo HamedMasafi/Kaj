@@ -197,7 +197,8 @@ bool GoogleGcm::init()
     //        qWarning() << "Error initing google gcm";
     //        return false;
     //    }
-
+#else
+    qDebug() << "KAJ_PLUGIN_GCM is not set";
 #endif
     return true;
 }
@@ -225,9 +226,12 @@ bool GoogleGcm::init(const QQmlApplicationEngine *)
 
 void GoogleGcm::setRegistrationToken(QString registrationToken)
 {
-    if (m_registrationToken == registrationToken)
+    if (m_registrationToken == registrationToken) {
+        qDebug() << "tokens are equal";
         return;
+    }
 
+    qDebug() << "getting token";
     m_registrationToken = registrationToken;
     emit registrationTokenChanged(m_registrationToken);
 }

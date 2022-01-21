@@ -35,10 +35,10 @@ ToolBar {
             Layout.fillHeight: true
 
             RoundButton{
-//                Rectangle{
-//                    anchors.fill: parent
-//                    color: 'red'
-//                }
+                Rectangle{
+                    anchors.fill: parent
+                    color: 'red'
+                }
                 id: backButton
                 opacity: showBackButton ? 1 : 0
                 onClicked: appBar.backButtonClicked()
